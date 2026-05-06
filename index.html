@@ -9,6 +9,17 @@
 <meta property="og:description" content="Stat tracking apps for coaches who want to understand the game.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ingameinsights.com">
+<meta name="theme-color" <!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>InGameInsights — Stat tracking apps for coaches</title>
+<meta name="description" content="InGameInsights builds live stat tracking apps for coaches and scorekeepers. Soccer, basketball, and lacrosse — purpose-built for the sideline.">
+<meta property="og:title" content="InGameInsights">
+<meta property="og:description" content="Stat tracking apps for coaches who want to understand the game.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com">
 <meta name="theme-color" content="#1a3a26">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,16 +36,16 @@
      typography and a warm gold accent.
      ========================================================================= */
   :root {
-    --field-deep:    #0e2818;   /* darkest, near-black green */
-    --field:         #1a3a26;   /* main brand green */
-    --field-mid:     #244e34;   /* lighter green for layering */
-    --field-line:    #2d5e40;   /* subtle borders */
-    --cream:         #efdc99;   /* primary text & wordmarks */
-    --cream-soft:    #d4c285;   /* secondary text */
-    --cream-mute:    #8a7d5a;   /* tertiary text, captions */
-    --gold:          #f0a830;   /* primary accent — buttons, highlights */
-    --gold-deep:     #c98a1f;   /* darker variant */
-    --rose:          #e8645a;   /* warning / live indicator */
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
 
     --serif: "DM Serif Display", "Times New Roman", serif;
     --display: "Anton", "Impact", sans-serif;
@@ -55,8 +66,6 @@
     overflow-x: hidden;
   }
 
-  /* Subtle field texture — repeating dot grid across the whole page so the
-     dark green never reads as flat dead space. Very low opacity. */
   body::before {
     content: "";
     position: fixed;
@@ -68,45 +77,7 @@
     background-size: 24px 24px;
   }
 
-  /* All real content sits above the texture overlay */
   .page { position: relative; z-index: 1; }
-
-  /* =========================================================================
-     Reusable: corner-bracket frame (the brand's signature visual)
-     ========================================================================= */
-  .bracket-frame {
-    position: relative;
-    padding: clamp(28px, 5vw, 56px);
-  }
-  .bracket-frame::before,
-  .bracket-frame::after {
-    content: "";
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    border: 2px solid var(--cream-soft);
-    pointer-events: none;
-  }
-  .bracket-frame::before {
-    top: 0; left: 0;
-    border-right: none;
-    border-bottom: none;
-  }
-  .bracket-frame::after {
-    bottom: 0; right: 0;
-    border-left: none;
-    border-top: none;
-  }
-  /* Optional secondary brackets on opposite corners */
-  .bracket-frame.full > .bracket-tl,
-  .bracket-frame.full > .bracket-br {
-    position: absolute;
-    width: 28px; height: 28px;
-    border: 2px solid var(--cream-soft);
-    pointer-events: none;
-  }
-  .bracket-frame.full > .bracket-tl { top: 0; right: 0; border-left: none; border-bottom: none; }
-  .bracket-frame.full > .bracket-br { bottom: 0; left: 0; border-right: none; border-top: none; }
 
   /* =========================================================================
      Layout shell
@@ -118,7 +89,7 @@
   }
 
   /* =========================================================================
-     Top nav — minimal, just brand mark + email link
+     Top nav — uses a real logo crop instead of a placeholder mark
      ========================================================================= */
   .nav {
     padding: 28px 0 0;
@@ -130,26 +101,25 @@
   .nav-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     text-decoration: none;
     color: var(--cream);
   }
-  .nav-brand-mark {
-    width: 32px; height: 32px;
+  /* Crop the navigation brand-mark to focus on the composite-ball portion of
+     the logo (the brand's most recognizable element). object-position keeps
+     the wordmark out of the small thumbnail so the ball reads cleanly. */
+  .nav-brand-logo {
+    width: 38px; height: 38px;
     flex-shrink: 0;
-    /* Show only the wordmark portion via a gold square placeholder bar */
-    background: var(--gold);
-    border-radius: 4px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--field-deep);
-    font-family: var(--display);
-    font-size: 18px;
-    letter-spacing: 0.5px;
+    object-fit: cover;
+    object-position: center 38%;
+    border-radius: 8px;
+    background: var(--field-deep);
   }
   .nav-brand-text {
     font-family: var(--display);
-    font-size: 20px;
-    letter-spacing: 1px;
+    font-size: 18px;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
     color: var(--cream);
   }
@@ -168,12 +138,53 @@
   .nav-link:hover { color: var(--gold); }
 
   /* =========================================================================
-     HERO
+     HERO — split layout: full logo on the left, headline + intro on the right
+     -------------------------------------------------------------------------
+     The composite ball logo is the brand's strongest visual asset, so we
+     give it real estate. On mobile the layout collapses to logo-on-top,
+     text-below.
      ========================================================================= */
   .hero {
-    padding: clamp(60px, 10vw, 120px) 0 clamp(80px, 12vw, 140px);
-    text-align: center;
+    padding: clamp(40px, 6vw, 70px) 0 clamp(48px, 6vw, 80px);
+    display: grid;
+    grid-template-columns: minmax(220px, 320px) 1fr;
+    gap: clamp(32px, 5vw, 80px);
+    align-items: center;
+  }
+
+  @media (max-width: 800px) {
+    .hero {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding-top: 40px;
+    }
+  }
+
+  .hero-logo-wrap {
     position: relative;
+  }
+  .hero-logo {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 16px 32px rgba(0,0,0,0.35));
+    transition: transform .8s cubic-bezier(.2,.8,.2,1);
+  }
+  .hero-logo:hover {
+    transform: scale(1.02);
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  @media (max-width: 800px) {
+    .hero-text { align-items: center; }
+    .hero-text p { max-width: none; }
   }
 
   .hero-eyebrow {
@@ -186,10 +197,10 @@
     font-weight: 600;
     text-transform: uppercase;
     color: var(--cream-mute);
-    margin-bottom: 28px;
     padding: 8px 18px;
     border: 1px solid var(--field-line);
     border-radius: 100px;
+    width: fit-content;
   }
   .hero-eyebrow::before {
     content: "";
@@ -203,19 +214,14 @@
     font-family: var(--serif);
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(48px, 9vw, 110px);
-    line-height: 0.95;
+    font-size: clamp(40px, 6.5vw, 76px);
+    line-height: 0.98;
     letter-spacing: -0.02em;
     color: var(--cream);
-    margin-bottom: 24px;
-    max-width: 14ch;
-    margin-left: auto;
-    margin-right: auto;
   }
   .hero h1 .accent {
     font-style: italic;
     color: var(--gold);
-    /* Subtle hand-drawn underline using a custom svg-like CSS effect */
     background-image: linear-gradient(transparent 80%, rgba(240, 168, 48, 0.3) 80%);
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -224,26 +230,26 @@
 
   .hero p {
     font-family: var(--body);
-    font-size: clamp(16px, 1.6vw, 19px);
+    font-size: clamp(15px, 1.5vw, 18px);
     color: var(--cream-soft);
-    max-width: 520px;
-    margin: 0 auto 40px;
     line-height: 1.65;
+    max-width: 56ch;
   }
 
+  /* Mini-stats row — reframed positively. "100% On Device" turns our
+     no-data-collection stance into a feature claim instead of a negative. */
   .hero-stats {
     display: flex;
-    justify-content: center;
-    gap: clamp(40px, 8vw, 80px);
-    margin-top: 60px;
+    gap: clamp(24px, 4vw, 48px);
+    margin-top: 8px;
     flex-wrap: wrap;
   }
-  .hero-stat {
-    text-align: center;
+  @media (max-width: 800px) {
+    .hero-stats { justify-content: center; }
   }
   .hero-stat-num {
     font-family: var(--display);
-    font-size: clamp(40px, 6vw, 64px);
+    font-size: clamp(36px, 4vw, 52px);
     line-height: 1;
     letter-spacing: 1px;
     color: var(--gold);
@@ -251,7 +257,7 @@
   }
   .hero-stat-label {
     font-family: var(--body);
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: var(--cream-mute);
@@ -259,14 +265,14 @@
   }
 
   /* =========================================================================
-     APPS GRID — the centerpiece of the page
+     APPS GRID — moved up to be directly under the hero
      ========================================================================= */
   .apps {
-    padding: 0 0 clamp(80px, 12vw, 140px);
+    padding: 0 0 clamp(60px, 10vw, 120px);
   }
 
   .section-header {
-    margin-bottom: clamp(40px, 6vw, 64px);
+    margin-bottom: clamp(32px, 5vw, 56px);
     display: flex;
     align-items: baseline;
     gap: 24px;
@@ -282,18 +288,12 @@
   }
   .section-title {
     font-family: var(--serif);
-    font-size: clamp(32px, 4.5vw, 48px);
+    font-size: clamp(28px, 3.8vw, 42px);
     color: var(--cream);
     line-height: 1.05;
     letter-spacing: -0.01em;
     flex: 1;
     min-width: 280px;
-  }
-  .section-rule {
-    flex: 0 0 auto;
-    width: 60px;
-    height: 1px;
-    background: var(--field-line);
   }
 
   .apps-grid {
@@ -312,7 +312,6 @@
     transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s ease;
   }
   .app-card::before {
-    /* Same dot texture but stronger inside the card */
     content: "";
     position: absolute;
     inset: 0;
@@ -326,7 +325,6 @@
     border-color: var(--gold-deep);
   }
 
-  /* Status pill in upper-right of each card */
   .app-card-status {
     position: absolute;
     top: 20px; right: 20px;
@@ -408,7 +406,6 @@
     z-index: 1;
   }
 
-  /* Action button at the bottom of each card */
   .app-card-cta {
     display: inline-flex;
     align-items: center;
@@ -555,27 +552,77 @@
   }
 
   /* =========================================================================
+     TOAST — confirmation feedback when an email link is clicked. Shown when
+     mailto: doesn't open a mail app (very common on desktop browsers without
+     a default mail handler). The email is copied to clipboard so the user
+     can still paste into whatever email tool they actually use.
+     ========================================================================= */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep);
+    border: 1px solid var(--gold-deep);
+    color: var(--cream);
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-family: var(--body);
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    z-index: 1000;
+    opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: calc(100% - 32px);
+    text-align: center;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  .toast::before {
+    content: "";
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    /* Inline SVG checkmark via mask */
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='12' fill='black'/><path d='M7 12.5l3 3 7-7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/contain no-repeat;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='12' fill='black'/><path d='M7 12.5l3 3 7-7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/contain no-repeat;
+  }
+
+  /* =========================================================================
      ANIMATIONS — staggered reveal on page load
      ========================================================================= */
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
   .reveal {
     opacity: 0;
     animation: fade-up .8s cubic-bezier(.2,.8,.2,1) forwards;
   }
-  .reveal.d1 { animation-delay: .05s; }
-  .reveal.d2 { animation-delay: .15s; }
-  .reveal.d3 { animation-delay: .25s; }
-  .reveal.d4 { animation-delay: .35s; }
-  .reveal.d5 { animation-delay: .45s; }
-  .reveal.d6 { animation-delay: .55s; }
-  .reveal.d7 { animation-delay: .65s; }
-  .reveal.d8 { animation-delay: .75s; }
+  .reveal-in {
+    opacity: 0;
+    animation: fade-in 1.2s ease forwards;
+  }
+  .reveal.d1, .reveal-in.d1 { animation-delay: .05s; }
+  .reveal.d2, .reveal-in.d2 { animation-delay: .15s; }
+  .reveal.d3, .reveal-in.d3 { animation-delay: .25s; }
+  .reveal.d4, .reveal-in.d4 { animation-delay: .35s; }
+  .reveal.d5, .reveal-in.d5 { animation-delay: .45s; }
+  .reveal.d6, .reveal-in.d6 { animation-delay: .55s; }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal { animation: none; opacity: 1; }
+    .reveal, .reveal-in { animation: none; opacity: 1; }
     * { transition: none !important; animation-duration: 0.01ms !important; }
   }
 
@@ -598,7 +645,7 @@
   <header class="container">
     <nav class="nav">
       <a href="/" class="nav-brand">
-        <span class="nav-brand-mark">i</span>
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
         <span class="nav-brand-text">InGame<span>Insights</span></span>
       </a>
       <a href="mailto:support@ingameinsights.com" class="nav-link">support@ingameinsights.com</a>
@@ -606,31 +653,35 @@
   </header>
 
   <!-- =========================================================================
-       HERO
+       HERO — split layout: full logo on left, headline + intro on right
        ========================================================================= -->
   <section class="hero container">
-    <div class="hero-eyebrow reveal d1">Built for the sideline</div>
-    <h1 class="reveal d2">Stat tracking apps for coaches who want to <span class="accent">understand the game</span>.</h1>
-    <p class="reveal d3">InGameInsights builds purpose-made stat trackers for soccer, basketball, and lacrosse. Track every shot, pass, and possession in real time — then turn the data into insights that make your team better.</p>
-
-    <div class="hero-stats reveal d4">
-      <div class="hero-stat">
-        <div class="hero-stat-num">3</div>
-        <div class="hero-stat-label">Sports</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">2yr</div>
-        <div class="hero-stat-label">In Production</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-num">0</div>
-        <div class="hero-stat-label">Data Tracking</div>
+    <div class="hero-logo-wrap reveal-in d1">
+      <img src="assets/logo.png" alt="InGameInsights" class="hero-logo">
+    </div>
+    <div class="hero-text">
+      <div class="hero-eyebrow reveal d2">Built for the sideline</div>
+      <h1 class="reveal d3">Stat tracking apps for coaches who want to <span class="accent">understand the game</span>.</h1>
+      <p class="reveal d4">Purpose-made stat trackers for soccer, basketball, and lacrosse. Track every shot, pass, and possession in real time — then turn the data into insights that make your team better.</p>
+      <div class="hero-stats reveal d5">
+        <div>
+          <div class="hero-stat-num">3</div>
+          <div class="hero-stat-label">Sports</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">2yr</div>
+          <div class="hero-stat-label">In Production</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">100%</div>
+          <div class="hero-stat-label">On Device</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- =========================================================================
-       APPS GRID
+       APPS GRID — directly under the hero
        ========================================================================= -->
   <section class="apps container" id="apps">
     <div class="section-header reveal d1">
@@ -647,7 +698,7 @@
         <h3 class="app-card-name">Soccer</h3>
         <p class="app-card-tagline">Live game stats for soccer coaches.</p>
         <p class="app-card-desc">Possession-first tracking, voice commands, shot charts with field location and target zone, multipeer second-screen display, and HTML game reports. Built for iPad.</p>
-        <a href="mailto:support@ingameinsights.com?subject=Soccer%20App%20-%20Notify%20me%20at%20launch" class="app-card-cta">
+        <a href="mailto:support@ingameinsights.com?subject=Soccer%20App%20-%20Notify%20me%20at%20launch" class="app-card-cta" data-email="support@ingameinsights.com" data-subject="Soccer App - Notify me at launch">
           Notify me at launch
           <span class="arrow">→</span>
         </a>
@@ -659,8 +710,8 @@
         <img src="assets/hoops-icon.png" alt="Hoops 25 app icon" class="app-card-icon" loading="lazy">
         <h3 class="app-card-name">Hoops '25</h3>
         <p class="app-card-tagline">Two seasons of real-game testing.</p>
-        <p class="app-card-desc">The flagship of the InGameInsights family — basketball stat tracking battle-tested across two full seasons of high school and club games. Comprehensive box scores, shot charts, and team analytics.</p>
-        <a href="mailto:support@ingameinsights.com?subject=Hoops%20%2725%20-%20TestFlight%20Access" class="app-card-cta secondary">
+        <p class="app-card-desc">The flagship of the InGameInsights family — basketball stat tracking battle-tested across two full years and nine teams, from middle school through varsity and club. Comprehensive box scores, shot charts, and team and individual analytics.</p>
+        <a href="mailto:support@ingameinsights.com?subject=Hoops%20%2725%20-%20TestFlight%20Access" class="app-card-cta secondary" data-email="support@ingameinsights.com" data-subject="Hoops '25 - TestFlight Access">
           Email for TestFlight access
           <span class="arrow">→</span>
         </a>
@@ -672,8 +723,8 @@
         <img src="assets/lax-icon.png" alt="LAX 26 app icon" class="app-card-icon" loading="lazy">
         <h3 class="app-card-name">LAX '26</h3>
         <p class="app-card-tagline">Lacrosse, scored properly.</p>
-        <p class="app-card-desc">Live lacrosse stat tracking with face-off win rates, shot location heatmaps, ground balls, saves, and penalty time. Currently in field testing with beta coaches across the spring season.</p>
-        <a href="mailto:support@ingameinsights.com?subject=LAX%20%2726%20-%20TestFlight%20Access" class="app-card-cta secondary">
+        <p class="app-card-desc">Live lacrosse stat tracking with face-off win rates, shot location heatmaps, ground balls, saves, possessions, and time of possession. Currently in field testing with beta coaches across the spring season.</p>
+        <a href="mailto:support@ingameinsights.com?subject=LAX%20%2726%20-%20TestFlight%20Access" class="app-card-cta secondary" data-email="support@ingameinsights.com" data-subject="LAX '26 - TestFlight Access">
           Email for TestFlight access
           <span class="arrow">→</span>
         </a>
@@ -694,7 +745,7 @@
         <div class="about-body">
           <p class="reveal d2"><strong>InGameInsights makes the tools we wish existed when we were on the sideline ourselves.</strong> Generic stat-keeping apps treat every sport like the same spreadsheet — we don't.</p>
           <p class="reveal d3">Every InGameInsights app is purpose-built for one game. Soccer's possession-first input model is different from basketball's quarter-driven flow, which is different from lacrosse's face-off-and-clear rhythm. The data the coaches care about is different in each. So we built each app from scratch around the way that sport is actually played.</p>
-          <p class="reveal d4">All data stays on your device. No accounts. No cloud sync. No tracking. Your roster is yours, your game data is yours, and the only thing leaving your iPad is the report you choose to share.</p>
+          <p class="reveal d4">All your data stays on your device. No accounts. No cloud sync. No tracking. Your roster is yours, your game data is yours, and the only thing leaving your iPad is the report you choose to share.</p>
         </div>
       </div>
     </div>
@@ -719,7 +770,78 @@
       <span>Made for coaches who care about the details.</span>
     </div>
   </footer>
+  <!-- Toast for email-click confirmation; hidden until activated -->
+  <div class="toast" id="toast" role="status" aria-live="polite">Email copied — paste it wherever you write email</div>
 
 </div>
+
+<script>
+  /* ===========================================================================
+     Smart email-link handler
+     ---------------------------------------------------------------------------
+     mailto: links have a long-standing UX problem: on desktop browsers
+     without a configured default mail handler, clicking does nothing visible
+     and users assume the button is broken. To fix this we:
+       1. Copy the address to clipboard so they can paste it anywhere
+       2. Try to open the user's mail app via mailto: (fails silently if none)
+       3. Always show a toast confirming "Email copied" — so the click feels
+          responsive even when nothing else happens
+     This works on every browser/device, and gives users a viable fallback
+     when their machine has no mail app set up.
+     =========================================================================== */
+  (function() {
+    var toast = document.getElementById('toast');
+    var toastTimer = null;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    function copyToClipboard(text) {
+      // Modern path
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      // Fallback for older browsers / non-HTTPS contexts
+      return new Promise(function(resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          resolve();
+        } catch (e) {
+          document.body.removeChild(ta);
+          reject(e);
+        }
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a[data-email]');
+      if (!link) return;
+
+      var email = link.getAttribute('data-email');
+      if (!email) return;
+
+      // Copy the email so users can paste it into whatever they use,
+      // regardless of whether mailto: opens anything
+      copyToClipboard(email).then(
+        function() { showToast('Email copied: ' + email); },
+        function() { showToast('Email: ' + email); }
+      );
+      // Don't preventDefault — let mailto: try to open the mail app too
+    });
+  })();
+</script>
 </body>
 </html>
