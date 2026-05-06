@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>InGameInsights — Stat tracking apps for coaches</title>
+<meta name="description" content="InGameInsights builds live stat tracking apps for coaches and scorekeepers. Soccer, basketball, and lacrosse — purpose-built for the sideline.">
+<meta property="og:title" content="InGameInsights">
+<meta property="og:description" content="Stat tracking apps for coaches who want to understand the game.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Design system — InGameInsights brand
+     -------------------------------------------------------------------------
+     Aesthetic: editorial sports-magazine meets viewfinder telemetry. The
+     corner-bracket motif from the app icons is the unifying visual idea —
+     it appears throughout as section frames, card framing, and a subtle
+     atmospheric overlay. Color is dominated by deep field-green with cream
+     typography and a warm gold accent.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;   /* darkest, near-black green */
+    --field:         #1a3a26;   /* main brand green */
+    --field-mid:     #244e34;   /* lighter green for layering */
+    --field-line:    #2d5e40;   /* subtle borders */
+    --cream:         #efdc99;   /* primary text & wordmarks */
+    --cream-soft:    #d4c285;   /* secondary text */
+    --cream-mute:    #8a7d5a;   /* tertiary text, captions */
+    --gold:          #f0a830;   /* primary accent — buttons, highlights */
+    --gold-deep:     #c98a1f;   /* darker variant */
+    --rose:          #e8645a;   /* warning / live indicator */
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Subtle field texture — repeating dot grid across the whole page so the
+     dark green never reads as flat dead space. Very low opacity. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+
+  /* All real content sits above the texture overlay */
+  .page { position: relative; z-index: 1; }
+
+  /* =========================================================================
+     Reusable: corner-bracket frame (the brand's signature visual)
+     ========================================================================= */
+  .bracket-frame {
+    position: relative;
+    padding: clamp(28px, 5vw, 56px);
+  }
+  .bracket-frame::before,
+  .bracket-frame::after {
+    content: "";
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--cream-soft);
+    pointer-events: none;
+  }
+  .bracket-frame::before {
+    top: 0; left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+  .bracket-frame::after {
+    bottom: 0; right: 0;
+    border-left: none;
+    border-top: none;
+  }
+  /* Optional secondary brackets on opposite corners */
+  .bracket-frame.full > .bracket-tl,
+  .bracket-frame.full > .bracket-br {
+    position: absolute;
+    width: 28px; height: 28px;
+    border: 2px solid var(--cream-soft);
+    pointer-events: none;
+  }
+  .bracket-frame.full > .bracket-tl { top: 0; right: 0; border-left: none; border-bottom: none; }
+  .bracket-frame.full > .bracket-br { bottom: 0; left: 0; border-right: none; border-top: none; }
+
+  /* =========================================================================
+     Layout shell
+     ========================================================================= */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  /* =========================================================================
+     Top nav — minimal, just brand mark + email link
+     ========================================================================= */
+  .nav {
+    padding: 28px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--cream);
+  }
+  .nav-brand-mark {
+    width: 32px; height: 32px;
+    flex-shrink: 0;
+    /* Show only the wordmark portion via a gold square placeholder bar */
+    background: var(--gold);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--field-deep);
+    font-family: var(--display);
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .nav-brand-text {
+    font-family: var(--display);
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .nav-brand-text span {
+    color: var(--cream-mute);
+    font-weight: 400;
+  }
+  .nav-link {
+    color: var(--cream-soft);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    transition: color .2s ease;
+  }
+  .nav-link:hover { color: var(--gold); }
+
+  /* =========================================================================
+     HERO
+     ========================================================================= */
+  .hero {
+    padding: clamp(60px, 10vw, 120px) 0 clamp(80px, 12vw, 140px);
+    text-align: center;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--cream-mute);
+    margin-bottom: 28px;
+    padding: 8px 18px;
+    border: 1px solid var(--field-line);
+    border-radius: 100px;
+  }
+  .hero-eyebrow::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(48px, 9vw, 110px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 24px;
+    max-width: 14ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero h1 .accent {
+    font-style: italic;
+    color: var(--gold);
+    /* Subtle hand-drawn underline using a custom svg-like CSS effect */
+    background-image: linear-gradient(transparent 80%, rgba(240, 168, 48, 0.3) 80%);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding: 0 0.05em;
+  }
+
+  .hero p {
+    font-family: var(--body);
+    font-size: clamp(16px, 1.6vw, 19px);
+    color: var(--cream-soft);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.65;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: clamp(40px, 8vw, 80px);
+    margin-top: 60px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat-num {
+    font-family: var(--display);
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .hero-stat-label {
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--cream-mute);
+    font-weight: 600;
+  }
+
+  /* =========================================================================
+     APPS GRID — the centerpiece of the page
+     ========================================================================= */
+  .apps {
+    padding: 0 0 clamp(80px, 12vw, 140px);
+  }
+
+  .section-header {
+    margin-bottom: clamp(40px, 6vw, 64px);
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .section-label {
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(32px, 4.5vw, 48px);
+    color: var(--cream);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    flex: 1;
+    min-width: 280px;
+  }
+  .section-rule {
+    flex: 0 0 auto;
+    width: 60px;
+    height: 1px;
+    background: var(--field-line);
+  }
+
+  .apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: clamp(24px, 3vw, 36px);
+  }
+
+  .app-card {
+    position: relative;
+    background: var(--field-deep);
+    border: 1px solid var(--field-line);
+    border-radius: 8px;
+    padding: clamp(28px, 3.5vw, 40px);
+    overflow: hidden;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s ease;
+  }
+  .app-card::before {
+    /* Same dot texture but stronger inside the card */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+    background-size: 18px 18px;
+    pointer-events: none;
+  }
+  .app-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold-deep);
+  }
+
+  /* Status pill in upper-right of each card */
+  .app-card-status {
+    position: absolute;
+    top: 20px; right: 20px;
+    font-family: var(--body);
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 100px;
+    z-index: 2;
+  }
+  .app-card-status.coming-soon {
+    color: var(--gold);
+    background: rgba(240, 168, 48, 0.1);
+    border: 1px solid var(--gold-deep);
+  }
+  .app-card-status.in-beta {
+    color: var(--cream);
+    background: rgba(232, 100, 90, 0.15);
+    border: 1px solid var(--rose);
+  }
+  .app-card-status.in-beta::before {
+    content: "";
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--rose);
+    margin-right: 6px;
+    transform: translateY(-1px);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(232,100,90,.7); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(232,100,90,0); }
+  }
+
+  .app-card-icon {
+    width: clamp(120px, 18vw, 160px);
+    height: clamp(120px, 18vw, 160px);
+    border-radius: 28px;
+    display: block;
+    margin-bottom: 28px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 12px 32px rgba(0,0,0,0.35);
+    position: relative;
+    z-index: 1;
+  }
+
+  .app-card-name {
+    font-family: var(--display);
+    font-size: clamp(28px, 3.5vw, 36px);
+    letter-spacing: 1.5px;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  .app-card-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gold);
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .app-card-desc {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--cream-soft);
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Action button at the bottom of each card */
+  .app-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--field-deep);
+    background: var(--gold);
+    padding: 14px 22px;
+    border-radius: 100px;
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+    position: relative;
+    z-index: 1;
+    border: none;
+    cursor: pointer;
+  }
+  .app-card-cta:hover {
+    background: var(--cream);
+    transform: translateX(2px);
+    box-shadow: 0 4px 20px rgba(240,168,48,0.3);
+  }
+  .app-card-cta.secondary {
+    background: transparent;
+    color: var(--cream);
+    border: 1px solid var(--field-line);
+  }
+  .app-card-cta.secondary:hover {
+    background: var(--field-mid);
+    color: var(--cream);
+    border-color: var(--gold);
+    box-shadow: none;
+  }
+  .app-card-cta .arrow {
+    transition: transform .2s ease;
+  }
+  .app-card-cta:hover .arrow { transform: translateX(3px); }
+
+  /* =========================================================================
+     ABOUT SECTION
+     ========================================================================= */
+  .about {
+    padding: clamp(60px, 10vw, 120px) 0;
+    background: var(--field-deep);
+    position: relative;
+  }
+  .about::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+  }
+  .about-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(28px, 4vw, 38px);
+    line-height: 1.2;
+    color: var(--cream);
+    letter-spacing: -0.005em;
+  }
+  .about-quote::before {
+    content: "\201C";
+    font-size: 1.5em;
+    line-height: 0;
+    color: var(--gold);
+    margin-right: 0.05em;
+    vertical-align: -0.3em;
+  }
+  .about-body p {
+    color: var(--cream-soft);
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+  .about-body p:last-child { margin-bottom: 0; }
+  .about-body strong { color: var(--cream); font-weight: 600; }
+
+  /* =========================================================================
+     FOOTER
+     ========================================================================= */
+  .footer {
+    border-top: 1px solid var(--field-line);
+    padding: 48px 0 36px;
+  }
+  .footer-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-brand {
+    font-family: var(--display);
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .footer-brand span {
+    color: var(--cream-mute);
+    font-weight: 400;
+  }
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    color: var(--cream-soft);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color .2s ease;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  .footer-meta {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--field-line);
+    color: var(--cream-mute);
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* =========================================================================
+     ANIMATIONS — staggered reveal on page load
+     ========================================================================= */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    animation: fade-up .8s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+  .reveal.d5 { animation-delay: .45s; }
+  .reveal.d6 { animation-delay: .55s; }
+  .reveal.d7 { animation-delay: .65s; }
+  .reveal.d8 { animation-delay: .75s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+
+  /* =========================================================================
+     RESPONSIVE
+     ========================================================================= */
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .hero-eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+    .app-card-status { top: 16px; right: 16px; padding: 5px 10px; font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- =========================================================================
+       NAV
+       ========================================================================= -->
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-mark">i</span>
+        <span class="nav-brand-text">InGame<span>Insights</span></span>
+      </a>
+      <a href="mailto:support@ingameinsights.com" class="nav-link">support@ingameinsights.com</a>
+    </nav>
+  </header>
+
+  <!-- =========================================================================
+       HERO
+       ========================================================================= -->
+  <section class="hero container">
+    <div class="hero-eyebrow reveal d1">Built for the sideline</div>
+    <h1 class="reveal d2">Stat tracking apps for coaches who want to <span class="accent">understand the game</span>.</h1>
+    <p class="reveal d3">InGameInsights builds purpose-made stat trackers for soccer, basketball, and lacrosse. Track every shot, pass, and possession in real time — then turn the data into insights that make your team better.</p>
+
+    <div class="hero-stats reveal d4">
+      <div class="hero-stat">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Sports</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">2yr</div>
+        <div class="hero-stat-label">In Production</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">0</div>
+        <div class="hero-stat-label">Data Tracking</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       APPS GRID
+       ========================================================================= -->
+  <section class="apps container" id="apps">
+    <div class="section-header reveal d1">
+      <span class="section-label">— The Lineup</span>
+      <h2 class="section-title">Three sports. One philosophy. Track everything that matters.</h2>
+    </div>
+
+    <div class="apps-grid">
+
+      <!-- ============ SOCCER ============ -->
+      <article class="app-card reveal d2">
+        <span class="app-card-status coming-soon">Coming Soon</span>
+        <img src="assets/soccer-icon.png" alt="Soccer app icon" class="app-card-icon" loading="lazy">
+        <h3 class="app-card-name">Soccer</h3>
+        <p class="app-card-tagline">Live game stats for soccer coaches.</p>
+        <p class="app-card-desc">Possession-first tracking, voice commands, shot charts with field location and target zone, multipeer second-screen display, and HTML game reports. Built for iPad.</p>
+        <a href="mailto:support@ingameinsights.com?subject=Soccer%20App%20-%20Notify%20me%20at%20launch" class="app-card-cta">
+          Notify me at launch
+          <span class="arrow">→</span>
+        </a>
+      </article>
+
+      <!-- ============ HOOPS '25 ============ -->
+      <article class="app-card reveal d3">
+        <span class="app-card-status in-beta">In Beta</span>
+        <img src="assets/hoops-icon.png" alt="Hoops 25 app icon" class="app-card-icon" loading="lazy">
+        <h3 class="app-card-name">Hoops '25</h3>
+        <p class="app-card-tagline">Two seasons of real-game testing.</p>
+        <p class="app-card-desc">The flagship of the InGameInsights family — basketball stat tracking battle-tested across two full seasons of high school and club games. Comprehensive box scores, shot charts, and team analytics.</p>
+        <a href="mailto:support@ingameinsights.com?subject=Hoops%20%2725%20-%20TestFlight%20Access" class="app-card-cta secondary">
+          Email for TestFlight access
+          <span class="arrow">→</span>
+        </a>
+      </article>
+
+      <!-- ============ LAX '26 ============ -->
+      <article class="app-card reveal d4">
+        <span class="app-card-status in-beta">In Beta</span>
+        <img src="assets/lax-icon.png" alt="LAX 26 app icon" class="app-card-icon" loading="lazy">
+        <h3 class="app-card-name">LAX '26</h3>
+        <p class="app-card-tagline">Lacrosse, scored properly.</p>
+        <p class="app-card-desc">Live lacrosse stat tracking with face-off win rates, shot location heatmaps, ground balls, saves, and penalty time. Currently in field testing with beta coaches across the spring season.</p>
+        <a href="mailto:support@ingameinsights.com?subject=LAX%20%2726%20-%20TestFlight%20Access" class="app-card-cta secondary">
+          Email for TestFlight access
+          <span class="arrow">→</span>
+        </a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       ABOUT
+       ========================================================================= -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-quote reveal d1">
+          Built by a coach. For coaches.
+        </div>
+        <div class="about-body">
+          <p class="reveal d2"><strong>InGameInsights makes the tools we wish existed when we were on the sideline ourselves.</strong> Generic stat-keeping apps treat every sport like the same spreadsheet — we don't.</p>
+          <p class="reveal d3">Every InGameInsights app is purpose-built for one game. Soccer's possession-first input model is different from basketball's quarter-driven flow, which is different from lacrosse's face-off-and-clear rhythm. The data the coaches care about is different in each. So we built each app from scratch around the way that sport is actually played.</p>
+          <p class="reveal d4">All data stays on your device. No accounts. No cloud sync. No tracking. Your roster is yours, your game data is yours, and the only thing leaving your iPad is the report you choose to share.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       FOOTER
+       ========================================================================= -->
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGame<span>Insights</span></div>
+      <nav class="footer-links">
+        <a href="#apps">Apps</a>
+        <a href="#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Made for coaches who care about the details.</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

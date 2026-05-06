@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Page Not Found — InGameInsights</title>
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --field-deep: #0e2818;
+    --field: #1a3a26;
+    --field-line: #2d5e40;
+    --cream: #efdc99;
+    --cream-soft: #d4c285;
+    --cream-mute: #8a7d5a;
+    --gold: #f0a830;
+    --gold-deep: #c98a1f;
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .lost {
+    position: relative;
+    max-width: 520px;
+  }
+  .code {
+    font-family: var(--display);
+    font-size: clamp(80px, 18vw, 160px);
+    line-height: 1;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(32px, 5vw, 44px);
+    color: var(--cream);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  p {
+    color: var(--cream-soft);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+  a.cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--field-deep);
+    background: var(--gold);
+    padding: 14px 22px;
+    border-radius: 100px;
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  a.cta:hover {
+    background: var(--cream);
+    box-shadow: 0 4px 20px rgba(240,168,48,0.3);
+  }
+</style>
+</head>
+<body>
+  <div class="lost">
+    <div class="code">404</div>
+    <h1>Off the field of play.</h1>
+    <p>The page you're looking for doesn't exist. Maybe a stat got mistracked, or maybe this URL never existed in the first place.</p>
+    <a href="/" class="cta">Back to home →</a>
+  </div>
+</body>
+</html>

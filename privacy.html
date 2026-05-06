@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy — InGameInsights</title>
+<meta name="description" content="InGameInsights privacy policy. Our apps don't collect data — your roster, your games, your stats stay on your device.">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --field-deep: #0e2818;
+    --field: #1a3a26;
+    --field-mid: #244e34;
+    --field-line: #2d5e40;
+    --cream: #efdc99;
+    --cream-soft: #d4c285;
+    --cream-mute: #8a7d5a;
+    --gold: #f0a830;
+    --gold-deep: #c98a1f;
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+  .nav {
+    padding: 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--cream);
+  }
+  .nav-brand-mark {
+    width: 32px; height: 32px;
+    background: var(--gold);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--field-deep);
+    font-family: var(--display);
+    font-size: 18px;
+  }
+  .nav-brand-text {
+    font-family: var(--display);
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-brand-text span { color: var(--cream-mute); font-weight: 400; }
+  .nav-link {
+    color: var(--cream-soft);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    transition: color .2s ease;
+  }
+  .nav-link:hover { color: var(--gold); }
+
+  .doc-header {
+    padding: clamp(40px, 8vw, 80px) 0 clamp(32px, 5vw, 56px);
+    border-bottom: 1px solid var(--field-line);
+    margin-bottom: clamp(40px, 5vw, 56px);
+  }
+  .doc-eyebrow {
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .doc-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--cream);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+  }
+  .doc-meta {
+    color: var(--cream-mute);
+    font-size: 14px;
+  }
+
+  .doc-body {
+    padding-bottom: 80px;
+  }
+  .doc-body h2 {
+    font-family: var(--display);
+    font-size: clamp(20px, 2.5vw, 24px);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin: 48px 0 16px;
+  }
+  .doc-body h2:first-child { margin-top: 0; }
+  .doc-body p {
+    color: var(--cream-soft);
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+  .doc-body p strong { color: var(--cream); font-weight: 600; }
+  .doc-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 24px;
+  }
+  .doc-body ul li {
+    color: var(--cream-soft);
+    font-size: 16px;
+    line-height: 1.75;
+    padding-left: 24px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .doc-body ul li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .doc-body a {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-deep);
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .doc-body a:hover { color: var(--cream); border-color: var(--cream); }
+
+  .footer {
+    border-top: 1px solid var(--field-line);
+    padding: 36px 0 28px;
+    color: var(--cream-mute);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer a {
+    color: var(--cream-soft);
+    text-decoration: none;
+  }
+  .footer a:hover { color: var(--gold); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-mark">i</span>
+        <span class="nav-brand-text">InGame<span>Insights</span></span>
+      </a>
+      <a href="/" class="nav-link">← Back to home</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="doc-header">
+      <div class="doc-eyebrow">Legal</div>
+      <h1 class="doc-title">Privacy Policy</h1>
+      <p class="doc-meta">Last updated: May 6, 2026</p>
+    </div>
+
+    <article class="doc-body">
+
+      <h2>The Short Version</h2>
+      <p><strong>InGameInsights apps don't collect any personal data.</strong> Your roster, your games, your players, your stats — all of it lives on your device and only on your device. We have no servers that store user data, no analytics SDKs, no advertising partners, no tracking of any kind.</p>
+
+      <h2>Information We Collect</h2>
+      <p>We collect <strong>nothing</strong>. There are no user accounts. There is no sign-up. The app does not phone home, transmit usage data, or share information with third parties.</p>
+      <p>All data you create — team rosters, game events, statistics, reports — is stored locally on your iOS device using Apple's standard SwiftData storage system. When you delete the app or wipe your device, that data is gone.</p>
+
+      <h2>Microphone &amp; Speech Recognition</h2>
+      <p>InGameInsights apps offer optional voice commands during games. When you enable this feature, the app uses Apple's built-in speech recognition framework (<a href="https://developer.apple.com/documentation/speech">SFSpeechRecognizer</a>) to convert your spoken commands into text.</p>
+      <p>This audio is processed by Apple's speech recognition service and is governed by <a href="https://www.apple.com/legal/privacy/">Apple's privacy policy</a>. The audio is not transmitted to InGameInsights, stored on our servers, or shared with any third party. Voice features are entirely optional and can be disabled at any time.</p>
+
+      <h2>Local Network &amp; Multipeer Connectivity</h2>
+      <p>InGameInsights apps support a "second-screen display" feature that connects two iOS devices on the same local network. This uses Apple's MultipeerConnectivity framework to send game data directly between devices.</p>
+      <p>This communication is peer-to-peer — it never travels over the internet, never reaches an InGameInsights server, and is not stored anywhere outside the two participating devices.</p>
+
+      <h2>Children's Privacy</h2>
+      <p>InGameInsights apps are designed for coaches and scorekeepers, who are typically adults. Because we collect no personal data of any kind, we cannot and do not knowingly collect data from anyone under the age of 13. Coaches who track player names of minor athletes are responsible for the appropriate handling of that information on their own device.</p>
+
+      <h2>Data Sharing</h2>
+      <p>We do not sell, trade, or transfer information to outside parties — because we have no information to sell, trade, or transfer. We don't have access to anything the app stores.</p>
+
+      <h2>What Happens If You Share a Report</h2>
+      <p>InGameInsights apps let you generate game reports as HTML or CSV files and share them via the standard iOS share sheet (email, AirDrop, Messages, etc.). When you share a report, you choose where it goes. Once a report leaves the app, the recipient and the apps you used to share it are responsible for the data — InGameInsights has no further involvement.</p>
+
+      <h2>Changes to This Policy</h2>
+      <p>If our practices ever change, we'll update this page with the new policy and a new "Last updated" date. Because we have no email list and don't track users, the only way to learn about changes is to revisit this page.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy? Email <a href="mailto:support@ingameinsights.com">support@ingameinsights.com</a>.</p>
+
+    </article>
+  </main>
+
+  <footer class="container footer">
+    <span>&copy; 2026 InGameInsights.</span>
+    <span><a href="/">Home</a> · <a href="support.html">Support</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
