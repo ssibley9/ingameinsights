@@ -331,6 +331,22 @@
     background: rgba(240, 168, 48, 0.1);
     border: 1px solid var(--gold-deep);
   }
+  .app-card-status.available {
+    color: var(--field-deep);
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    /* Subtle pulse on the dot to signal "live" — same idea as in-beta but
+       gold-accented to celebrate the launch without being a flashy banner. */
+  }
+  .app-card-status.available::before {
+    content: "";
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--field-deep);
+    margin-right: 6px;
+    transform: translateY(-1px);
+  }
   .app-card-status.in-beta {
     color: var(--cream);
     background: rgba(232, 100, 90, 0.15);
@@ -674,13 +690,13 @@
 
       <!-- ============ SOCCER ============ -->
       <article class="app-card reveal d2">
-        <span class="app-card-status coming-soon">Coming Soon</span>
+        <span class="app-card-status available">Available</span>
         <img src="assets/soccer-icon.png" alt="Soccer app icon" class="app-card-icon" loading="lazy">
         <h3 class="app-card-name">Soccer</h3>
         <p class="app-card-tagline">Live game stats for soccer coaches.</p>
-        <p class="app-card-desc">Possession-first tracking, voice commands, shot charts with field location and target zone, multipeer second-screen display, and HTML game reports. Built for iPad.</p>
-        <a href="mailto:support@ingameinsights.com?subject=Soccer%20App%20-%20Notify%20me%20at%20launch" class="app-card-cta" data-email="support@ingameinsights.com" data-subject="Soccer App - Notify me at launch">
-          Notify me at launch
+        <p class="app-card-desc">Possession-first tracking, voice commands, shot charts with field location and target zone, multipeer second-screen display, and HTML game reports. Built for iPad, with a free iPhone display companion.</p>
+        <a href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730" class="app-card-cta" target="_blank" rel="noopener">
+          Download on the App Store
           <span class="arrow">→</span>
         </a>
       </article>
