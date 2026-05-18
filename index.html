@@ -453,6 +453,29 @@
   .app-card-cta:hover .arrow { transform: translateX(3px); }
 
   /* =========================================================================
+     APP STORE BADGE — Apple's official "Download on the App Store"
+     -------------------------------------------------------------------------
+     Wrapped in its own block so the badge sits in the same vertical rhythm
+     as the secondary CTAs on the other cards. The lift-on-hover gives the
+     badge a sense of interactivity without modifying Apple's artwork, which
+     would violate the App Store Marketing Guidelines.
+     ========================================================================= */
+  .app-store-badge {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    transition: transform .2s ease;
+    line-height: 0;
+  }
+  .app-store-badge:hover { transform: translateY(-2px); }
+  .app-store-badge img {
+    width: 200px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* =========================================================================
      ABOUT SECTION
      ========================================================================= */
   .about {
@@ -695,9 +718,18 @@
         <h3 class="app-card-name">Soccer</h3>
         <p class="app-card-tagline">Live game stats for soccer coaches.</p>
         <p class="app-card-desc">Possession-first tracking, voice commands, shot charts with field location and target zone, multipeer second-screen display, and HTML game reports. Built for iPad, with a free iPhone display companion.</p>
-        <a href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730" class="app-card-cta" target="_blank" rel="noopener">
-          Download on the App Store
-          <span class="arrow">→</span>
+        <!-- Official Apple App Store badge.
+             - Badge artwork (SVG) is self-hosted at assets/app-store-badge.svg
+             - href retains Apple's tracking parameters (itscg, itsct, mttnsubad)
+               so installs show up in App Store Connect analytics as coming
+               from the website badge. Per Apple's Marketing Guidelines, do not
+               modify the badge artwork. -->
+        <a href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730?itscg=30200&itsct=apps_box_badge&mttnsubad=6762889730"
+           class="app-store-badge"
+           aria-label="Download Soccer Stats by InGameInsights on the App Store"
+           target="_blank"
+           rel="noopener">
+          <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
         </a>
       </article>
 
