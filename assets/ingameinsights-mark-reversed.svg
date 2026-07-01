@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150" width="200" height="300" role="img" aria-label="InGameInsights"><title>InGameInsights</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.5">
+    <path stroke="#efdc99" d="M45 18 V75"/>
+    <path stroke="#efdc99" d="M25 18 H65"/>
+    <path stroke="#efdc99" d="M55 75 V132"/>
+    <path stroke="#efdc99" d="M35 132 H75"/>
+    <path stroke="#efdc99" d="M28 75 H86"/>
+    <path stroke="#b8860b" d="M86 75 A36 36 0 1 1 70.6 45.5"/>
+  </g>
+</svg>
