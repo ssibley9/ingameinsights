@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guides — InGameInsights</title>
+<meta name="description" content="How-to guides for the InGameInsights stat tracking apps — Soccer, Hoops '25, and LAX '26. Set up your roster, track a live game, and share reports.">
+<meta name="theme-color" content="#0b3d2e">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --field-deep: #072a20;
+    --field: #0b3d2e;
+    --field-mid: #12503c;
+    --field-line: #1d5d46;
+    --cream: #efdc99;
+    --cream-soft: #d4c285;
+    --cream-mute: #8a7d5a;
+    --gold: #b8860b;
+    --gold-deep: #8f6708;
+    --rose: #e8645a;
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  .nav {
+    padding: 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--cream); }
+  .nav-brand-text { font-family: var(--display); font-size: 20px; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-brand-text span { color: var(--cream-mute); font-weight: 400; }
+  .nav-link { color: var(--cream-soft); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease; }
+  .nav-link:hover { color: var(--gold); }
+
+  .doc-header {
+    padding: clamp(40px, 8vw, 80px) 0 clamp(28px, 4vw, 48px);
+  }
+  .doc-eyebrow {
+    font-family: var(--body);
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+  }
+  .doc-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--cream); line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 16px;
+  }
+  .doc-subtitle {
+    color: var(--cream-soft); font-size: clamp(16px, 1.6vw, 18px); line-height: 1.6; max-width: 62ch;
+  }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(20px, 3vw, 32px);
+    padding: clamp(20px, 3vw, 32px) 0 clamp(60px, 9vw, 100px);
+  }
+  .guide-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--field-deep);
+    border: 1px solid var(--field-line);
+    border-radius: 10px;
+    padding: clamp(24px, 3vw, 32px);
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s ease;
+  }
+  .guide-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+    background-size: 18px 18px;
+    pointer-events: none;
+  }
+  .guide-card:hover { transform: translateY(-4px); border-color: var(--gold-deep); }
+  .guide-card > * { position: relative; z-index: 1; }
+
+  .guide-card-icon {
+    width: 72px; height: 72px;
+    border-radius: 16px;
+    display: block;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  }
+  .guide-card-name {
+    font-family: var(--display);
+    font-size: clamp(24px, 3vw, 30px);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .status-pill {
+    font-family: var(--body);
+    font-size: 9px; letter-spacing: 1.5px; font-weight: 700;
+    text-transform: uppercase; padding: 5px 10px; border-radius: 100px;
+  }
+  .status-pill.available { color: var(--field-deep); background: var(--gold); border: 1px solid var(--gold); }
+  .status-pill.in-beta { color: var(--cream); background: rgba(232, 100, 90, 0.15); border: 1px solid var(--rose); }
+  .guide-card-desc {
+    color: var(--cream-soft); font-size: 15px; line-height: 1.6; margin-bottom: 20px; flex: 1;
+  }
+  .guide-card-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.4px; color: var(--gold);
+    transition: gap .2s ease, color .2s ease;
+  }
+  .guide-card:hover .guide-card-cta { color: var(--cream); gap: 12px; }
+
+  .footer {
+    border-top: 1px solid var(--field-line);
+    padding: 36px 0 28px;
+    color: var(--cream-mute); font-size: 13px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .footer a { color: var(--cream-soft); text-decoration: none; }
+  .footer a:hover { color: var(--gold); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/ingameinsights-mark-reversed.svg" alt="" style="height:30px;width:auto;display:block;flex-shrink:0;">
+        <span class="nav-brand-text">InGame<span>Insights</span></span>
+      </a>
+      <a href="/" class="nav-link">← Back to home</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="doc-header">
+      <div class="doc-eyebrow">Guides</div>
+      <h1 class="doc-title">How to use the apps</h1>
+      <p class="doc-subtitle">Every InGameInsights app is built around the way its sport is actually played, but the rhythm is the same: set up your roster, track the game live, and share the report. Pick your sport to get started.</p>
+    </div>
+
+    <div class="guides-grid">
+
+      <a href="guide-soccer.html" class="guide-card">
+        <img src="assets/soccer-icon.png" alt="Soccer app icon" class="guide-card-icon">
+        <div class="guide-card-name">Soccer <span class="status-pill available">Available</span></div>
+        <p class="guide-card-desc">Roster setup, live possession and shot tracking, second-screen display, and game reports.</p>
+        <span class="guide-card-cta">Open guide <span aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="guide-hoops.html" class="guide-card">
+        <img src="assets/hoops-icon.jpg" alt="Hoops 25 app icon" class="guide-card-icon">
+        <div class="guide-card-name">Hoops '25 <span class="status-pill in-beta">In Beta</span></div>
+        <p class="guide-card-desc">Team setup, quarter-by-quarter tracking, live box scores, and shot charts.</p>
+        <span class="guide-card-cta">Open guide <span aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="guide-lax.html" class="guide-card">
+        <img src="assets/lax-icon.png" alt="LAX 26 app icon" class="guide-card-icon">
+        <div class="guide-card-name">LAX '26 <span class="status-pill in-beta">In Beta</span></div>
+        <p class="guide-card-desc">Face-offs and possession, shot heatmaps, saves, and time of possession.</p>
+        <span class="guide-card-cta">Open guide <span aria-hidden="true">→</span></span>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer class="container footer">
+    <span>&copy; 2026 InGameInsights.</span>
+    <span><a href="/">Home</a> · <a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
