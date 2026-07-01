@@ -9,7 +9,7 @@
 <meta property="og:description" content="Stat tracking apps for coaches who want to understand the game.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ingameinsights.com">
-<meta name="theme-color" content="#1a3a26">
+<meta name="theme-color" content="#0b3d2e">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,15 +25,15 @@
      typography and a warm gold accent.
      ========================================================================= */
   :root {
-    --field-deep:    #0e2818;
-    --field:         #1a3a26;
-    --field-mid:     #244e34;
-    --field-line:    #2d5e40;
+    --field-deep:    #072a20;
+    --field:         #0b3d2e;
+    --field-mid:     #12503c;
+    --field-line:    #1d5d46;
     --cream:         #efdc99;
     --cream-soft:    #d4c285;
     --cream-mute:    #8a7d5a;
-    --gold:          #f0a830;
-    --gold-deep:     #c98a1f;
+    --gold:          #b8860b;
+    --gold-deep:     #8f6708;
     --rose:          #e8645a;
 
     --serif: "DM Serif Display", "Times New Roman", serif;
@@ -98,12 +98,9 @@
      the logo (the brand's most recognizable element). object-position keeps
      the wordmark out of the small thumbnail so the ball reads cleanly. */
   .nav-brand-logo {
-    width: 38px; height: 38px;
+    width: auto; height: 34px;
     flex-shrink: 0;
-    object-fit: cover;
-    object-position: center 38%;
-    border-radius: 8px;
-    background: var(--field-deep);
+    display: block;
   }
   .nav-brand-text {
     font-family: var(--display);
@@ -153,9 +150,10 @@
     position: relative;
   }
   .hero-logo {
-    width: 100%;
-    max-width: 320px;
+    width: auto;
+    max-width: 100%;
     height: auto;
+    max-height: 300px;
     display: block;
     margin: 0 auto;
     filter: drop-shadow(0 16px 32px rgba(0,0,0,0.35));
@@ -211,7 +209,7 @@
   .hero h1 .accent {
     font-style: italic;
     color: var(--gold);
-    background-image: linear-gradient(transparent 80%, rgba(240, 168, 48, 0.3) 80%);
+    background-image: linear-gradient(transparent 80%, rgba(184, 134, 11, 0.3) 80%);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     padding: 0 0.05em;
@@ -328,7 +326,7 @@
   }
   .app-card-status.coming-soon {
     color: var(--gold);
-    background: rgba(240, 168, 48, 0.1);
+    background: rgba(184, 134, 11, 0.1);
     border: 1px solid var(--gold-deep);
   }
   .app-card-status.available {
@@ -434,7 +432,7 @@
   .app-card-cta:hover {
     background: var(--cream);
     transform: translateX(2px);
-    box-shadow: 0 4px 20px rgba(240,168,48,0.3);
+    box-shadow: 0 4px 20px rgba(184,134,11,0.3);
   }
   .app-card-cta.secondary {
     background: transparent;
@@ -665,7 +663,7 @@
   <header class="container">
     <nav class="nav">
       <a href="/" class="nav-brand">
-        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <img src="assets/ingameinsights-mark-reversed.svg" alt="" class="nav-brand-logo">
         <span class="nav-brand-text">InGame<span>Insights</span></span>
       </a>
       <a href="mailto:support@ingameinsights.com" class="nav-link">support@ingameinsights.com</a>
@@ -677,7 +675,7 @@
        ========================================================================= -->
   <section class="hero container">
     <div class="hero-logo-wrap reveal-in d1">
-      <img src="assets/logo.png" alt="InGameInsights" class="hero-logo">
+      <img src="assets/ingameinsights-mark-reversed.svg" alt="InGameInsights" class="hero-logo">
     </div>
     <div class="hero-text">
       <div class="hero-eyebrow reveal d2">Built for the sideline</div>
@@ -736,7 +734,7 @@
       <!-- ============ HOOPS '25 ============ -->
       <article class="app-card reveal d3">
         <span class="app-card-status in-beta">In Beta</span>
-        <img src="assets/hoops-icon.png" alt="Hoops 25 app icon" class="app-card-icon" loading="lazy">
+        <img src="assets/hoops-icon.jpg" alt="Hoops 25 app icon" class="app-card-icon" loading="lazy">
         <h3 class="app-card-name">Hoops '25</h3>
         <p class="app-card-tagline">Two seasons of real-game testing.</p>
         <p class="app-card-desc">The flagship of the InGameInsights family — basketball stat tracking battle-tested across two full years and nine teams, from middle school through varsity and club. Comprehensive box scores, shot charts, and team and individual analytics.</p>
