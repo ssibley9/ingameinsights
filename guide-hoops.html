@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How to Use Hoops '25 — InGameInsights</title>
+<meta name="description" content="Step-by-step guide to the InGameInsights Hoops '25 basketball app — set up your team, track shots and stats live, review box scores, and export reports.">
+<meta name="theme-color" content="#0b3d2e">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --field-deep: #072a20;
+    --field: #0b3d2e;
+    --field-mid: #12503c;
+    --field-line: #1d5d46;
+    --cream: #efdc99;
+    --cream-soft: #d4c285;
+    --cream-mute: #8a7d5a;
+    --gold: #b8860b;
+    --gold-deep: #8f6708;
+    --rose: #e8645a;
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  .nav {
+    padding: 28px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--cream); }
+  .nav-brand-text { font-family: var(--display); font-size: 20px; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-brand-text span { color: var(--cream-mute); font-weight: 400; }
+  .nav-link { color: var(--cream-soft); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease; }
+  .nav-link:hover { color: var(--gold); }
+
+  .guide-hero {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 3vw, 28px);
+    padding: clamp(36px, 6vw, 64px) 0 clamp(28px, 4vw, 44px);
+    border-bottom: 1px solid var(--field-line);
+    margin-bottom: clamp(40px, 6vw, 64px);
+    flex-wrap: wrap;
+  }
+  .guide-hero-icon {
+    width: clamp(72px, 12vw, 96px);
+    height: clamp(72px, 12vw, 96px);
+    border-radius: 20px;
+    display: block;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+  }
+  .guide-hero-text { flex: 1; min-width: 240px; }
+  .guide-eyebrow {
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .status-pill {
+    font-family: var(--body);
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 100px;
+  }
+  .status-pill.available { color: var(--field-deep); background: var(--gold); border: 1px solid var(--gold); }
+  .status-pill.in-beta { color: var(--cream); background: rgba(232, 100, 90, 0.15); border: 1px solid var(--rose); }
+  .guide-hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(34px, 5vw, 52px);
+    color: var(--cream);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .guide-hero p {
+    color: var(--cream-soft);
+    font-size: clamp(15px, 1.6vw, 18px);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  .beta-note {
+    background: var(--field-deep);
+    border: 1px solid var(--field-line);
+    border-left: 3px solid var(--rose);
+    border-radius: 8px;
+    padding: 16px 20px;
+    color: var(--cream-soft);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: clamp(36px, 5vw, 52px);
+  }
+  .beta-note a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-deep); }
+  .beta-note a:hover { color: var(--cream); border-color: var(--cream); }
+
+  .step {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(28px, 4vw, 56px);
+    align-items: center;
+    margin-bottom: clamp(44px, 6vw, 76px);
+  }
+  .step:last-of-type { margin-bottom: 0; }
+  .step:nth-of-type(even) .step-figure { order: -1; }
+
+  .step-num { font-family: var(--display); font-size: clamp(40px, 6vw, 64px); line-height: 1; color: var(--gold); display: block; margin-bottom: 12px; letter-spacing: 1px; }
+  .step-text h3 { font-family: var(--serif); font-size: clamp(22px, 2.6vw, 28px); color: var(--cream); line-height: 1.15; margin-bottom: 12px; }
+  .step-text p { color: var(--cream-soft); font-size: 16px; line-height: 1.7; }
+
+  .shot { margin: 0; }
+  .shot-frame {
+    position: relative;
+    border: 1px solid var(--field-line);
+    border-radius: 12px;
+    background: var(--field-deep);
+    overflow: hidden;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+    background-size: 18px 18px;
+  }
+  .shot-frame img { display: block; width: 100%; height: auto; }
+  .shot-ph {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    aspect-ratio: 4 / 3;
+    text-align: center;
+    padding: 24px;
+    color: var(--cream-mute);
+  }
+  .shot-ph .icon { font-size: 32px; line-height: 1; color: var(--gold-deep); }
+  .shot-ph code { color: var(--cream-soft); font-size: 13px; background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 6px; }
+  .shot figcaption { margin-top: 12px; font-size: 13px; color: var(--cream-mute); letter-spacing: 0.3px; }
+
+  @media (max-width: 820px) {
+    .step { grid-template-columns: 1fr; gap: 20px; }
+    .step:nth-of-type(even) .step-figure { order: 0; }
+  }
+
+  .more {
+    border-top: 1px solid var(--field-line);
+    margin-top: clamp(56px, 8vw, 96px);
+    padding-top: clamp(32px, 5vw, 48px);
+  }
+  .more-label { font-family: var(--body); font-size: 11px; letter-spacing: 3px; font-weight: 700; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .more-links { display: flex; gap: 12px; flex-wrap: wrap; }
+  .more-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--body);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: var(--cream);
+    border: 1px solid var(--field-line);
+    padding: 12px 20px;
+    border-radius: 100px;
+    transition: border-color .2s ease, color .2s ease;
+  }
+  .more-links a:hover { border-color: var(--gold); color: var(--gold); }
+  .more-links a img { width: 22px; height: 22px; border-radius: 6px; display: block; }
+
+  .footer {
+    border-top: 1px solid var(--field-line);
+    padding: 36px 0 28px;
+    margin-top: clamp(48px, 7vw, 80px);
+    color: var(--cream-mute);
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer a { color: var(--cream-soft); text-decoration: none; }
+  .footer a:hover { color: var(--gold); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/ingameinsights-mark-reversed.svg" alt="" style="height:30px;width:auto;display:block;flex-shrink:0;">
+        <span class="nav-brand-text">InGame<span>Insights</span></span>
+      </a>
+      <a href="/" class="nav-link">← Back to home</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <div class="guide-hero">
+      <img src="assets/hoops-icon.jpg" alt="Hoops 25 app icon" class="guide-hero-icon">
+      <div class="guide-hero-text">
+        <div class="guide-eyebrow">Hoops '25 Guide <span class="status-pill in-beta">In Beta</span></div>
+        <h1>How to use Hoops '25</h1>
+        <p>Basketball stat tracking battle-tested across two seasons and nine teams. Track the game quarter by quarter and watch the box score build itself in real time.</p>
+      </div>
+    </div>
+
+    <div class="beta-note">
+      Hoops '25 is currently in beta. To follow along with these steps, <a href="mailto:support@ingameinsights.com?subject=Hoops%20%2725%20-%20TestFlight%20Access">request TestFlight access</a> and we'll send you an invitation.
+    </div>
+
+    <div class="step">
+      <div class="step-text">
+        <span class="step-num">1</span>
+        <h3>Set up your team</h3>
+        <p>Enter your roster with jersey numbers so every stat lands on the right player. You can keep multiple teams if you coach more than one.</p>
+      </div>
+      <figure class="step-figure shot">
+        <div class="shot-frame">
+          <img src="assets/guide-hoops-1.png" alt="Hoops team setup" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/guide-hoops-1.png</code></span></div>
+        </div>
+        <figcaption>Setting up the team</figcaption>
+      </figure>
+    </div>
+
+    <div class="step">
+      <div class="step-text">
+        <span class="step-num">2</span>
+        <h3>Tip off a game</h3>
+        <p>Start a new game and track it quarter by quarter, with substitutions and the game clock built into the flow.</p>
+      </div>
+      <figure class="step-figure shot">
+        <div class="shot-frame">
+          <img src="assets/guide-hoops-2.png" alt="Starting a basketball game" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/guide-hoops-2.png</code></span></div>
+        </div>
+        <figcaption>Starting a new game</figcaption>
+      </figure>
+    </div>
+
+    <div class="step">
+      <div class="step-text">
+        <span class="step-num">3</span>
+        <h3>Log shots and stats</h3>
+        <p>Record makes and misses on the shot chart, plus rebounds, assists, steals, and turnovers, as they happen. The box score builds itself in real time.</p>
+      </div>
+      <figure class="step-figure shot">
+        <div class="shot-frame">
+          <img src="assets/guide-hoops-3.png" alt="Basketball shot chart tracking" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/guide-hoops-3.png</code></span></div>
+        </div>
+        <figcaption>Logging shots on the chart</figcaption>
+      </figure>
+    </div>
+
+    <div class="step">
+      <div class="step-text">
+        <span class="step-num">4</span>
+        <h3>Review box scores and analytics</h3>
+        <p>Check team and individual analytics live during the game, then dig into the full box score at any point without stopping tracking.</p>
+      </div>
+      <figure class="step-figure shot">
+        <div class="shot-frame">
+          <img src="assets/guide-hoops-4.png" alt="Basketball box score and analytics" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/guide-hoops-4.png</code></span></div>
+        </div>
+        <figcaption>Live box score and analytics</figcaption>
+      </figure>
+    </div>
+
+    <div class="step">
+      <div class="step-text">
+        <span class="step-num">5</span>
+        <h3>Export the box score</h3>
+        <p>Share an HTML or CSV report after the game so players, parents, and assistant coaches can see exactly how it went.</p>
+      </div>
+      <figure class="step-figure shot">
+        <div class="shot-frame">
+          <img src="assets/guide-hoops-5.png" alt="Exporting a basketball box score" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/guide-hoops-5.png</code></span></div>
+        </div>
+        <figcaption>Exporting the box score</figcaption>
+      </figure>
+    </div>
+
+    <section class="more">
+      <div class="more-label">— More guides</div>
+      <div class="more-links">
+        <a href="guide-soccer.html"><img src="assets/soccer-icon.png" alt="">How to use Soccer</a>
+        <a href="guide-lax.html"><img src="assets/lax-icon.png" alt="">How to use LAX '26</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="container footer">
+    <span>&copy; 2026 InGameInsights.</span>
+    <span><a href="/">Home</a> · <a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
