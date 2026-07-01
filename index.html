@@ -450,6 +450,25 @@
   }
   .app-card-cta:hover .arrow { transform: translateX(3px); }
 
+  /* Subtle "How to use" link on each app card, pointing to its guide page. */
+  .app-card-guide {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: var(--gold);
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    transition: gap .2s ease, color .2s ease;
+  }
+  .app-card-guide:hover { color: var(--cream); gap: 12px; }
+
   /* =========================================================================
      APP STORE BADGE — Apple's official "Download on the App Store"
      -------------------------------------------------------------------------
@@ -729,6 +748,7 @@
            rel="noopener">
           <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
         </a>
+        <a href="guide-soccer.html" class="app-card-guide">How to use Soccer <span class="arrow">→</span></a>
       </article>
 
       <!-- ============ HOOPS '25 ============ -->
@@ -742,6 +762,7 @@
           Email for TestFlight access
           <span class="arrow">→</span>
         </a>
+        <a href="guide-hoops.html" class="app-card-guide">How to use Hoops '25 <span class="arrow">→</span></a>
       </article>
 
       <!-- ============ LAX '26 ============ -->
@@ -755,6 +776,7 @@
           Email for TestFlight access
           <span class="arrow">→</span>
         </a>
+        <a href="guide-lax.html" class="app-card-guide">How to use LAX '26 <span class="arrow">→</span></a>
       </article>
 
     </div>
@@ -787,6 +809,7 @@
       <nav class="footer-links">
         <a href="#apps">Apps</a>
         <a href="#about">About</a>
+        <a href="guides.html">Guides</a>
         <a href="privacy.html">Privacy</a>
         <a href="support.html">Support</a>
         <a href="mailto:support@ingameinsights.com">Contact</a>
