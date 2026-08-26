@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Guides — InGameInsights</title>
-<meta name="description" content="How-to guides for the InGameInsights stat tracking apps — Soccer, Basketball, and LAX '26. Set up your roster, track a live game, and share reports.">
+<meta name="description" content="How-to guides for the InGameInsights stat tracking apps — Soccer, Basketball, LAX '26, and Football. Set up your roster, track a live game, and share reports.">
 <meta name="theme-color" content="#0b3d2e">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,11 +81,16 @@
     color: var(--cream-soft); font-size: clamp(16px, 1.6vw, 18px); line-height: 1.6; max-width: 62ch;
   }
 
+  /* Four guides: two columns above the breakpoint keeps the grid balanced
+     rather than leaving one card alone on a second row. */
   .guides-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: clamp(20px, 3vw, 32px);
     padding: clamp(20px, 3vw, 32px) 0 clamp(60px, 9vw, 100px);
+  }
+  @media (min-width: 800px) {
+    .guides-grid { grid-template-columns: repeat(2, 1fr); }
   }
   .guide-card {
     position: relative;
@@ -203,6 +208,13 @@
         <img src="assets/lax-icon.png" alt="LAX 26 app icon" class="guide-card-icon">
         <div class="guide-card-name">LAX '26 <span class="status-pill in-beta">In Beta</span></div>
         <p class="guide-card-desc">Face-offs and possession, shot heatmaps, saves, and time of possession.</p>
+        <span class="guide-card-cta">Open guide <span aria-hidden="true">→</span></span>
+      </a>
+
+      <a href="guide-football.html" class="guide-card">
+        <img src="assets/football-icon.png" alt="Football app icon" class="guide-card-icon">
+        <div class="guide-card-name">Football <span class="status-pill in-beta">In Beta</span></div>
+        <p class="guide-card-desc">Play-by-play logging, down and distance, rush and pass yardage, flag pulls, and drive charts.</p>
         <span class="guide-card-cta">Open guide <span aria-hidden="true">→</span></span>
       </a>
 
