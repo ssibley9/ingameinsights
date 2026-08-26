@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>InGameInsights — Stat tracking apps for coaches</title>
-<meta name="description" content="InGameInsights builds live stat tracking apps for coaches and scorekeepers. Soccer, basketball, and lacrosse — purpose-built for the sideline.">
+<meta name="description" content="InGameInsights builds live stat tracking apps for coaches and scorekeepers. Soccer, basketball, lacrosse, and flag football — purpose-built for the sideline.">
 <meta property="og:title" content="InGameInsights">
 <meta property="og:description" content="Stat tracking apps for coaches who want to understand the game.">
 <meta property="og:type" content="website">
@@ -285,10 +285,16 @@
     min-width: 280px;
   }
 
+  /* Four cards: auto-fit would leave a lone card orphaned on a second row at
+     desktop widths (three fit, the fourth wraps). Locking to two columns above
+     the breakpoint gives a balanced 2x2 instead. */
   .apps-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: clamp(24px, 3vw, 36px);
+  }
+  @media (min-width: 860px) {
+    .apps-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
   .app-card {
@@ -682,10 +688,10 @@
     <div class="hero-text">
       <div class="hero-eyebrow reveal d2">Built for the sideline</div>
       <h1 class="reveal d3">Stat tracking apps for coaches who want to <span class="accent">understand the game</span>.</h1>
-      <p class="reveal d4">Purpose-made stat trackers for soccer, basketball, and lacrosse. Track every shot, pass, and possession in real time — then turn the data into insights that make your team better.</p>
+      <p class="reveal d4">Purpose-made stat trackers for soccer, basketball, lacrosse, and flag football. Track every shot, pass, and possession in real time — then turn the data into insights that make your team better.</p>
       <div class="hero-stats reveal d5">
         <div>
-          <div class="hero-stat-num">3</div>
+          <div class="hero-stat-num">4</div>
           <div class="hero-stat-label">Sports</div>
         </div>
         <div>
@@ -706,7 +712,7 @@
   <section class="apps container" id="apps">
     <div class="section-header reveal d1">
       <span class="section-label">— The Lineup</span>
-      <h2 class="section-title">Three sports. One philosophy. Track everything that matters.</h2>
+      <h2 class="section-title">Four sports. One philosophy. Track everything that matters.</h2>
     </div>
 
     <div class="apps-grid">
@@ -762,6 +768,19 @@
         </a>
       </article>
 
+      <!-- ============ FOOTBALL ============ -->
+      <article class="app-card reveal d5">
+        <span class="app-card-status in-beta">In Beta</span>
+        <img src="assets/football-icon.png" alt="Football app icon" class="app-card-icon" loading="lazy">
+        <h3 class="app-card-name">Football</h3>
+        <p class="app-card-tagline">Flag football, tracked play by play.</p>
+        <p class="app-card-desc">Live flag football stat tracking built around the drive — play-by-play logging with down and distance, rush and pass yardage, completions, flag pulls, and field position charts for both sides of the ball. Currently in beta with coaches running real seasons.</p>
+        <a href="mailto:support@ingameinsights.com?subject=Football%20-%20TestFlight%20Access" class="app-card-cta secondary" data-email="support@ingameinsights.com" data-subject="Football - TestFlight Access">
+          Email for TestFlight access
+          <span class="arrow">→</span>
+        </a>
+      </article>
+
     </div>
   </section>
 
@@ -776,7 +795,7 @@
         </div>
         <div class="about-body">
           <p class="reveal d2"><strong>InGameInsights makes the tools we wish existed when we were on the sideline ourselves.</strong> Generic stat-keeping apps treat every sport like the same spreadsheet — we don't.</p>
-          <p class="reveal d3">Every InGameInsights app is purpose-built for one game. Soccer's possession-first input model is different from basketball's quarter-driven flow, which is different from lacrosse's face-off-and-clear rhythm. The data the coaches care about is different in each. So we built each app from scratch around the way that sport is actually played.</p>
+          <p class="reveal d3">Every InGameInsights app is purpose-built for one game. Soccer's possession-first input model is different from basketball's quarter-driven flow, which is different from lacrosse's face-off-and-clear rhythm, which is different again from football's down-and-distance march. The data the coaches care about is different in each. So we built each app from scratch around the way that sport is actually played.</p>
           <p class="reveal d4">All your data stays on your device. No accounts. No cloud sync. No tracking. Your roster is yours, your game data is yours, and the only thing leaving your iPad is the report you choose to share.</p>
         </div>
       </div>
