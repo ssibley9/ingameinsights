@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coaches Box Football — Playbook, live stats, and scouting for iPad</title>
+<meta name="description" content="Draw your plays, call them from the sideline, track every snap, and scout next week's opponent — all in one iPad app for tackle and flag football. Call sheets, wristbands, tendency reports, and self-scout.">
+<meta property="og:title" content="Coaches Box Football — Playbook. Live Stats. Scouting.">
+<meta property="og:description" content="One iPad app for tackle and flag football: playbook and wristbands, live snap-by-snap stats, and opponent scouting with automatic self-scout.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com/coaches-box-football.html">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Coaches Box Football — product page
+     -------------------------------------------------------------------------
+     Structure lifted from the printed one-pager: three numbered pillars
+     (playbook / stats / scouting), the game-week strip, the tackle-vs-flag
+     split, and the small-feature grid. The strip is the spine of the page —
+     it's the clearest argument for one app instead of three tools.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------------------------------------------------------------- NAV */
+  .nav {
+    padding: 28px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--cream); }
+  .nav-brand-logo {
+    width: 38px; height: 38px; flex-shrink: 0;
+    object-fit: cover; object-position: center 38%;
+    border-radius: 8px; background: var(--field-deep);
+  }
+  .nav-brand-text {
+    font-family: var(--display); font-size: 18px; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--cream);
+  }
+  .nav-brand-text span { color: var(--cream-mute); font-weight: 400; }
+  .nav-menu { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 28px); flex-wrap: wrap; }
+  .nav-link {
+    color: var(--cream-soft); text-decoration: none; font-size: 14px;
+    font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease;
+  }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
+
+  /* --------------------------------------------------------------- HERO */
+  .hero { padding: clamp(44px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.15fr 1fr;
+    gap: clamp(30px, 4.5vw, 64px); align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
+    color: var(--cream-mute); padding: 8px 18px;
+    border: 1px solid var(--field-line); border-radius: 100px; margin-bottom: 24px;
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 0.95; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); display: block; }
+  .hero-lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--cream-soft); line-height: 1.65; max-width: 54ch; }
+
+  .tag-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .tag {
+    font-size: 11px; letter-spacing: 2px; font-weight: 700; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-deep); border-radius: 100px; padding: 8px 16px;
+  }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 15px 24px; border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .btn-primary { color: var(--field-deep); background: var(--gold); }
+  .btn-primary:hover { background: var(--cream); box-shadow: 0 4px 20px rgba(240,168,48,0.3); }
+  .btn-ghost { color: var(--cream); background: transparent; border: 1px solid var(--field-line); }
+  .btn-ghost:hover { background: var(--field-mid); border-color: var(--gold); }
+
+  /* Shared screenshot frame with graceful missing-asset fallback. */
+  .shot-frame {
+    position: relative; border: 1px solid var(--field-line); border-radius: 10px;
+    overflow: hidden; background: var(--field-deep); box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .shot-frame img { width: 100%; height: auto; display: block; }
+  .shot-ph {
+    display: none; min-height: 220px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; text-align: center; padding: 40px 24px;
+    color: var(--cream-mute); font-size: 13px; line-height: 1.6;
+  }
+  .shot-ph .icon { font-size: 28px; color: var(--field-line); }
+  .shot-ph code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--cream-soft); }
+  figure { margin: 0; }
+  figcaption { margin-top: 12px; font-size: 13px; color: var(--cream-mute); letter-spacing: 0.3px; }
+
+  /* ------------------------------------------------------------ PILLARS */
+  .pillar { padding: clamp(48px, 7vw, 92px) 0; border-top: 1px solid var(--field-line); }
+  .pillar.shaded { background: var(--field-deep); border-top: none; }
+
+  .pillar-head { display: flex; gap: 22px; align-items: flex-start; margin-bottom: clamp(30px, 4vw, 48px); }
+  .pillar-num {
+    font-family: var(--display); font-size: clamp(24px, 3vw, 34px);
+    color: var(--field-deep); background: var(--gold);
+    width: clamp(48px, 5vw, 62px); height: clamp(48px, 5vw, 62px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; flex-shrink: 0; line-height: 1;
+  }
+  .pillar.shaded .pillar-num { background: var(--cream); }
+  .pillar-titles { flex: 1; min-width: 0; }
+  .pillar-titles h2 {
+    font-family: var(--display); font-size: clamp(26px, 4vw, 44px);
+    letter-spacing: 1px; text-transform: uppercase; color: var(--cream); line-height: 1.02;
+  }
+  .pillar-titles p {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(16px, 1.9vw, 22px); color: var(--gold); margin-top: 8px;
+  }
+
+  .pillar-body {
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(28px, 4.5vw, 60px); align-items: start;
+  }
+  @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
+
+  .points { list-style: none; display: grid; gap: 18px; }
+  .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
+  .points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0;
+    color: var(--gold-deep); font-size: 14px;
+  }
+  .points strong { color: var(--cream); font-weight: 600; }
+
+  .figure-stack { display: grid; gap: 24px; }
+
+  /* -------------------------------------------------------- GAME WEEK */
+  .gameweek { padding: clamp(48px, 7vw, 88px) 0; background: var(--field-deep); }
+  .gameweek h2 {
+    font-family: var(--display); font-size: clamp(24px, 3.4vw, 38px);
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold);
+    margin-bottom: clamp(28px, 4vw, 44px);
+  }
+  .week-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 0; position: relative;
+  }
+  .week-grid::before {
+    content: ""; position: absolute; top: 21px; left: 8%; right: 8%;
+    height: 1px; background: var(--field-line);
+  }
+  @media (max-width: 860px) {
+    .week-grid { grid-template-columns: repeat(3, 1fr); row-gap: 34px; }
+    .week-grid::before { display: none; }
+  }
+  @media (max-width: 460px) { .week-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .week-step { text-align: center; padding: 0 8px; position: relative; z-index: 1; }
+  .week-dot {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--field-deep); border: 1px solid var(--field-line);
+    color: var(--cream-soft); font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .week-step.key .week-dot { background: var(--gold); border-color: var(--gold); color: var(--field-deep); }
+  .week-step h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 6px;
+  }
+  .week-step p { font-size: 13px; line-height: 1.5; color: var(--cream-mute); }
+
+  /* ---------------------------------------------------------- RULE SETS */
+  .rulesets { padding: clamp(44px, 6vw, 80px) 0; border-top: 1px solid var(--field-line); }
+  .ruleset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.5vw, 48px); }
+  @media (max-width: 760px) { .ruleset-grid { grid-template-columns: 1fr; } }
+  .ruleset {
+    border: 1px solid var(--field-line); border-left: 3px solid var(--gold);
+    border-radius: 10px; padding: clamp(24px, 3vw, 34px);
+  }
+  .ruleset h3 {
+    font-family: var(--display); font-size: 20px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .ruleset p { font-size: 15px; line-height: 1.7; color: var(--cream-soft); }
+
+  /* ------------------------------------------------------ SIDELINE GRID */
+  .sideline { padding: clamp(44px, 6vw, 84px) 0; border-top: 1px solid var(--field-line); }
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.6vw, 40px);
+    color: var(--cream); line-height: 1.08; margin-bottom: clamp(30px, 4vw, 44px); max-width: 24ch;
+  }
+  .sideline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(20px, 2.6vw, 30px); }
+  .sl-item { border-top: 1px solid var(--field-line); padding-top: 18px; }
+  .sl-item h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.3px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 9px;
+  }
+  .sl-item p { font-size: 14.5px; line-height: 1.6; color: var(--cream-soft); }
+
+  /* ---------------------------------------------------------- CLOSING */
+  .closing { padding: clamp(52px, 8vw, 100px) 0; background: var(--field-deep); }
+  .closing h2 {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.1;
+    color: var(--cream); margin-bottom: 18px; max-width: 22ch;
+  }
+  .closing p { color: var(--cream-soft); font-size: 16px; line-height: 1.7; max-width: 58ch; }
+  .closing-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+
+  /* ----------------------------------------------------------- FOOTER */
+  .footer { border-top: 1px solid var(--field-line); padding: 48px 0 36px; }
+  .footer-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand { font-family: var(--display); font-size: 18px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cream); }
+  .footer-brand span { color: var(--cream-mute); font-weight: 400; }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a { color: var(--cream-soft); text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-meta {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--field-line);
+    color: var(--cream-mute); font-size: 12px; letter-spacing: 0.3px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep); border: 1px solid var(--gold-deep); color: var(--cream);
+    padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 1000; opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    max-width: calc(100% - 32px); text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fade-up .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ---------------------------------------------------------------- NAV -->
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGame<span>Insights</span></span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- --------------------------------------------------------------- HERO -->
+  <section class="container hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal d1">One iPad. Your whole coaches' box.</div>
+        <h1 class="reveal d1">Playbook. Live Stats. <em>Scouting.</em></h1>
+        <p class="hero-lede reveal d2">Draw your plays, call them from the sideline, track every snap, and scout next week's opponent &mdash; all in one app built around how football staffs actually work.</p>
+        <div class="tag-row reveal d3">
+          <span class="tag">Tackle Football</span>
+          <span class="tag">Flag Football</span>
+          <span class="tag">Built for iPad</span>
+        </div>
+        <div class="hero-actions reveal d4">
+          <a href="mailto:support@ingameinsights.com?subject=Football%20-%20TestFlight%20Access" class="btn btn-primary" data-email="support@ingameinsights.com">Email for TestFlight access</a>
+          <a href="#gameweek" class="btn btn-ghost">See the game week</a>
+        </div>
+      </div>
+      <figure class="reveal d3">
+        <div class="shot-frame">
+          <img src="assets/football-hero.png" alt="Coaches Box Football play editor and live stat tracking on iPad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/football-hero.png</code></span></div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------- PILLAR 01 PLAYBOOK -->
+  <section class="pillar" id="playbook">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">01</div>
+        <div class="pillar-titles">
+          <h2>Playbook Management</h2>
+          <p>Draw it once. Use it all week, and on game day.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Chart your plays.</strong> Draw offensive plays with routes and motion, and defensive calls with alignments and zone responsibilities. Formations, personnel groups, and special teams included.</li>
+          <li><strong>Offense and defense, side by side.</strong> Both sides of the ball in one team playbook, organized by categories you choose.</li>
+          <li><strong>Build call sheets and wristbands.</strong> Assemble game-day call sheets and wristband panels using your own play-calling terminology.</li>
+          <li><strong>Print with play diagrams.</strong> One-page call sheets, play sheets, and wristband cards sized to real wristband windows, with every play drawn.</li>
+          <li><strong>Sideline whiteboard.</strong> Start from any formation or play, sketch the adjustment in real time, and save it as a new play.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame">
+            <img src="assets/football-play-editor.png" alt="Play editor showing a route concept drawn from a bunch formation" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/football-play-editor.png</code></span></div>
+          </div>
+          <figcaption>Play editor &mdash; a call drawn from your own formation library</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------- PILLAR 02 STATS -->
+  <section class="pillar shaded" id="stats">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">02</div>
+        <div class="pillar-titles">
+          <h2>Record Stats</h2>
+          <p>Fast enough for the sideline. Deep enough for the film room.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Touch-first live input.</strong> Tap players and spots on the field to log each snap in seconds. Score, clock, down, and distance keep themselves.</li>
+          <li><strong>Your playbook drives the stats.</strong> Tag the call on every snap and see play-call effectiveness in real time, broken down by call, situation, and drive. This is the part no other app can do.</li>
+          <li><strong>Share live to other iPads.</strong> Assistants follow score, situation, and every stat tab on a bench iPad as it happens, without touching the inputs.</li>
+          <li><strong>Game reports.</strong> HTML game reports and CSV exports, plus drive charts that draw every possession on a field.</li>
+          <li><strong>Full-season totals.</strong> Records, team totals, and player lines roll up automatically across the season.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame">
+            <img src="assets/football-game-report.png" alt="Football game report with score by period and team statistics" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/football-game-report.png</code></span></div>
+          </div>
+          <figcaption>Game report &mdash; score by period and team stats, shareable as HTML</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------- PILLAR 03 SCOUTING -->
+  <section class="pillar" id="scouting">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">03</div>
+        <div class="pillar-titles">
+          <h2>Scouting</h2>
+          <p>Know what's coming before they line up.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Chart opponent film.</strong> Log each snap's formation, play, defensive front, coverage, and result, linked to its spot in the film.</li>
+          <li><strong>Find their tendencies.</strong> Scouting reports break down what they do by down, distance, field zone, formation, and hash &mdash; ready to print and hand out.</li>
+          <li><strong>Diagram their plays.</strong> Draw the opponent's plays on the same canvas as your playbook, so your scout team simulates them accurately.</li>
+          <li><strong>Self-scout automatically.</strong> Every game you track feeds the same tendency reports for your own team. Spot your own patterns before opponents do &mdash; with no extra charting.</li>
+          <li><strong>Prepare both sides.</strong> Chart both teams in one game and scout their offense and defense from the same film.</li>
+        </ul>
+        <div class="figure-stack">
+          <figure>
+            <div class="shot-frame">
+              <img src="assets/football-scout-snap.png" alt="Opponent snap charted with formation, call, defensive front, and result" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/football-scout-snap.png</code></span></div>
+            </div>
+            <figcaption>Every snap charted with its call, front, and result</figcaption>
+          </figure>
+          <figure>
+            <div class="shot-frame">
+              <img src="assets/football-scout-tendency.png" alt="Scouting report showing run and pass split by down and distance" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/football-scout-tendency.png</code></span></div>
+            </div>
+            <figcaption>Run/pass split by down and distance, with the efficiency behind it</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ----------------------------------------------------------- GAME WEEK -->
+  <section class="gameweek" id="gameweek">
+    <div class="container">
+      <h2>Your game week, in one app</h2>
+      <div class="week-grid">
+        <div class="week-step">
+          <div class="week-dot">1</div>
+          <h3>Scout</h3>
+          <p>Chart next opponent's film</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">2</div>
+          <h3>Plan</h3>
+          <p>Read their tendencies</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">3</div>
+          <h3>Install</h3>
+          <p>Draw and adjust your plays</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">4</div>
+          <h3>Print</h3>
+          <p>Call sheets and wristbands</p>
+        </div>
+        <div class="week-step key">
+          <div class="week-dot">5</div>
+          <h3>Game Day</h3>
+          <p>Track live, share to bench</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">6</div>
+          <h3>Review</h3>
+          <p>Reports, season totals, self-scout</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ RULE SETS -->
+  <section class="rulesets">
+    <div class="container">
+      <div class="ruleset-grid">
+        <div class="ruleset">
+          <h3>Tackle Football</h3>
+          <p>11-man formations with personnel groupings, offensive line, kickoff, punt, and return units.</p>
+        </div>
+        <div class="ruleset">
+          <h3>Flag Football</h3>
+          <p>5v5 through 7v7, NFHS and NFL FLAG rules, including two-zone downs and shared defensive credit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------- SIDELINE GRID -->
+  <section class="sideline">
+    <div class="container">
+      <span class="section-label">&mdash; Built for the sideline</span>
+      <h2 class="section-title">The small things that decide whether an app survives a season.</h2>
+      <div class="sideline-grid">
+        <div class="sl-item">
+          <h3>Share with your staff</h3>
+          <p>Send teams, playbooks, and games to another coach's iPad by AirDrop, Messages, or Mail.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Roster from a screenshot</h3>
+          <p>Import jersey numbers and names straight from a roster image, then review before saving.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Your terminology</h3>
+          <p>Build calls from your own words for formation, motion, play, direction, and tag.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Custom route tree</h3>
+          <p>Redraw a route once and every play that runs it updates to match.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Rotations and depth</h3>
+          <p>Set up to three units per side, with rotation tables printed on the call sheet.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Situational analysis</h3>
+          <p>Run and pass splits by down and distance and field zone, for your team and your opponents.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------- CLOSING -->
+  <section class="closing">
+    <div class="container">
+      <h2>Currently in beta, with staffs running real seasons.</h2>
+      <p>Coaches Box Football is in TestFlight while we put it through live Friday nights. Email us and we'll get you in &mdash; and if you need something to hand an athletic director, there's a printable one-pager below.</p>
+      <div class="closing-actions">
+        <a href="mailto:support@ingameinsights.com?subject=Football%20-%20TestFlight%20Access" class="btn btn-primary" data-email="support@ingameinsights.com">Email for TestFlight access</a>
+        <!-- Upload the PDF to assets/ with this filename, or update the href. -->
+        <a href="assets/coaches-box-football-one-pager.pdf" class="btn btn-ghost" target="_blank" rel="noopener">Download the one-pager (PDF)</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------- FOOTER -->
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGame<span>Insights</span></div>
+      <nav class="footer-links">
+        <a href="index.html#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Coaches Box &mdash; live stats and scouting for tackle and flag football.</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Email copied</div>
+
+</div>
+
+<script>
+  (function() {
+    var toast = document.getElementById('toast');
+    var toastTimer = null;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 3500);
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function(resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); document.body.removeChild(ta); resolve(); }
+        catch (e) { document.body.removeChild(ta); reject(e); }
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a[data-email]');
+      if (!link) return;
+      var email = link.getAttribute('data-email');
+      if (!email) return;
+      copyToClipboard(email).then(
+        function() { showToast('Email copied: ' + email); },
+        function() { showToast('Email: ' + email); }
+      );
+    });
+  })();
+</script>
+</body>
+</html>

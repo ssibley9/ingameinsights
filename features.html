@@ -1,0 +1,1168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Features — Coaches Box stat tracking apps by InGameInsights</title>
+<meta name="description" content="Shot quality grading, possession analytics, voice control, season rollups, individual player reports, and playbook-linked football stats. See what's inside the Coaches Box apps for iPad.">
+<meta property="og:title" content="What's inside the Coaches Box apps">
+<meta property="og:description" content="Shot charts, shot quality grading, possession analytics, season rollups, player reports, and playbook-linked football stats.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com/features.html">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Features page — inherits the InGameInsights design system from index.html
+     -------------------------------------------------------------------------
+     Organizing idea: the page is structured by WHEN a coach uses the app,
+     not by feature category. Three moments — during the game, right after
+     the final buzzer, across the season — because that's how a coach decides
+     whether a stat app is worth carrying to the gym.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* =========================================================================
+     NAV
+     ========================================================================= */
+  .nav {
+    padding: 28px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: var(--cream);
+  }
+  .nav-brand-logo {
+    width: 38px; height: 38px;
+    flex-shrink: 0;
+    object-fit: cover;
+    object-position: center 38%;
+    border-radius: 8px;
+    background: var(--field-deep);
+  }
+  .nav-brand-text {
+    font-family: var(--display);
+    font-size: 18px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .nav-brand-text span { color: var(--cream-mute); font-weight: 400; }
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 2.5vw, 28px);
+    flex-wrap: wrap;
+  }
+  .nav-link {
+    color: var(--cream-soft);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    transition: color .2s ease;
+  }
+  .nav-link:hover { color: var(--gold); }
+  .nav-link.current { color: var(--gold); }
+
+  /* =========================================================================
+     PAGE HEAD
+     ========================================================================= */
+  .page-head {
+    padding: clamp(44px, 6vw, 76px) 0 clamp(36px, 5vw, 60px);
+    max-width: 62ch;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--cream-mute);
+    padding: 8px 18px;
+    border: 1px solid var(--field-line);
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+  }
+  .page-head h1 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(36px, 5.6vw, 64px);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 22px;
+  }
+  .page-head p {
+    font-size: clamp(15px, 1.5vw, 18px);
+    color: var(--cream-soft);
+    line-height: 1.65;
+  }
+
+  /* Jump links to the three moments — these double as the page's table of
+     contents and as a statement of the organizing idea. */
+  .moments-jump {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+  .moments-jump a {
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: var(--cream-soft);
+    border: 1px solid var(--field-line);
+    border-radius: 100px;
+    padding: 10px 18px;
+    transition: border-color .2s ease, color .2s ease, background .2s ease;
+  }
+  .moments-jump a:hover {
+    color: var(--field-deep);
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  /* =========================================================================
+     MOMENT SECTIONS
+     ========================================================================= */
+  .moment {
+    padding: clamp(48px, 7vw, 92px) 0;
+    border-top: 1px solid var(--field-line);
+  }
+  .moment.shaded {
+    background: var(--field-deep);
+    border-top: none;
+  }
+  .moment-head {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: clamp(32px, 5vw, 56px);
+  }
+  .moment-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .moment-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 3.6vw, 40px);
+    color: var(--cream);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    flex: 1;
+    min-width: 260px;
+  }
+
+  /* =========================================================================
+     FEATURE BLOCK — screenshot-led, alternating sides
+     ========================================================================= */
+  .feat {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: clamp(28px, 4.5vw, 64px);
+    align-items: center;
+    margin-bottom: clamp(48px, 6vw, 80px);
+  }
+  .feat:last-child { margin-bottom: 0; }
+  .feat.flip .feat-text { order: 2; }
+  .feat.flip .feat-figure { order: 1; }
+
+  @media (max-width: 860px) {
+    .feat { grid-template-columns: 1fr; }
+    .feat.flip .feat-text { order: 1; }
+    .feat.flip .feat-figure { order: 2; }
+  }
+
+  /* Sport tag on blocks that describe one app rather than the whole line. */
+  .feat-sport {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--cream-mute);
+    border: 1px solid var(--field-line);
+    border-radius: 100px;
+    padding: 5px 12px;
+    margin-bottom: 14px;
+  }
+
+  .feat-title {
+    font-family: var(--display);
+    font-size: clamp(22px, 2.6vw, 30px);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--cream);
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+  .feat-text p {
+    color: var(--cream-soft);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 56ch;
+  }
+  .feat-text p + p { margin-top: 14px; }
+  .feat-text strong { color: var(--cream); font-weight: 600; }
+
+  .feat-list {
+    list-style: none;
+    margin-top: 20px;
+    display: grid;
+    gap: 10px;
+  }
+  .feat-list li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--cream-soft);
+  }
+  .feat-list li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 8px;
+    width: 8px; height: 8px;
+    border: 1px solid var(--gold-deep);
+    background: rgba(240,168,48,0.18);
+  }
+
+  /* Screenshot frame — same placeholder fallback pattern used on the guide
+     pages, so a missing asset shows an upload prompt instead of a broken
+     image icon. */
+  .feat-figure { margin: 0; }
+  .shot-frame {
+    position: relative;
+    border: 1px solid var(--field-line);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--field-deep);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .shot-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .shot-ph {
+    display: none;
+    min-height: 220px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--cream-mute);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .shot-ph .icon { font-size: 28px; color: var(--field-line); }
+  .shot-ph code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: var(--cream-soft);
+  }
+  .feat-figure figcaption {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--cream-mute);
+    letter-spacing: 0.3px;
+  }
+
+  /* =========================================================================
+     PULL QUOTE — used for the voice-control detail. Given a quote treatment
+     rather than a screenshot because the point is the design decision, not
+     the pixels.
+     ========================================================================= */
+  .pullquote {
+    border-left: 3px solid var(--gold);
+    padding: 6px 0 6px clamp(20px, 3vw, 34px);
+    margin: clamp(40px, 5vw, 64px) 0;
+    max-width: 68ch;
+  }
+  .pullquote q {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(22px, 3vw, 32px);
+    line-height: 1.25;
+    color: var(--cream);
+    quotes: none;
+  }
+  .pullquote-note {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--cream-soft);
+  }
+
+  /* =========================================================================
+     PLAYBOOK FEATURE — the football differentiator gets its own treatment
+     ========================================================================= */
+  .playbook {
+    padding: clamp(52px, 8vw, 100px) 0;
+    background: var(--field-deep);
+    position: relative;
+  }
+  .playbook::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .playbook > .container { position: relative; z-index: 1; }
+  .playbook-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: rgba(232, 100, 90, 0.15);
+    border: 1px solid var(--rose);
+    border-radius: 100px;
+    padding: 6px 14px;
+    margin-bottom: 20px;
+  }
+  .playbook-badge::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--rose);
+  }
+  .playbook h2 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(30px, 4.4vw, 50px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    color: var(--cream);
+    margin-bottom: 22px;
+    max-width: 20ch;
+  }
+  .playbook-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(28px, 4.5vw, 64px);
+    align-items: center;
+  }
+  @media (max-width: 860px) {
+    .playbook-grid { grid-template-columns: 1fr; }
+  }
+  .playbook p {
+    color: var(--cream-soft);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 56ch;
+  }
+  .playbook p + p { margin-top: 14px; }
+  .playbook strong { color: var(--cream); font-weight: 600; }
+
+  .cta-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--field-deep);
+    background: var(--gold);
+    padding: 14px 22px;
+    border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease;
+  }
+  .cta-inline:hover {
+    background: var(--cream);
+    box-shadow: 0 4px 20px rgba(240,168,48,0.3);
+  }
+  .cta-inline.secondary {
+    background: transparent;
+    color: var(--cream);
+    border: 1px solid var(--field-line);
+  }
+  .cta-inline.secondary:hover {
+    background: var(--field-mid);
+    border-color: var(--gold);
+    box-shadow: none;
+  }
+
+  /* =========================================================================
+     CAPABILITY MATRIX
+     ========================================================================= */
+  .matrix-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--field-line);
+    border-radius: 10px;
+    background: var(--field-deep);
+    -webkit-overflow-scrolling: touch;
+  }
+  table.matrix {
+    width: 100%;
+    min-width: 660px;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  table.matrix caption {
+    text-align: left;
+    padding: 18px 20px 0;
+    font-size: 13px;
+    color: var(--cream-mute);
+    line-height: 1.6;
+  }
+  table.matrix th,
+  table.matrix td {
+    padding: 15px 16px;
+    border-bottom: 1px solid var(--field-line);
+    text-align: center;
+    vertical-align: middle;
+  }
+  table.matrix thead th {
+    font-family: var(--body);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  table.matrix tbody th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--cream);
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  table.matrix tbody tr:last-child th,
+  table.matrix tbody tr:last-child td { border-bottom: none; }
+  .yes { color: var(--gold); font-size: 17px; }
+  .no  { color: var(--field-line); font-size: 17px; }
+  .soon {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--cream-mute);
+  }
+
+  /* =========================================================================
+     CLOSING
+     ========================================================================= */
+  .closing {
+    padding: clamp(52px, 8vw, 100px) 0;
+    border-top: 1px solid var(--field-line);
+  }
+  .closing h2 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 18px;
+    max-width: 22ch;
+  }
+  .closing p {
+    color: var(--cream-soft);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 58ch;
+  }
+  .closing-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+
+  /* =========================================================================
+     FOOTER
+     ========================================================================= */
+  .footer {
+    border-top: 1px solid var(--field-line);
+    padding: 48px 0 36px;
+  }
+  .footer-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-brand {
+    font-family: var(--display);
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+  .footer-brand span { color: var(--cream-mute); font-weight: 400; }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a {
+    color: var(--cream-soft);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color .2s ease;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-meta {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--field-line);
+    color: var(--cream-mute);
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* Toast (shared with index.html for mailto: fallback) */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep);
+    border: 1px solid var(--gold-deep);
+    color: var(--cream);
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    z-index: 1000;
+    opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    max-width: calc(100% - 32px);
+    text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* Single page-load reveal on the head only; section content is static so
+     the page doesn't animate every block on scroll. */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; animation: fade-up .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- =========================================================================
+       NAV
+       ========================================================================= -->
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGame<span>Insights</span></span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link current" aria-current="page">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =========================================================================
+       PAGE HEAD
+       ========================================================================= -->
+  <section class="container page-head">
+    <div class="eyebrow reveal d1">What's inside</div>
+    <h1 class="reveal d2">Most stat apps tell you what happened. Ours tell you what to do about it.</h1>
+    <p class="reveal d3">Every Coaches Box app is built around three moments — the game itself, the twenty minutes after it, and the shape of a season as it takes form. Here's what each one gives you.</p>
+    <div class="moments-jump reveal d4">
+      <a href="#live">During the game</a>
+      <a href="#after">After the final buzzer</a>
+      <a href="#season">Across the season</a>
+      <a href="#football">Football</a>
+      <a href="#playbook">Playbook-linked stats</a>
+      <a href="#matrix">What's in which app</a>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MOMENT 1 — DURING THE GAME
+       ========================================================================= -->
+  <section class="moment" id="live">
+    <div class="container">
+      <div class="moment-head">
+        <span class="moment-label">— During the game</span>
+        <h2 class="moment-title">One person, one iPad, and a game that doesn't slow down for you.</h2>
+      </div>
+
+      <!-- ---------- Shot entry ---------- -->
+      <article class="feat">
+        <div class="feat-text">
+          <h3 class="feat-title">Every shot, fully described, in three taps</h3>
+          <p>Tap where the shot went up and the app asks only what it still needs: who shot it, what happened, and who set it up. <strong>The pass chain is already tracked</strong>, so the most likely assister is waiting pre-selected when the shot falls.</p>
+          <ul class="feat-list">
+            <li>Shot type — jump shot, layup, floater, dunk, hook</li>
+            <li>Half court or fast break, tagged on every attempt</li>
+            <li>Made, missed, blocked, or and-one</li>
+            <li>Assist credited automatically when the passer is known</li>
+          </ul>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-shot-entry.png" alt="Recording a three-point shot with shot type, result, and assist in the basketball app" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-shot-entry.png</code></span></div>
+          </div>
+          <figcaption>Recording a shot, start to finish, without leaving the court view</figcaption>
+        </figure>
+      </article>
+
+      <!-- ---------- Live decision support ---------- -->
+      <article class="feat flip">
+        <div class="feat-text">
+          <h3 class="feat-title">Answers while you can still use them</h3>
+          <p>Most stat tools are record-keepers — you find out what happened on the drive home. These apps put the numbers you need for the <em>next</em> substitution on screen while the ball is still in play.</p>
+          <ul class="feat-list">
+            <li>Foul trouble board — who's at three, who's at four, both benches</li>
+            <li>Live possessions and points per possession, both teams</li>
+            <li>Running box score that never stops updating</li>
+            <li>Timeouts, possession arrow, and quarter scoring in one strip</li>
+          </ul>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-live-track.png" alt="Live tracking view with foul trouble, team stats, and possession" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-live-track.png</code></span></div>
+          </div>
+          <figcaption>The tracking screen, mid-game</figcaption>
+        </figure>
+      </article>
+
+      <!-- ---------- Football: the drive ---------- -->
+      <article class="feat" id="football">
+        <div class="feat-text">
+          <span class="feat-sport">Coaches Box Football</span>
+          <h3 class="feat-title">Football is tracked the way football is played</h3>
+          <p>Not as a list of events, but as a march. Every snap is logged with down, distance, and field position, so the drive stays intact instead of dissolving into a pile of individual stats. Tackle and flag, with the rules of each built in.</p>
+          <ul class="feat-list">
+            <li>Down-and-distance play-by-play, snap by snap</li>
+            <li>Rush and pass yardage, completions, tackles or flag pulls</li>
+            <li>Both sides of the ball in the same game file</li>
+            <li>Drive-by-drive results as the game unfolds</li>
+          </ul>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-football-drive.png" alt="Football play-by-play tracking with down, distance, and field position" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-football-drive.png</code></span></div>
+          </div>
+          <figcaption>Logging a drive, down by down</figcaption>
+        </figure>
+      </article>
+
+      <!-- ---------- Voice ---------- -->
+      <div class="pullquote">
+        <q>Shared #10 — say color first</q>
+        <p class="pullquote-note">Voice control &mdash; in soccer, basketball, and lacrosse today &mdash; lets you keep your eyes on the play and call stats as they happen. That banner appears when both teams have a number 10 — the app noticed the collision before you did and told you how to avoid it. Small thing. It only exists because someone stood courtside and hit the problem.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MOMENT 2 — AFTER THE BUZZER
+       ========================================================================= -->
+  <section class="moment shaded" id="after">
+    <div class="container">
+      <div class="moment-head">
+        <span class="moment-label">— After the final buzzer</span>
+        <h2 class="moment-title">A finished report before the bus leaves the parking lot.</h2>
+      </div>
+
+      <!-- ---------- Shot quality ---------- -->
+      <article class="feat">
+        <div class="feat-text">
+          <h3 class="feat-title">Shot charts that grade the shot, not just the result</h3>
+          <p>Every chart shows makes and misses by zone with a percentage attached. Then it does the thing no other app does: it separates the <strong>good shots</strong> from the <strong>bad ones</strong> and totals the points your offense gave away taking shots it shouldn't have.</p>
+          <p>A 3-for-12 night from a spot you keep going back to isn't bad luck. It's a practice plan.</p>
+          <ul class="feat-list">
+            <li>Zone-by-zone makes, misses, and percentage</li>
+            <li>Good shots, bad shots, and points lost to shot selection</li>
+            <li>Half-court and transition efficiency, split out</li>
+            <li>Filter by quarter, half, full game, team, or one player</li>
+          </ul>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-shot-chart.png" alt="Basketball shot chart with zone percentages and shot quality grading" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-shot-chart.png</code></span></div>
+          </div>
+          <figcaption>Zone percentages, with good and bad shots counted separately</figcaption>
+        </figure>
+      </article>
+
+      <!-- ---------- Game report ---------- -->
+      <article class="feat flip">
+        <div class="feat-text">
+          <h3 class="feat-title">Game reports you can send to anyone</h3>
+          <p>Every stat side by side, with the better number in each row highlighted, plus the possession-level metrics that usually require a spreadsheet and a free evening. Share it as HTML or export the raw numbers as CSV.</p>
+          <ul class="feat-list">
+            <li>Full team comparison — shooting splits, rebounding, turnovers, fouls</li>
+            <li>Possessions and points per possession for both teams</li>
+            <li>Hustle stats in the box score: deflections, charges drawn, plus-minus</li>
+            <li>HTML report to share, CSV to keep</li>
+          </ul>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-game-report.png" alt="Shareable post-game report comparing both teams" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-game-report.png</code></span></div>
+          </div>
+          <figcaption>The post-game report, ready to share</figcaption>
+        </figure>
+      </article>
+
+      <!-- ---------- Box score ---------- -->
+      <article class="feat">
+        <div class="feat-text">
+          <h3 class="feat-title">A box score with the columns coaches actually argue about</h3>
+          <p>Starters separated from the bench, shooting broken out by twos, threes, and free throws, and plus-minus per player. Deflections sit right next to points, because the kid who doesn't score and changes the game deserves a number too.</p>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-box-score.png" alt="Full box score with plus-minus, deflections, and shooting splits" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-box-score.png</code></span></div>
+          </div>
+          <figcaption>Full box score, live or final</figcaption>
+        </figure>
+      </article>
+
+      <!-- ---------- Football: field position ---------- -->
+      <article class="feat flip">
+        <div class="feat-text">
+          <span class="feat-sport">Coaches Box Football</span>
+          <h3 class="feat-title">Field position charts for both sides of the ball</h3>
+          <p>Where your offense actually moves the ball, and where it stalls. Where your defense gives ground. The same location logic behind the shot charts, applied to a field instead of a court.</p>
+          <p>Pair it with the play-call data and the picture gets specific fast: this look works between the twenties and dies in the red zone.</p>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-football-field.png" alt="Football field position chart for offense and defense" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-football-field.png</code></span></div>
+          </div>
+          <figcaption>Offense and defense, by field position</figcaption>
+        </figure>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       MOMENT 3 — ACROSS THE SEASON
+       ========================================================================= -->
+  <section class="moment" id="season">
+    <div class="container">
+      <div class="moment-head">
+        <span class="moment-label">— Across the season</span>
+        <h2 class="moment-title">One game is a story. Twenty games is the truth.</h2>
+      </div>
+
+      <article class="feat">
+        <div class="feat-text">
+          <h3 class="feat-title">Season rollups</h3>
+          <p>Every game you track rolls into season totals and averages automatically — no re-entry, no spreadsheet, no end-of-year scramble. Shooting trends, possession efficiency, and team tendencies build themselves as the season goes.</p>
+          <p>It's also how you find the pattern you'd never spot from one night: the quarter you always fade in, the zone that's been quietly killing your offense since December, the play call that's been losing you a yard a snap since week two.</p>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-season.png" alt="Season totals and averages across all tracked games" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-season.png</code></span></div>
+          </div>
+          <figcaption>Season totals, built from every tracked game</figcaption>
+        </figure>
+      </article>
+
+      <article class="feat flip">
+        <div class="feat-text">
+          <h3 class="feat-title">Individual player reports</h3>
+          <p>A single page per player: their season line, their shooting map, their trend across games. It's the handout for a parent meeting, the evidence in a playing-time conversation, and the thing a junior sends to a college coach.</p>
+          <p>Players believe numbers about themselves in a way they don't believe a speech.</p>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-player-report.png" alt="Individual player season report with shooting map and trends" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-player-report.png</code></span></div>
+          </div>
+          <figcaption>One player, one page, the whole season</figcaption>
+        </figure>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       PLAYBOOK — the football differentiator
+       ========================================================================= -->
+  <section class="playbook" id="playbook">
+    <div class="container">
+      <div class="playbook-grid">
+        <div>
+          <div class="playbook-badge">Coaches Box Football · In beta</div>
+          <h2>The plays you draw are the plays you track.</h2>
+          <p>Football is the only Coaches Box app with a playbook built into it — and the playbook isn't a separate drawing tool bolted on the side. <strong>It's wired straight into the stats.</strong></p>
+          <p>Call a play from your own playbook and the result is logged against that play. Which means at the end of the night you can answer a question no other stat app can even ask: <strong>which of my plays actually work?</strong></p>
+          <p>Yards per call. Success rate by down and distance. The play you love that's averaging two yards, and the one you've almost stopped calling that's your best snap on the card.</p>
+          <p>And because the playbook lives in the same app as the scouting module, next week's opponent gets charted on the same canvas your own plays are drawn on.</p>
+          <a href="coaches-box-football.html" class="cta-inline">See everything in Coaches Box Football</a>
+        </div>
+        <figure class="feat-figure">
+          <div class="shot-frame">
+            <img src="assets/feature-playbook.png" alt="Football playbook with plays linked to live stat tracking" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/feature-playbook.png</code></span></div>
+          </div>
+          <figcaption>Your playbook, connected to the numbers it produces</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       CAPABILITY MATRIX
+       -------------------------------------------------------------------------
+       ⚠ STEVE — VERIFY EVERY CELL BEFORE PUBLISHING.
+       These marks are my best read from the site copy and screenshots, not
+       confirmed from the apps themselves. Edit in place:
+         <span class="yes">●</span>   = has it
+         <span class="no">—</span>    = doesn't
+         <span class="soon">Soon</span> = planned
+       ========================================================================= -->
+  <section class="moment" id="matrix">
+    <div class="container">
+      <div class="moment-head">
+        <span class="moment-label">— What's in which app</span>
+        <h2 class="moment-title">Each app is built for one sport, so the feature list isn't identical.</h2>
+      </div>
+
+      <div class="matrix-wrap">
+        <table class="matrix">
+          <caption>Every Coaches Box app tracks its sport end to end. This is where the deeper analysis features currently live.</caption>
+          <thead>
+            <tr>
+              <th scope="col" style="text-align:left;">Capability</th>
+              <th scope="col">Soccer</th>
+              <th scope="col">Basketball</th>
+              <th scope="col">Lacrosse</th>
+              <th scope="col">Football</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Live box score</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Shot &amp; scoring location charts</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Shot quality grading</th>
+              <td><span class="no">—</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Possession &amp; efficiency metrics</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Voice control</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="soon">Soon</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Second-screen display</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">HTML report export</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">CSV export</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Season rollups</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Individual player reports</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Playbook linked to stats</th>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Down-and-distance play-by-play</th>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Opponent scouting &amp; tendency reports</th>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Automatic self-scout</th>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Printable call sheets &amp; wristbands</th>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Field position charts</th>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="no">—</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+            <tr>
+              <th scope="row">Works with no signal in the gym</th>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+              <td><span class="yes">●</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       CLOSING
+       ========================================================================= -->
+  <section class="closing">
+    <div class="container">
+      <h2>All of it runs on your iPad. None of it leaves.</h2>
+      <p>No accounts, no cloud sync, no signal required — which matters, because the gyms where you need this most are the ones with no bars and no guest wifi. Your roster is yours, your game data is yours, and the only thing that ever leaves the device is the report you choose to send.</p>
+      <div class="closing-actions">
+        <a href="index.html#apps" class="cta-inline">See the Coaches Box apps</a>
+        <a href="guides.html" class="cta-inline secondary">Read the guides</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       FOOTER
+       ========================================================================= -->
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGame<span>Insights</span></div>
+      <nav class="footer-links">
+        <a href="index.html#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Made for coaches who care about the details.</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Email copied — paste it wherever you write email</div>
+
+</div>
+
+<script>
+  /* Smart email-link handler — same behavior as index.html so mailto: links
+     still give feedback on machines with no mail app configured. */
+  (function() {
+    var toast = document.getElementById('toast');
+    var toastTimer = null;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 3500);
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function(resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); document.body.removeChild(ta); resolve(); }
+        catch (e) { document.body.removeChild(ta); reject(e); }
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a[data-email]');
+      if (!link) return;
+      var email = link.getAttribute('data-email');
+      if (!email) return;
+      copyToClipboard(email).then(
+        function() { showToast('Email copied: ' + email); },
+        function() { showToast('Email: ' + email); }
+      );
+    });
+  })();
+</script>
+</body>
+</html>

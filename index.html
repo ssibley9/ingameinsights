@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>InGameInsights — Stat tracking apps for coaches</title>
-<meta name="description" content="InGameInsights builds live stat tracking apps for coaches and scorekeepers. Soccer, basketball, lacrosse, and flag football — purpose-built for the sideline.">
+<title>InGameInsights — Coaches Box stat tracking apps for coaches</title>
+<meta name="description" content="Coaches Box by InGameInsights — live stat tracking apps for soccer, basketball, lacrosse, and flag football. Shot charts, shot quality grading, possession analytics, season rollups, and playbook-linked football stats.">
 <meta property="og:title" content="InGameInsights">
-<meta property="og:description" content="Stat tracking apps for coaches who want to understand the game.">
+<meta property="og:description" content="Coaches Box — stat tracking apps for coaches who want to understand the game.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ingameinsights.com">
 <meta name="theme-color" content="#1a3a26">
@@ -124,7 +124,84 @@
     letter-spacing: 0.4px;
     transition: color .2s ease;
   }
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 2.5vw, 28px);
+    flex-wrap: wrap;
+  }
   .nav-link:hover { color: var(--gold); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* =========================================================================
+     SIGNATURE CAPABILITIES STRIP
+     -------------------------------------------------------------------------
+     Sits between the app lineup and the about section. Its job is to answer
+     "why this instead of a spreadsheet" in four beats, then hand off to the
+     features page for the full argument. Deliberately text-only and tightly
+     set so it reads as a claim list, not another card grid.
+     ========================================================================= */
+  .signature {
+    padding: 0 0 clamp(60px, 10vw, 110px);
+  }
+  .signature-inner {
+    border-top: 1px solid var(--field-line);
+    border-bottom: 1px solid var(--field-line);
+    padding: clamp(36px, 5vw, 56px) 0;
+  }
+  .signature-lede {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(24px, 3.2vw, 36px);
+    line-height: 1.15;
+    color: var(--cream);
+    max-width: 24ch;
+    margin-bottom: clamp(32px, 4vw, 46px);
+  }
+  .signature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: clamp(26px, 3.5vw, 44px);
+  }
+  .sig-item h3 {
+    font-family: var(--display);
+    font-size: 17px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    line-height: 1.15;
+  }
+  .sig-item p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--cream-soft);
+  }
+  .signature-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: clamp(30px, 4vw, 44px);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--field-deep);
+    background: var(--gold);
+    padding: 14px 22px;
+    border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease;
+  }
+  .signature-more:hover {
+    background: var(--cream);
+    box-shadow: 0 4px 20px rgba(240,168,48,0.3);
+  }
 
   /* =========================================================================
      HERO — split layout: full logo on the left, headline + intro on the right
@@ -385,6 +462,30 @@
     position: relative;
     z-index: 1;
   }
+
+  /* Product-line label sitting above the sport name. The two lines read as
+     one lockup — "Coaches Box / BASKETBALL" — which keeps the scannable
+     token (the sport) in display type without losing the brand. */
+  .app-card-brand {
+    font-family: var(--body);
+    font-size: 10px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--cream-mute);
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-intro {
+    color: var(--cream-soft);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 60ch;
+    margin: -8px 0 clamp(32px, 4vw, 48px);
+  }
+  .section-intro strong { color: var(--cream); font-weight: 600; }
 
   .app-card-name {
     font-family: var(--display);
@@ -674,7 +775,12 @@
         <img src="assets/logo.png" alt="" class="nav-brand-logo">
         <span class="nav-brand-text">InGame<span>Insights</span></span>
       </a>
-      <a href="mailto:support@ingameinsights.com" class="nav-link">support@ingameinsights.com</a>
+      <div class="nav-menu">
+        <a href="#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
     </nav>
   </header>
 
@@ -688,7 +794,7 @@
     <div class="hero-text">
       <div class="hero-eyebrow reveal d2">Built for the sideline</div>
       <h1 class="reveal d3">Stat tracking apps for coaches who want to <span class="accent">understand the game</span>.</h1>
-      <p class="reveal d4">Purpose-made stat trackers for soccer, basketball, lacrosse, and flag football. Track every shot, pass, and possession in real time — then turn the data into insights that make your team better.</p>
+      <p class="reveal d4">One iPad. Your whole coaches' box. Coaches Box is our line of purpose-made stat trackers — one app per sport, built around the way that sport is actually played. Track every shot, pass, and possession in real time, then turn the data into insights that make your team better.</p>
       <div class="hero-stats reveal d5">
         <div>
           <div class="hero-stat-num">4</div>
@@ -711,16 +817,18 @@
        ========================================================================= -->
   <section class="apps container" id="apps">
     <div class="section-header reveal d1">
-      <span class="section-label">— The Lineup</span>
+      <span class="section-label">— The Coaches Box lineup</span>
       <h2 class="section-title">Four sports. One philosophy. Track everything that matters.</h2>
     </div>
+    <p class="section-intro reveal d1"><strong>Coaches Box</strong> is the InGameInsights app line — a separate app for each sport, so nothing is bent to fit a generic template.</p>
 
     <div class="apps-grid">
 
       <!-- ============ SOCCER ============ -->
       <article class="app-card reveal d2">
         <span class="app-card-status available">Available</span>
-        <img src="assets/soccer-icon.png" alt="Soccer app icon" class="app-card-icon" loading="lazy">
+        <img src="assets/soccer-icon.png" alt="Coaches Box Soccer app icon" class="app-card-icon" loading="lazy">
+        <p class="app-card-brand">Coaches Box</p>
         <h3 class="app-card-name">Soccer</h3>
         <p class="app-card-tagline">Live game stats for soccer coaches.</p>
         <p class="app-card-desc">Possession-first tracking, voice commands, shot charts with field location and target zone, multipeer second-screen display, and HTML game reports. Built for iPad, with a free iPhone display companion.</p>
@@ -732,7 +840,7 @@
                modify the badge artwork. -->
         <a href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730?itscg=30200&itsct=apps_box_badge&mttnsubad=6762889730"
            class="app-store-badge"
-           aria-label="Download Soccer Stats by InGameInsights on the App Store"
+           aria-label="Download Coaches Box Soccer on the App Store"
            target="_blank"
            rel="noopener">
           <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
@@ -742,29 +850,31 @@
       <!-- ============ HOOPS '25 ============ -->
       <article class="app-card reveal d3">
         <span class="app-card-status available">Available</span>
-        <img src="assets/hoops-icon.png" alt="Basketball app icon" class="app-card-icon" loading="lazy">
+        <img src="assets/hoops-icon.png" alt="Coaches Box Basketball app icon" class="app-card-icon" loading="lazy">
+        <p class="app-card-brand">Coaches Box</p>
         <h3 class="app-card-name">Basketball</h3>
         <p class="app-card-tagline">Two seasons of real-game testing.</p>
-        <p class="app-card-desc">The flagship of the InGameInsights family — basketball stat tracking battle-tested across two full years and nine teams, from middle school through varsity and club. Comprehensive box scores, shot charts, and team and individual analytics.</p>
+        <p class="app-card-desc">The flagship of the Coaches Box line — basketball stat tracking battle-tested across two full years and nine teams, from middle school through varsity and club. Comprehensive box scores, shot charts, and team and individual analytics.</p>
         <a href="https://apps.apple.com/us/app/id6758053681?itscg=30200&itsct=apps_box_badge&mttnsubad=6758053681"
            class="app-store-badge"
-           aria-label="Download InGameInsights Basketball on the App Store"
+           aria-label="Download Coaches Box Basketball on the App Store"
            target="_blank"
            rel="noopener">
           <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
         </a>
       </article>
 
-      <!-- ============ LAX '26 ============ -->
+      <!-- ============ LACROSSE ============ -->
       <article class="app-card reveal d4">
         <span class="app-card-status available">Available</span>
-        <img src="assets/lax-icon.png" alt="LAX 26 app icon" class="app-card-icon" loading="lazy">
-        <h3 class="app-card-name">LAX '26</h3>
+        <img src="assets/lax-icon.png" alt="Coaches Box Lacrosse app icon" class="app-card-icon" loading="lazy">
+        <p class="app-card-brand">Coaches Box</p>
+        <h3 class="app-card-name">Lacrosse</h3>
         <p class="app-card-tagline">Lacrosse, scored properly.</p>
         <p class="app-card-desc">Live lacrosse stat tracking with face-off win rates, shot location heatmaps, ground balls, saves, possessions, and time of possession. Field-tested through a full season with beta coaches before release.</p>
         <a href="https://apps.apple.com/us/app/id6759114526?itscg=30200&itsct=apps_box_badge&mttnsubad=6759114526"
            class="app-store-badge"
-           aria-label="Download InGameInsights LAX '26 on the App Store"
+           aria-label="Download Coaches Box Lacrosse on the App Store"
            target="_blank"
            rel="noopener">
           <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
@@ -774,16 +884,55 @@
       <!-- ============ FOOTBALL ============ -->
       <article class="app-card reveal d5">
         <span class="app-card-status in-beta">In Beta</span>
-        <img src="assets/football-icon.png" alt="Football app icon" class="app-card-icon" loading="lazy">
+        <img src="assets/football-icon.png" alt="Coaches Box Football app icon" class="app-card-icon" loading="lazy">
+        <p class="app-card-brand">Coaches Box</p>
         <h3 class="app-card-name">Football</h3>
-        <p class="app-card-tagline">Flag football, tracked play by play.</p>
-        <p class="app-card-desc">Live flag football stat tracking built around the drive — play-by-play logging with down and distance, rush and pass yardage, completions, flag pulls, and field position charts for both sides of the ball. Currently in beta with coaches running real seasons.</p>
-        <a href="mailto:support@ingameinsights.com?subject=Football%20-%20TestFlight%20Access" class="app-card-cta secondary" data-email="support@ingameinsights.com" data-subject="Football - TestFlight Access">
-          Email for TestFlight access
+        <p class="app-card-tagline">Playbook, live stats, and scouting in one app.</p>
+        <p class="app-card-desc">Tackle and flag football in one app: draw your playbook and print call sheets and wristbands, track every snap live with down and distance, and chart next week's opponent for tendency reports — with self-scout falling out of your own games for free. Currently in beta with staffs running real seasons.</p>
+        <a href="coaches-box-football.html" class="app-card-cta secondary">
+          Explore Coaches Box Football
           <span class="arrow">→</span>
         </a>
       </article>
 
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SIGNATURE CAPABILITIES — the four things that separate these apps from
+       a scorebook or a spreadsheet. Each links into the matching section of
+       features.html rather than expanding here.
+       ========================================================================= -->
+  <section class="signature container" id="what">
+    <div class="signature-inner">
+      <div class="section-header reveal d1">
+        <span class="section-label">&mdash; What's inside</span>
+        <h2 class="section-title">Built to answer the questions a box score can't.</h2>
+      </div>
+
+      <div class="signature-grid">
+        <div class="sig-item reveal d2">
+          <h3><a href="features.html#after" style="color:inherit;text-decoration:none;">Shot quality, graded</a></h3>
+          <p>Not just what your team shot, but whether they should have. Good shots, bad shots, and the points you gave away on shot selection.</p>
+        </div>
+        <div class="sig-item reveal d3">
+          <h3><a href="features.html#live" style="color:inherit;text-decoration:none;">Possession analytics</a></h3>
+          <p>Points per possession, transition versus half court, live on the sideline &mdash; the numbers college staffs use, without the staff.</p>
+        </div>
+        <div class="sig-item reveal d4">
+          <h3><a href="coaches-box-football.html" style="color:inherit;text-decoration:none;">Playbook, stats, and scouting</a></h3>
+          <p>In football, the plays you draw are the plays you track — and the scouting module self-scouts your own season while you do it.</p>
+        </div>
+        <div class="sig-item reveal d5">
+          <h3><a href="features.html#live" style="color:inherit;text-decoration:none;">Hands-free voice control</a></h3>
+          <p>Call the stat out loud and keep your eyes on the floor. It even warns you when both teams have the same jersey number.</p>
+        </div>
+      </div>
+
+      <a href="features.html" class="signature-more reveal d6">
+        See everything inside
+        <span aria-hidden="true">&rarr;</span>
+      </a>
     </div>
   </section>
 
@@ -798,7 +947,7 @@
         </div>
         <div class="about-body">
           <p class="reveal d2"><strong>InGameInsights makes the tools we wish existed when we were on the sideline ourselves.</strong> Generic stat-keeping apps treat every sport like the same spreadsheet — we don't.</p>
-          <p class="reveal d3">Every InGameInsights app is purpose-built for one game. Soccer's possession-first input model is different from basketball's quarter-driven flow, which is different from lacrosse's face-off-and-clear rhythm, which is different again from football's down-and-distance march. The data the coaches care about is different in each. So we built each app from scratch around the way that sport is actually played.</p>
+          <p class="reveal d3">Every Coaches Box app is purpose-built for one game. Soccer's possession-first input model is different from basketball's quarter-driven flow, which is different from lacrosse's face-off-and-clear rhythm, which is different again from football's down-and-distance march. The data the coaches care about is different in each. So we built each app from scratch around the way that sport is actually played.</p>
           <p class="reveal d4">All your data stays on your device. No accounts. No cloud sync. No tracking. Your roster is yours, your game data is yours, and the only thing leaving your iPad is the report you choose to share.</p>
         </div>
       </div>
@@ -813,6 +962,8 @@
       <div class="footer-brand">InGame<span>Insights</span></div>
       <nav class="footer-links">
         <a href="#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
         <a href="#about">About</a>
         <a href="privacy.html">Privacy</a>
         <a href="support.html">Support</a>
