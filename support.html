@@ -70,13 +70,17 @@
     flex-shrink: 0;
     object-fit: contain;
   }
+  /* Wordmark set in DM Serif Display to match the brand lockup — the mark
+     and the name now speak the same typographic language. Single cream
+     weight, no split colour, matching the artwork. */
   .nav-brand-text {
-    font-family: var(--display);
-    font-size: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+    line-height: 1;
   }
-  .nav-brand-text span { color: var(--cream-mute); font-weight: 400; }
   .nav-link {
     color: var(--cream-soft);
     text-decoration: none;
@@ -240,7 +244,7 @@
     <nav class="nav">
       <a href="/" class="nav-brand">
         <img src="assets/logo.png" alt="" class="nav-brand-logo">
-        <span class="nav-brand-text">InGame<span>Insights</span></span>
+        <span class="nav-brand-text">InGameInsights</span>
       </a>
       <div class="nav-menu">
         <a href="index.html#apps" class="nav-link">Apps</a>

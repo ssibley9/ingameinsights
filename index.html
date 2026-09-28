@@ -104,16 +104,16 @@
     flex-shrink: 0;
     object-fit: contain;
   }
+  /* Wordmark set in DM Serif Display to match the brand lockup — the mark
+     and the name now speak the same typographic language. Single cream
+     weight, no split colour, matching the artwork. */
   .nav-brand-text {
-    font-family: var(--display);
-    font-size: 18px;
-    letter-spacing: 1.2px;
-    text-transform: uppercase;
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
     color: var(--cream);
-  }
-  .nav-brand-text span {
-    color: var(--cream-mute);
-    font-weight: 400;
+    line-height: 1;
   }
   .nav-link {
     color: var(--cream-soft);
@@ -640,15 +640,11 @@
     gap: 24px;
   }
   .footer-brand {
-    font-family: var(--display);
-    font-size: 18px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
     color: var(--cream);
-  }
-  .footer-brand span {
-    color: var(--cream-mute);
-    font-weight: 400;
   }
   .footer-links {
     display: flex;
@@ -771,7 +767,7 @@
     <nav class="nav">
       <a href="/" class="nav-brand">
         <img src="assets/logo.png" alt="" class="nav-brand-logo">
-        <span class="nav-brand-text">InGame<span>Insights</span></span>
+        <span class="nav-brand-text">InGameInsights</span>
       </a>
       <div class="nav-menu">
         <a href="#apps" class="nav-link">Apps</a>
@@ -957,7 +953,7 @@
        ========================================================================= -->
   <footer class="container footer">
     <div class="footer-grid">
-      <div class="footer-brand">InGame<span>Insights</span></div>
+      <div class="footer-brand">InGameInsights</div>
       <nav class="footer-links">
         <a href="#apps">Apps</a>
         <a href="features.html">Features</a>
