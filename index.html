@@ -97,13 +97,12 @@
   /* Crop the navigation brand-mark to focus on the composite-ball portion of
      the logo (the brand's most recognizable element). object-position keeps
      the wordmark out of the small thumbnail so the ball reads cleanly. */
+  /* The mark ships with a transparent background, so it sits directly on
+     whatever green is behind it — no tinted tile to mismatch the page. */
   .nav-brand-logo {
     width: 38px; height: 38px;
     flex-shrink: 0;
-    object-fit: cover;
-    object-position: center 38%;
-    border-radius: 8px;
-    background: var(--field-deep);
+    object-fit: contain;
   }
   .nav-brand-text {
     font-family: var(--display);
@@ -235,7 +234,6 @@
     height: auto;
     display: block;
     margin: 0 auto;
-    filter: drop-shadow(0 16px 32px rgba(0,0,0,0.35));
     transition: transform .8s cubic-bezier(.2,.8,.2,1);
   }
   .hero-logo:hover {

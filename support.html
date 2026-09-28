@@ -64,14 +64,11 @@
     text-decoration: none;
     color: var(--cream);
   }
-  .nav-brand-mark {
-    width: 32px; height: 32px;
-    background: var(--gold);
-    border-radius: 4px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--field-deep);
-    font-family: var(--display);
-    font-size: 18px;
+  /* Real brand mark, transparent background so it sits on the page green. */
+  .nav-brand-logo {
+    width: 34px; height: 34px;
+    flex-shrink: 0;
+    object-fit: contain;
   }
   .nav-brand-text {
     font-family: var(--display);
@@ -88,7 +85,13 @@
     letter-spacing: 0.4px;
     transition: color .2s ease;
   }
-  .nav-link:hover { color: var(--gold); }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2.4vw, 26px);
+    flex-wrap: wrap;
+  }
 
   .doc-header {
     padding: clamp(40px, 8vw, 80px) 0 clamp(32px, 5vw, 56px);
@@ -236,10 +239,15 @@
   <header class="container">
     <nav class="nav">
       <a href="/" class="nav-brand">
-        <span class="nav-brand-mark">i</span>
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
         <span class="nav-brand-text">InGame<span>Insights</span></span>
       </a>
-      <a href="/" class="nav-link">← Back to home</a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link current" aria-current="page">Support</a>
+      </div>
     </nav>
   </header>
 
@@ -263,8 +271,8 @@
       <div class="faq-item">
         <div class="faq-question">How do I get TestFlight access for the beta apps?</div>
         <div class="faq-answer">
-          <p>Email <a href="mailto:support@ingameinsights.com">support@ingameinsights.com</a> with the subject "TestFlight Access" and let us know you'd like to try <strong>Football</strong>. We'll send you a TestFlight invitation.</p>
-          <p>Football is in active beta and we welcome real coaches putting it to use during the season. Soccer, Basketball, and LAX '26 are all available now on the App Store.</p>
+          <p>Email <a href="mailto:support@ingameinsights.com">support@ingameinsights.com</a> with the subject "TestFlight Access" and let us know you'd like to try <strong>Coaches Box Football</strong>. We'll send you a TestFlight invitation.</p>
+          <p>Football is in active beta and we welcome real coaches putting it to use during the season. Soccer, Basketball, and Lacrosse are all available now on the App Store.</p>
         </div>
       </div>
 
@@ -311,7 +319,7 @@
       <div class="faq-item">
         <div class="faq-question">When will Football hit the App Store?</div>
         <div class="faq-answer">
-          <p>Football is in beta with coaches now, and we ship it once it's been through a full season of real sideline use — that's the same path Soccer, Basketball, and LAX '26 took.</p>
+          <p>Football is in beta with coaches now, and we ship it once it's been through a full season of real sideline use — that's the same path Soccer, Basketball, and Lacrosse took.</p>
           <p>Email <a href="mailto:support@ingameinsights.com?subject=Notify%20me%20at%20launch">support@ingameinsights.com</a> with the subject "Notify me at launch" and we'll let you know the moment it goes live.</p>
         </div>
       </div>
@@ -321,7 +329,7 @@
 
   <footer class="container footer">
     <span>&copy; 2026 InGameInsights.</span>
-    <span><a href="/">Home</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
+    <span><a href="/">Home</a> · <a href="features.html">Features</a> · <a href="guides.html">Guides</a> · <a href="privacy.html">Privacy</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
   </footer>
 
 </div>
