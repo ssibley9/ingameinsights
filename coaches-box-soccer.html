@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coaches Box Soccer — possession-first match stats for iPad</title>
+<meta name="description" content="Possession-first soccer stat tracking for iPad: shot charts with field location and target zone, voice commands, a free iPhone second screen, and HTML or CSV match reports.">
+<meta property="og:title" content="Coaches Box Soccer — possession-first match stats for iPad">
+<meta property="og:description" content="Possession-first soccer stat tracking for iPad: shot charts with field location and target zone, voice commands, a free iPhone second screen, and HTML or CSV match reports.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com/coaches-box-soccer.html">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Coaches Box Football — product page
+     -------------------------------------------------------------------------
+     Structure lifted from the printed one-pager: three numbered pillars
+     (playbook / stats / scouting), the game-week strip, the tackle-vs-flag
+     split, and the small-feature grid. The strip is the spine of the page —
+     it's the clearest argument for one app instead of three tools.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------------------------------------------------------------- NAV */
+  .nav {
+    padding: 28px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--cream); }
+  /* Transparent mark — no tinted tile behind it. */
+  .nav-brand-logo {
+    width: 38px; height: 38px; flex-shrink: 0;
+    object-fit: contain;
+  }
+  /* Wordmark set in DM Serif Display to match the brand lockup — the mark
+     and the name now speak the same typographic language. Single cream
+     weight, no split colour, matching the artwork. */
+  .nav-brand-text {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .nav-menu { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 28px); flex-wrap: wrap; }
+  .nav-link {
+    color: var(--cream-soft); text-decoration: none; font-size: 14px;
+    font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease;
+  }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
+
+  /* --------------------------------------------------------------- HERO */
+  .hero { padding: clamp(44px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.15fr 1fr;
+    gap: clamp(30px, 4.5vw, 64px); align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
+    color: var(--cream-mute); padding: 8px 18px;
+    border: 1px solid var(--field-line); border-radius: 100px; margin-bottom: 24px;
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 0.95; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); display: block; }
+  .hero-lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--cream-soft); line-height: 1.65; max-width: 54ch; }
+
+  .tag-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .tag {
+    font-size: 11px; letter-spacing: 2px; font-weight: 700; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-deep); border-radius: 100px; padding: 8px 16px;
+  }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 15px 24px; border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .btn-primary { color: var(--field-deep); background: var(--gold); }
+  .btn-primary:hover { background: var(--cream); box-shadow: 0 4px 20px rgba(240,168,48,0.3); }
+  .btn-ghost { color: var(--cream); background: transparent; border: 1px solid var(--field-line); }
+  .btn-ghost:hover { background: var(--field-mid); border-color: var(--gold); }
+
+  /* Shared screenshot frame with graceful missing-asset fallback. */
+  .shot-frame {
+    position: relative; border: 1px solid var(--field-line); border-radius: 10px;
+    overflow: hidden; background: var(--field-deep); box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .shot-frame img { width: 100%; height: auto; display: block; }
+  .shot-ph {
+    display: none; min-height: 220px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; text-align: center; padding: 40px 24px;
+    color: var(--cream-mute); font-size: 13px; line-height: 1.6;
+  }
+  .shot-ph .icon { font-size: 28px; color: var(--field-line); }
+  .shot-ph code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--cream-soft); }
+  figure { margin: 0; }
+  figcaption { margin-top: 12px; font-size: 13px; color: var(--cream-mute); letter-spacing: 0.3px; }
+
+  /* ------------------------------------------------------------ PILLARS */
+  .pillar { padding: clamp(48px, 7vw, 92px) 0; border-top: 1px solid var(--field-line); }
+  .pillar.shaded { background: var(--field-deep); border-top: none; }
+
+  .pillar-head { display: flex; gap: 22px; align-items: flex-start; margin-bottom: clamp(30px, 4vw, 48px); }
+  .pillar-num {
+    font-family: var(--display); font-size: clamp(24px, 3vw, 34px);
+    color: var(--field-deep); background: var(--gold);
+    width: clamp(48px, 5vw, 62px); height: clamp(48px, 5vw, 62px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; flex-shrink: 0; line-height: 1;
+  }
+  .pillar.shaded .pillar-num { background: var(--cream); }
+  .pillar-titles { flex: 1; min-width: 0; }
+  .pillar-titles h2 {
+    font-family: var(--display); font-size: clamp(26px, 4vw, 44px);
+    letter-spacing: 1px; text-transform: uppercase; color: var(--cream); line-height: 1.02;
+  }
+  .pillar-titles p {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(16px, 1.9vw, 22px); color: var(--gold); margin-top: 8px;
+  }
+
+  .pillar-body {
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(28px, 4.5vw, 60px); align-items: start;
+  }
+  @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
+
+  .points { list-style: none; display: grid; gap: 18px; }
+  .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
+  .points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0;
+    color: var(--gold-deep); font-size: 14px;
+  }
+  .points strong { color: var(--cream); font-weight: 600; }
+
+  .figure-stack { display: grid; gap: 24px; }
+
+  /* ---------------------------------------------------------- RULE SETS */
+  .rulesets { padding: clamp(44px, 6vw, 80px) 0; border-top: 1px solid var(--field-line); }
+  .ruleset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.5vw, 48px); }
+  @media (max-width: 760px) { .ruleset-grid { grid-template-columns: 1fr; } }
+  .ruleset {
+    border: 1px solid var(--field-line); border-left: 3px solid var(--gold);
+    border-radius: 10px; padding: clamp(24px, 3vw, 34px);
+  }
+  .ruleset h3 {
+    font-family: var(--display); font-size: 20px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .ruleset p { font-size: 15px; line-height: 1.7; color: var(--cream-soft); }
+
+  /* ------------------------------------------------------ SIDELINE GRID */
+  .sideline { padding: clamp(44px, 6vw, 84px) 0; border-top: 1px solid var(--field-line); }
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.6vw, 40px);
+    color: var(--cream); line-height: 1.08; margin-bottom: clamp(30px, 4vw, 44px); max-width: 24ch;
+  }
+  .sideline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(20px, 2.6vw, 30px); }
+  .sl-item { border-top: 1px solid var(--field-line); padding-top: 18px; }
+  .sl-item h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.3px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 9px;
+  }
+  .sl-item p { font-size: 14.5px; line-height: 1.6; color: var(--cream-soft); }
+
+  /* ---------------------------------------------------------- CLOSING */
+  .closing { padding: clamp(52px, 8vw, 100px) 0; background: var(--field-deep); }
+  .closing h2 {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.1;
+    color: var(--cream); margin-bottom: 18px; max-width: 22ch;
+  }
+  .closing p { color: var(--cream-soft); font-size: 16px; line-height: 1.7; max-width: 58ch; }
+  .closing-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+
+  /* ----------------------------------------------------------- FOOTER */
+  .footer { border-top: 1px solid var(--field-line); padding: 48px 0 36px; }
+  .footer-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+  }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a { color: var(--cream-soft); text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-meta {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--field-line);
+    color: var(--cream-mute); font-size: 12px; letter-spacing: 0.3px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep); border: 1px solid var(--gold-deep); color: var(--cream);
+    padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 1000; opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    max-width: calc(100% - 32px); text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fade-up .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGameInsights</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="container hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal d1">One iPad. Your whole coaches' box.</div>
+        <h1 class="reveal d1">Every possession. <em>Every shot. Live.</em></h1>
+        <p class="hero-lede reveal d2">Possession&#8209;first stat tracking built for the touchline. Log the match as it happens, mirror it to the bench, and turn ninety minutes into something your team can learn from.</p>
+        <div class="tag-row reveal d3">
+          <span class="tag">iPad app</span>
+          <span class="tag">Free iPhone companion</span>
+          <span class="tag">Voice control</span>
+        </div>
+        <div class="hero-actions reveal d4">
+          <a href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730?itscg=30200&itsct=apps_box_badge&mttnsubad=6762889730" class="btn btn-primary" target="_blank" rel="noopener">Download on the App Store</a>
+          <a href="guide-soccer.html" class="btn btn-ghost">Read the guide</a>
+        </div>
+      </div>
+      <div class="reveal d3">
+        <figure>
+          <div class="shot-frame">
+            <img src="assets/soccer-hero.png" alt="Coaches Box Soccer running on iPad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/soccer-hero.png</code></span></div>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillar" id="track">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">01</div>
+        <div class="pillar-titles">
+          <h2>Possession First</h2>
+          <p>Because the ball is the story.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Tap the field.</strong> Log where the action actually happens. Possession tracking starts the moment you kick off and keeps itself.</li>
+          <li><strong>Shots with location and target.</strong> Record where the shot came from and which zone of the goal it was aimed at &mdash; two dimensions most apps flatten into one.</li>
+          <li><strong>Call it from the touchline.</strong> Voice commands let you log without looking down, using voice aliases you set for the names you actually shout.</li>
+          <li><strong>The chart builds as you go.</strong> A live shot chart and field heatmap take shape while the match is still running.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame">
+            <img src="assets/soccer-track.png" alt="Logging a shot on the field view" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/soccer-track.png</code></span></div>
+          </div>
+          <figcaption>Logging a shot with field location and target zone</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillar shaded" id="second-screen">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">02</div>
+        <div class="pillar-titles">
+          <h2>Two Screens, One Match</h2>
+          <p>Your assistant sees everything. Touches nothing.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>A free iPhone companion.</strong> Connect an iPhone or a second iPad over the same wifi to mirror the match.</li>
+          <li><strong>Everything mirrored live.</strong> Scoreboard, live stats, and the field heatmap, updating as you log them.</li>
+          <li><strong>Read&ndash;only by design.</strong> The bench can follow the match without any chance of disturbing your inputs.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame">
+            <img src="assets/soccer-second-screen.png" alt="The iPhone second-screen display" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/soccer-second-screen.png</code></span></div>
+          </div>
+          <figcaption>The bench view, mirrored from the tracking iPad</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillar" id="report">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">03</div>
+        <div class="pillar-titles">
+          <h2>After The Whistle</h2>
+          <p>A report your team can actually learn from.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>HTML or CSV, your choice.</strong> A readable report to send, or the raw numbers for your own spreadsheet.</li>
+          <li><strong>Share how you already share.</strong> Straight through the iOS share sheet &mdash; email, AirDrop, or Messages.</li>
+          <li><strong>Season rollups and player reports.</strong> Every match folds into season totals automatically, with a page per player.</li>
+          <li><strong>Nothing leaves until you send it.</strong> Your data sits on the iPad until you choose to share it.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame">
+            <img src="assets/soccer-report.png" alt="Exporting the match report" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/soccer-report.png</code></span></div>
+          </div>
+          <figcaption>The match report, ready to send</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="rulesets">
+    <div class="container">
+      <div class="ruleset-grid">
+        <div class="ruleset">
+          <h3>Built for the touchline</h3>
+          <p>One&#8209;handed entry, a clock that runs itself, and a layout you can read standing up in the sun.</p>
+        </div>
+        <div class="ruleset">
+          <h3>Everything stays on your iPad</h3>
+          <p>No accounts and no cloud sync. Your roster and your match data are yours, and the only thing that leaves is the report you choose to send.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sideline">
+    <div class="container">
+      <span class="section-label">&mdash; Built for the sideline</span>
+      <h2 class="section-title">The small things that decide whether an app survives a season.</h2>
+      <div class="sideline-grid">
+        <div class="sl-item">
+          <h3>Roster once, use all season</h3>
+          <p>Add each player with a name and number before the first match and the rest takes care of itself.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Voice aliases</h3>
+          <p>Set the shortened names you actually call out so the app recognizes them mid&#8209;match.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Lineups and subs</h3>
+          <p>Pick your starting eleven at kickoff and change it as the match goes.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Field heatmap</h3>
+          <p>See where your play is actually happening, not where you think it is.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Works with no signal</h3>
+          <p>Most touchlines have no usable wifi. This one does not care.</p>
+        </div>
+        <div class="sl-item">
+          <h3>HTML and CSV reports</h3>
+          <p>Readable for parents and players, raw for you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="container">
+      <h2>Built for coaches who think in possessions.</h2>
+      <p>Coaches Box Soccer treats the match the way you already read it &mdash; as a sequence of possessions rather than a list of events. Download it and track your next match.</p>
+      <div class="closing-actions">
+        <a href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730?itscg=30200&itsct=apps_box_badge&mttnsubad=6762889730" class="btn btn-primary" target="_blank" rel="noopener">Download on the App Store</a>
+        <a href="features.html" class="btn btn-ghost">See all features</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGameInsights</div>
+      <nav class="footer-links">
+        <a href="index.html#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Coaches Box Soccer &mdash; live stat tracking for iPad.</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
