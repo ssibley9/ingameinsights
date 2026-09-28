@@ -59,10 +59,13 @@
     gap: 20px;
   }
   .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--cream); }
-  .nav-brand-text { font-family: var(--display); font-size: 20px; letter-spacing: 1px; text-transform: uppercase; }
-  .nav-brand-text span { color: var(--cream-mute); font-weight: 400; }
+  /* Wordmark in DM Serif Display, matching the brand lockup; the mark ships
+     with a transparent background so it sits straight on the page green. */
+  .nav-brand-text { font-family: var(--serif); font-size: 22px; letter-spacing: 0.2px; color: var(--cream); line-height: 1; }
+  .nav-brand-logo { width: 34px; height: 34px; flex-shrink: 0; object-fit: contain; }
+  .nav-menu { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 26px); flex-wrap: wrap; }
   .nav-link { color: var(--cream-soft); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease; }
-  .nav-link:hover { color: var(--gold); }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
 
   .guide-hero {
     display: flex;
@@ -231,10 +234,15 @@
   <header class="container">
     <nav class="nav">
       <a href="/" class="nav-brand">
-        <img src="assets/ingameinsights-mark-reversed.svg" alt="" style="height:30px;width:auto;display:block;flex-shrink:0;">
-        <span class="nav-brand-text">InGame<span>Insights</span></span>
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGameInsights</span>
       </a>
-      <a href="/" class="nav-link">← Back to home</a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link current" aria-current="page">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
     </nav>
   </header>
 
@@ -318,7 +326,7 @@
       <div class="more-links">
         <a href="guide-soccer.html"><img src="assets/soccer-icon.png" alt="">How to use Soccer</a>
         <a href="guide-hoops.html"><img src="assets/hoops-icon.jpg" alt="">How to use Basketball</a>
-        <a href="guide-lax.html"><img src="assets/lax-icon.png" alt="">How to use LAX '26</a>
+        <a href="guide-lax.html"><img src="assets/lax-icon.png" alt="">How to use Lacrosse</a>
       </div>
     </section>
 
@@ -326,7 +334,7 @@
 
   <footer class="container footer">
     <span>&copy; 2026 InGameInsights.</span>
-    <span><a href="/">Home</a> · <a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
+    <span><a href="/">Home</a> · <a href="features.html">Features</a> · <a href="guides.html">Guides</a> · <a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
   </footer>
 
 </div>

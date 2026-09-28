@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>How to Use LAX '26 — InGameInsights</title>
-<meta name="description" content="Step-by-step guide to the InGameInsights LAX '26 lacrosse app — track face-offs, possessions, shot heatmaps, and saves, then share the report.">
+<title>How to Use Lacrosse — InGameInsights</title>
+<meta name="description" content="Step-by-step guide to the InGameInsights Coaches Box Lacrosse app — track face-offs, possessions, shot heatmaps, and saves, then share the report.">
 <meta name="theme-color" content="#0b3d2e">
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -59,10 +59,13 @@
     gap: 20px;
   }
   .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--cream); }
-  .nav-brand-text { font-family: var(--display); font-size: 20px; letter-spacing: 1px; text-transform: uppercase; }
-  .nav-brand-text span { color: var(--cream-mute); font-weight: 400; }
+  /* Wordmark in DM Serif Display, matching the brand lockup; the mark ships
+     with a transparent background so it sits straight on the page green. */
+  .nav-brand-text { font-family: var(--serif); font-size: 22px; letter-spacing: 0.2px; color: var(--cream); line-height: 1; }
+  .nav-brand-logo { width: 34px; height: 34px; flex-shrink: 0; object-fit: contain; }
+  .nav-menu { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 26px); flex-wrap: wrap; }
   .nav-link { color: var(--cream-soft); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease; }
-  .nav-link:hover { color: var(--gold); }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
 
   .guide-hero {
     display: flex;
@@ -231,26 +234,31 @@
   <header class="container">
     <nav class="nav">
       <a href="/" class="nav-brand">
-        <img src="assets/ingameinsights-mark-reversed.svg" alt="" style="height:30px;width:auto;display:block;flex-shrink:0;">
-        <span class="nav-brand-text">InGame<span>Insights</span></span>
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGameInsights</span>
       </a>
-      <a href="/" class="nav-link">← Back to home</a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link current" aria-current="page">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
     </nav>
   </header>
 
   <main class="container">
 
     <div class="guide-hero">
-      <img src="assets/lax-icon.png" alt="LAX 26 app icon" class="guide-hero-icon">
+      <img src="assets/lax-icon.png" alt="Coaches Box Lacrosse app icon" class="guide-hero-icon">
       <div class="guide-hero-text">
-        <div class="guide-eyebrow">LAX '26 Guide <span class="status-pill available">Available</span></div>
-        <h1>How to use LAX '26</h1>
+        <div class="guide-eyebrow">Lacrosse Guide <span class="status-pill available">Available</span></div>
+        <h1>How to use Lacrosse</h1>
         <p>Lacrosse scored properly — face-off win rates, shot heatmaps, ground balls, saves, and time of possession, all tracked live from the sideline.</p>
       </div>
     </div>
 
     <div class="beta-note" style="border-left-color: var(--gold);">
-      LAX '26 is now available on the App Store. <a href="https://apps.apple.com/us/app/id6759114526?itscg=30200&itsct=apps_box_badge&mttnsubad=6759114526" target="_blank" rel="noopener">Download it here</a> to follow along with these steps.
+      Coaches Box Lacrosse is now available on the App Store. <a href="https://apps.apple.com/us/app/id6759114526?itscg=30200&itsct=apps_box_badge&mttnsubad=6759114526" target="_blank" rel="noopener">Download it here</a> to follow along with these steps.
     </div>
 
     <div class="step">
@@ -326,7 +334,7 @@
 
   <footer class="container footer">
     <span>&copy; 2026 InGameInsights.</span>
-    <span><a href="/">Home</a> · <a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
+    <span><a href="/">Home</a> · <a href="features.html">Features</a> · <a href="guides.html">Guides</a> · <a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> · <a href="mailto:support@ingameinsights.com">Contact</a></span>
   </footer>
 
 </div>
