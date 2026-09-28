@@ -565,6 +565,19 @@
      badge a sense of interactivity without modifying Apple's artwork, which
      would violate the App Store Marketing Guidelines.
      ========================================================================= */
+  /* Badge + secondary CTA share a row; they wrap to two lines on narrow
+     cards rather than shrinking the badge, which Apple's guidelines don't
+     allow us to redraw. */
+  .app-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .app-card-actions .app-card-cta { padding: 12px 20px; font-size: 12px; }
+
   .app-store-badge {
     display: inline-block;
     position: relative;
@@ -832,13 +845,19 @@
                so installs show up in App Store Connect analytics as coming
                from the website badge. Per Apple's Marketing Guidelines, do not
                modify the badge artwork. -->
-        <a href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730?itscg=30200&itsct=apps_box_badge&mttnsubad=6762889730"
-           class="app-store-badge"
-           aria-label="Download Coaches Box Soccer on the App Store"
-           target="_blank"
-           rel="noopener">
-          <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
-        </a>
+        <div class="app-card-actions">
+          <a href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730?itscg=30200&itsct=apps_box_badge&mttnsubad=6762889730"
+             class="app-store-badge"
+             aria-label="Download Coaches Box Soccer on the App Store"
+             target="_blank"
+             rel="noopener">
+            <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
+          </a>
+          <a href="guide-soccer.html" class="app-card-cta secondary">
+            Explore Soccer
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
       </article>
 
       <!-- ============ BASKETBALL ============ -->
@@ -849,13 +868,19 @@
         <h3 class="app-card-name">Basketball</h3>
         <p class="app-card-tagline">From middle school to varsity and tournament play.</p>
         <p class="app-card-desc">The flagship of the Coaches Box line — basketball stat tracking proven over years of live games, from a single Tuesday night to a full tournament weekend. Comprehensive box scores, shot charts, shot quality grading, and team and individual analytics.</p>
-        <a href="https://apps.apple.com/us/app/id6758053681?itscg=30200&itsct=apps_box_badge&mttnsubad=6758053681"
-           class="app-store-badge"
-           aria-label="Download Coaches Box Basketball on the App Store"
-           target="_blank"
-           rel="noopener">
-          <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
-        </a>
+        <div class="app-card-actions">
+          <a href="https://apps.apple.com/us/app/id6758053681?itscg=30200&itsct=apps_box_badge&mttnsubad=6758053681"
+             class="app-store-badge"
+             aria-label="Download Coaches Box Basketball on the App Store"
+             target="_blank"
+             rel="noopener">
+            <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
+          </a>
+          <a href="guide-hoops.html" class="app-card-cta secondary">
+            Explore Basketball
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
       </article>
 
       <!-- ============ LACROSSE ============ -->
@@ -866,13 +891,19 @@
         <h3 class="app-card-name">Lacrosse</h3>
         <p class="app-card-tagline">Lacrosse, scored properly.</p>
         <p class="app-card-desc">Live lacrosse stat tracking with face-off win rates, shot location heatmaps, ground balls, saves, possessions, and time of possession. Field-tested through a full season with beta coaches before release.</p>
-        <a href="https://apps.apple.com/us/app/id6759114526?itscg=30200&itsct=apps_box_badge&mttnsubad=6759114526"
-           class="app-store-badge"
-           aria-label="Download Coaches Box Lacrosse on the App Store"
-           target="_blank"
-           rel="noopener">
-          <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
-        </a>
+        <div class="app-card-actions">
+          <a href="https://apps.apple.com/us/app/id6759114526?itscg=30200&itsct=apps_box_badge&mttnsubad=6759114526"
+             class="app-store-badge"
+             aria-label="Download Coaches Box Lacrosse on the App Store"
+             target="_blank"
+             rel="noopener">
+            <img src="assets/app-store-badge.svg" alt="Download on the App Store" />
+          </a>
+          <a href="guide-lax.html" class="app-card-cta secondary">
+            Explore Lacrosse
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
       </article>
 
       <!-- ============ FOOTBALL ============ -->
