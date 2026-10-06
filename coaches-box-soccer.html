@@ -195,6 +195,22 @@
   }
   @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
 
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
   .points { list-style: none; display: grid; gap: 18px; }
   .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
   .points li::before {
@@ -344,24 +360,26 @@
       <div class="pillar-head">
         <div class="pillar-num">01</div>
         <div class="pillar-titles">
-          <h2>Possession First</h2>
-          <p>Because the ball is the story.</p>
+          <h2>Track</h2>
+          <p>One screen, six jobs, with your thumbs.</p>
         </div>
       </div>
-      <div class="pillar-body">
-        <ul class="points">
-          <li><strong>Tap the field.</strong> Log where the action actually happens. Possession tracking starts the moment you kick off and keeps itself.</li>
-          <li><strong>Shots with location and target.</strong> Record where the shot came from and which zone of the goal it was aimed at &mdash; two dimensions most apps flatten into one.</li>
-          <li><strong>Call it from the touchline.</strong> Voice commands let you log without looking down, using voice aliases you set for the names you actually shout.</li>
-          <li><strong>The chart builds as you go.</strong> A live shot chart and field heatmap take shape while the match is still running.</li>
-        </ul>
-        <figure>
+            <div class="pillar-body" style="grid-template-columns:1fr">
+        <figure class="track-figure">
           <div class="shot-frame">
-            <img src="assets/soccer-track.png" alt="Logging a shot on the field view" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <img src="assets/soccer-track.png" alt="The soccer tracking screen with each section numbered" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
             <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/soccer-track.png</code></span></div>
           </div>
-          <figcaption>Logging a shot with field location and target zone</figcaption>
+          <figcaption>The tracking screen mid-match &mdash; everything below happens here, on one screen</figcaption>
         </figure>
+        <ul class="callouts">
+          <li><span class="n">1</span><div><h4>BOTH TEAMS, LIVE</h4><p>Shots, shots on goal, corners, steals, cards, penalties and pass completion — yours and theirs, side by side, building as the match goes.</p></div></li>
+          <li><span class="n">2</span><div><h4>WHERE THE BALL IS</h4><p>Attacking third, the box, or defensive third. One tap, and possession time starts accruing to that zone — which is how you learn that 62 per cent of possession was not 62 per cent of pressure.</p></div></li>
+          <li><span class="n">3</span><div><h4>EVERYTHING ELSE THAT HAPPENS</h4><p>Shot, corner, foul, offside, penalty, yellow, red, substitution, goalkeeper change. The whole match down one rail, not buried in menus.</p></div></li>
+          <li><span class="n">4</span><div><h4>WHO HAS IT</h4><p>Tap the player on the ball. Numbers greyed out are on the bench, so you cannot credit someone who is not on the pitch.</p></div></li>
+          <li><span class="n">5</span><div><h4>WHERE THE PASS WENT</h4><p>Tap who received it, or mark it incomplete. That chain builds the pass completion figure and hands you the assist when a goal follows.</p></div></li>
+          <li><span class="n">6</span><div><h4>THEIR SIDE TOO</h4><p>The opponent’s numbers sit on the same screen, so one person charts both teams — their steals, fouls and cards included.</p></div></li>
+        </ul>
       </div>
     </div>
   </section>
