@@ -195,6 +195,22 @@
   }
   @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
 
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
   .points { list-style: none; display: grid; gap: 18px; }
   .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
   .points li::before {
@@ -345,27 +361,29 @@
         <div class="pillar-num">01</div>
         <div class="pillar-titles">
           <h2>Track</h2>
-          <p>The buttons change with the game, so the next tap is the one you need.</p>
+          <p>One screen, eight jobs, with your thumbs and your voice.</p>
         </div>
       </div>
-      <div class="pillar-body">
-        <ul class="points">
-          <li><strong>Face&#8209;off win rate, live.</strong> Every face&#8209;off logged as it happens, with a running win rate for both teams.</li>
-          <li><strong>Ground balls and clears.</strong> Tracked as the ball changes hands, attributed to the player who actually won it.</li>
-          <li><strong>Time of possession.</strong> Kept for both teams throughout, so the possession story is on screen rather than in your head.</li>
-          <li><strong>Linked actions.</strong> One tap records every stat it earns. Log a knockdown, and if your defence recovers the ground ball, that same player is credited with the takeaway. Log a goal, and the last passer is already waiting as the assist.</li>
-          <li><strong>Only what can happen.</strong> When the other team has the ball, your clear buttons grey themselves out and the defensive ones arm. You cannot log something the game will not allow.</li>
-          <li><strong>Call it out loud.</strong> Voice commands log the fast sequences without you looking down at the iPad.</li>
-        </ul>
-        <figure>
+            <div class="pillar-body" style="grid-template-columns:1fr">
+        <figure class="track-figure">
           <div class="shot-frame">
-            <img src="assets/lacrosse-faceoff.png" alt="The tracking screen with the opponent carrying, annotated" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <img src="assets/lacrosse-faceoff.png" alt="The lacrosse tracking screen with each section numbered" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
             <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/lacrosse-faceoff.png</code></span></div>
           </div>
-          <figcaption>The opponent has the ball &mdash; the defensive actions arm themselves and the rest grey out</figcaption>
+          <figcaption>The opponent is carrying &mdash; the defensive actions arm themselves and the rest grey out</figcaption>
         </figure>
+        <ul class="callouts">
+          <li><span class="n">1</span><div><h4>RUNNING TOTALS</h4><p>Shots, shots on goal, face-off wins, ground balls, takeaways, knockdowns, clears and possession time &mdash; both teams, building as you log.</p></div></li>
+          <li><span class="n">2</span><div><h4>FIELD POSITION</h4><p>The row turns orange the moment the other team has it. Possession time accrues to them, in the third of the field they are in.</p></div></li>
+          <li><span class="n">3</span><div><h4>ONLY WHAT IS POSSIBLE</h4><p>With the ball gone, your clear buttons grey themselves out and the defensive ones stay live. The app will not let you log something that cannot happen.</p></div></li>
+          <li><span class="n">4</span><div><h4>KNOCKDOWN</h4><p>Tap the defender who knocked it loose. If your defence then recovers the ground ball, that same player is credited with the takeaway automatically.</p></div></li>
+          <li><span class="n">5</span><div><h4>GROUNDBALL + POSSESSION</h4><p>Who picked it up, and whether it turned into possession &mdash; in one tap, with the opponent bar beneath for when they win it back.</p></div></li>
+          <li><span class="n">6</span><div><h4>STRENGTH AND SITUATION</h4><p>Man up, man down or even, and whether the play came off a face-off, a clear or a ride. Every action is stamped with its context, so the reports can give you man-up conversion and clear and ride success rates rather than just totals.</p></div></li>
+          <li><span class="n">7</span><div><h4>THEIR BALL, LIVE</h4><p>Pass, incomplete loose ball and incomplete-to-turnover arm themselves while they carry, ready for the next thing that happens.</p></div></li>
+          <li><span class="n">8</span><div><h4>WHO IS ON, AND FOR HOW LONG</h4><p>Substitute from here and the badge shows how many are on. Because the app knows who was on the field and when, playing time is counted for you rather than estimated after the fact.</p></div></li>
+        </ul>
       </div>
-    </div>
+        </div>
   </section>
 
   <section class="pillar shaded" id="compare">
@@ -447,54 +465,6 @@
           </div>
           <figcaption>The game report, ready to share</figcaption>
         </figure>
-      </div>
-    </div>
-  </section>
-
-  <section class="rulesets">
-    <div class="container">
-      <div class="ruleset-grid">
-        <div class="ruleset">
-          <h3>Field-tested before release</h3>
-          <p>A full season with beta coaches running real games before it ever reached the App Store.</p>
-        </div>
-        <div class="ruleset">
-          <h3>Everything stays on your iPad</h3>
-          <p>No accounts, no cloud sync, no signal required. The only thing that leaves the device is the report you choose to send.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sideline">
-    <div class="container">
-      <span class="section-label">&mdash; Built for the sideline</span>
-      <h2 class="section-title">The small things that decide whether an app survives a season.</h2>
-      <div class="sideline-grid">
-        <div class="sl-item">
-          <h3>Roster with positions</h3>
-          <p>Add players with numbers and positions so face&#8209;offs, ground balls and shots all attribute correctly.</p>
-        </div>
-        <div class="sl-item">
-          <h3>Voice aliases</h3>
-          <p>Teach it the names you actually shout across the field.</p>
-        </div>
-        <div class="sl-item">
-          <h3>Second-screen display</h3>
-          <p>Mirror the game to an iPhone or a second iPad so the bench can follow along.</p>
-        </div>
-        <div class="sl-item">
-          <h3>Running win rates</h3>
-          <p>Face&#8209;off percentage and possession time update as the game goes, not after it.</p>
-        </div>
-        <div class="sl-item">
-          <h3>Works with no signal</h3>
-          <p>Most fields have no usable wifi. This one does not need any.</p>
-        </div>
-        <div class="sl-item">
-          <h3>HTML and CSV reports</h3>
-          <p>Readable for the team, raw for you.</p>
-        </div>
       </div>
     </div>
   </section>

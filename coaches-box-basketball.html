@@ -195,6 +195,22 @@
   }
   @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
 
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
   .points { list-style: none; display: grid; gap: 18px; }
   .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
   .points li::before {
@@ -345,23 +361,26 @@
         <div class="pillar-num">01</div>
         <div class="pillar-titles">
           <h2>Track</h2>
-          <p>Fast enough to keep up with the game.</p>
+          <p>One screen, seven jobs, with your thumbs and your voice.</p>
         </div>
       </div>
-      <div class="pillar-body">
-        <ul class="points">
-          <li><strong>Tap the court.</strong> Mark where the shot went up, then answer only what the app still needs: who shot it, what happened, and who set it up.</li>
-          <li><strong>Every shot, fully described.</strong> Jump shot, layup, floater, dunk or hook. Half court or fast break. Made, missed, blocked or and&#8209;one.</li>
-          <li><strong>Assists credited for you.</strong> The pass chain is already tracked, so the likely assister is waiting pre&#8209;selected when the shot falls.</li>
-          <li><strong>Call it out loud.</strong> Voice commands keep your eyes on the floor &mdash; and warns you when both teams have the same jersey number.</li>
-        </ul>
-        <figure>
+            <div class="pillar-body" style="grid-template-columns:1fr">
+        <figure class="track-figure">
           <div class="shot-frame">
-            <img src="assets/feature-shot-entry.png" alt="Recording a shot with type, result, and assist" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/feature-shot-entry.png</code></span></div>
+            <img src="assets/feature-live-track.png" alt="The basketball tracking screen with each section numbered" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/feature-live-track.png</code></span></div>
           </div>
-          <figcaption>Recording a shot, start to finish, without leaving the court view</figcaption>
+          <figcaption>The Track screen mid-game &mdash; Northgate 39, Ridgeway 30, 3:30 left in the fourth</figcaption>
         </figure>
+        <ul class="callouts">
+          <li><span class="n">1</span><div><h4>THE GAME STATE, KEPT FOR YOU</h4><p>Score by quarter, team fouls, the bonus, and timeouts remaining &mdash; maintained while you track, so nobody is also keeping a paper book.</p></div></li>
+          <li><span class="n">2</span><div><h4>POSSESSION AND THE ARROW</h4><p>The alternating-possession arrow and the jump-ball button, right where the argument happens. The thing every scorer forgets, remembered for you.</p></div></li>
+          <li><span class="n">3</span><div><h4>TAP THE FLOOR</h4><p>Mark where the shot went up and the app already knows the rest: #5 has the ball, so he is the shooter, and it remembers who passed it to him, so the assist is waiting too.</p></div></li>
+          <li><span class="n">4</span><div><h4>YOUR FIVE</h4><p>Who is on the floor, with substitutions in two taps. Only players actually in the game can be credited with anything.</p></div></li>
+          <li><span class="n">5</span><div><h4>EVERYTHING ELSE THAT HAPPENS</h4><p>Foul, free throw, technical, deflection, charge drawn, turnover. The hustle stats sit beside the scoring ones instead of on another screen.</p></div></li>
+          <li><span class="n">6</span><div><h4>THE NEXT TOUCH</h4><p>One tap on the teammate the pass went to, or the defender who took it away. That chain is what lets the app hand you the assist in 3 without asking. Shots and rebounds come up as their own prompts.</p></div></li>
+          <li><span class="n">7</span><div><h4>ANSWERS WHILE IT MATTERS</h4><p>Possessions and points per possession, shot selection with points lost, and both benches&rsquo; foul trouble &mdash; live, without leaving the tracking screen.</p></div></li>
+        </ul>
       </div>
     </div>
   </section>

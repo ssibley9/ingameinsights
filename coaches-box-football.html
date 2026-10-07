@@ -195,6 +195,22 @@
   }
   @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
 
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
   .points { list-style: none; display: grid; gap: 18px; }
   .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
   .points li::before {
@@ -411,26 +427,27 @@
         <div class="pillar-num">02</div>
         <div class="pillar-titles">
           <h2>Record Stats</h2>
-          <p>Fast enough for the sideline. Deep enough for the film room.</p>
+          <p>One screen, six jobs, with your thumbs.</p>
         </div>
       </div>
-      <div class="pillar-body">
-        <ul class="points">
-          <li><strong>Touch-first live input.</strong> Tap players and spots on the field to log each snap in seconds. Score, clock, down, and distance keep themselves.</li>
-          <li><strong>Your playbook drives the stats.</strong> Tag the call on every snap and see play-call effectiveness in real time, broken down by call, situation, and drive. This is the part no other app can do.</li>
-          <li><strong>Share live to other iPads.</strong> Assistants follow score, situation, and every stat tab on a bench iPad as it happens, without touching the inputs.</li>
-          <li><strong>Game reports.</strong> HTML game reports and CSV exports, plus drive charts that draw every possession on a field.</li>
-          <li><strong>Full-season totals.</strong> Records, team totals, and player lines roll up automatically across the season.</li>
-        </ul>
-        <figure>
+            <div class="pillar-body" style="grid-template-columns:1fr">
+        <figure class="track-figure">
           <div class="shot-frame">
-            <img src="assets/football-game-report.png" alt="Football game report with score by period and team statistics" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/football-game-report.png</code></span></div>
+            <img src="assets/football-live-input.png" alt="The football live input screen with each section numbered" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/football-live-input.png</code></span></div>
           </div>
-          <figcaption>Game report &mdash; score by period and team stats, shareable as HTML</figcaption>
+          <figcaption>Logging a completed pass &mdash; second and eight, with the call already tagged</figcaption>
         </figure>
+        <ul class="callouts">
+          <li><span class="n">1</span><div><h4>SITUATION KEEPS ITSELF</h4><p>Drive number, down, distance and ball spot advance on their own as you log snaps. Nobody on your staff is tracking the chains twice.</p></div></li>
+          <li><span class="n">2</span><div><h4>YOUR PLAYBOOK, LIVE</h4><p>Tag the call you actually made from your own formation and play chips. This is what lets the app grade play-call effectiveness later.</p></div></li>
+          <li><span class="n">3</span><div><h4>THE RESULT, IN ONE ROW</h4><p>Run, pass or punt, then what happened &mdash; caught, incomplete, dropped, overthrown, intercepted, scrambled. One row covers every outcome.</p></div></li>
+          <li><span class="n">4</span><div><h4>ONLY THE FIELDS THAT APPLY</h4><p>A completed pass asks for passer, target, yardage and tackler. Change the result and the row changes with it, so you are never staring at fields that cannot apply.</p></div></li>
+          <li><span class="n">5</span><div><h4>BOTH SIDES OF THE BALL</h4><p>Flip between your offense and your defense without leaving the screen, so one person charts the whole game.</p></div></li>
+          <li><span class="n">6</span><div><h4>TAP THE FIELD, NOT A FORM</h4><p>Two taps on the field set where the ball was caught and where the play ended. The yardage, the drive chart and the field-position report all come from that.</p></div></li>
+        </ul>
       </div>
-    </div>
+        </div>
   </section>
 
   <!-- ------------------------------------------------- PILLAR 03 SCOUTING -->
