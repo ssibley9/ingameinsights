@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coaches Box Soccer &mdash; every stat it tracks</title>
+<meta name="description" content="The complete feature list for Coaches Box Soccer: ball-tracking passes, two-tap shot charts, zone possession, voice commands, goalkeeper stats, second-screen display, reports and exports.">
+<meta property="og:title" content="Coaches Box Soccer — possession-first match stats for iPad">
+<meta property="og:description" content="Possession-first soccer stat tracking for iPad: shot charts with field location and target zone, voice commands, a free iPhone second screen, and HTML or CSV match reports.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com/coaches-box-soccer.html">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Coaches Box Football — product page
+     -------------------------------------------------------------------------
+     Structure lifted from the printed one-pager: three numbered pillars
+     (playbook / stats / scouting), the game-week strip, the tackle-vs-flag
+     split, and the small-feature grid. The strip is the spine of the page —
+     it's the clearest argument for one app instead of three tools.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------------------------------------------------------------- NAV */
+  .nav {
+    padding: 28px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--cream); }
+  /* Transparent mark — no tinted tile behind it. */
+  .nav-brand-logo {
+    width: 38px; height: 38px; flex-shrink: 0;
+    object-fit: contain;
+  }
+  /* Wordmark set in DM Serif Display to match the brand lockup — the mark
+     and the name now speak the same typographic language. Single cream
+     weight, no split color, matching the artwork. */
+  .nav-brand-text {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .nav-menu { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 28px); flex-wrap: wrap; }
+  .nav-link {
+    color: var(--cream-soft); text-decoration: none; font-size: 14px;
+    font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease;
+  }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
+
+  /* --------------------------------------------------------------- HERO */
+  .hero { padding: clamp(44px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.15fr 1fr;
+    gap: clamp(30px, 4.5vw, 64px); align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
+    color: var(--cream-mute); padding: 8px 18px;
+    border: 1px solid var(--field-line); border-radius: 100px; margin-bottom: 24px;
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 0.95; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); display: block; }
+  .hero-lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--cream-soft); line-height: 1.65; max-width: 54ch; }
+
+  .tag-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .tag {
+    font-size: 11px; letter-spacing: 2px; font-weight: 700; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-deep); border-radius: 100px; padding: 8px 16px;
+  }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 15px 24px; border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .btn-primary { color: var(--field-deep); background: var(--gold); }
+  .btn-primary:hover { background: var(--cream); box-shadow: 0 4px 20px rgba(240,168,48,0.3); }
+  .btn-ghost { color: var(--cream); background: transparent; border: 1px solid var(--field-line); }
+  .btn-ghost:hover { background: var(--field-mid); border-color: var(--gold); }
+
+  /* Shared screenshot frame with graceful missing-asset fallback. */
+  .shot-frame {
+    position: relative; border: 1px solid var(--field-line); border-radius: 10px;
+    overflow: hidden; background: var(--field-deep); box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .shot-frame img { width: 100%; height: auto; display: block; }
+  .shot-ph {
+    display: none; min-height: 220px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; text-align: center; padding: 40px 24px;
+    color: var(--cream-mute); font-size: 13px; line-height: 1.6;
+  }
+  .shot-ph .icon { font-size: 28px; color: var(--field-line); }
+  .shot-ph code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--cream-soft); }
+  figure { margin: 0; }
+  figcaption { margin-top: 12px; font-size: 13px; color: var(--cream-mute); letter-spacing: 0.3px; }
+
+  /* ------------------------------------------------------------ PILLARS */
+  .pillar { padding: clamp(48px, 7vw, 92px) 0; border-top: 1px solid var(--field-line); }
+  .pillar.shaded { background: var(--field-deep); border-top: none; }
+
+  .pillar-head { display: flex; gap: 22px; align-items: flex-start; margin-bottom: clamp(30px, 4vw, 48px); }
+  .pillar-num {
+    font-family: var(--display); font-size: clamp(24px, 3vw, 34px);
+    color: var(--field-deep); background: var(--gold);
+    width: clamp(48px, 5vw, 62px); height: clamp(48px, 5vw, 62px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; flex-shrink: 0; line-height: 1;
+  }
+  .pillar.shaded .pillar-num { background: var(--cream); }
+  .pillar-titles { flex: 1; min-width: 0; }
+  .pillar-titles h2 {
+    font-family: var(--display); font-size: clamp(26px, 4vw, 44px);
+    letter-spacing: 1px; text-transform: uppercase; color: var(--cream); line-height: 1.02;
+  }
+  .pillar-titles p {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(16px, 1.9vw, 22px); color: var(--gold); margin-top: 8px;
+  }
+
+  .pillar-body {
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(28px, 4.5vw, 60px); align-items: start;
+  }
+  @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
+
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
+  .points { list-style: none; display: grid; gap: 18px; }
+  .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
+  .points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0;
+    color: var(--gold-deep); font-size: 14px;
+  }
+  .points strong { color: var(--cream); font-weight: 600; }
+
+  .figure-stack { display: grid; gap: 24px; }
+
+  /* ---------------------------------------------------------- RULE SETS */
+  .rulesets { padding: clamp(44px, 6vw, 80px) 0; border-top: 1px solid var(--field-line); }
+  .ruleset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.5vw, 48px); }
+  @media (max-width: 760px) { .ruleset-grid { grid-template-columns: 1fr; } }
+  .ruleset {
+    border: 1px solid var(--field-line); border-left: 3px solid var(--gold);
+    border-radius: 10px; padding: clamp(24px, 3vw, 34px);
+  }
+  .ruleset h3 {
+    font-family: var(--display); font-size: 20px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .ruleset p { font-size: 15px; line-height: 1.7; color: var(--cream-soft); }
+
+  /* ------------------------------------------------------ SIDELINE GRID */
+  .sideline { padding: clamp(44px, 6vw, 84px) 0; border-top: 1px solid var(--field-line); }
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.6vw, 40px);
+    color: var(--cream); line-height: 1.08; margin-bottom: clamp(30px, 4vw, 44px); max-width: 24ch;
+  }
+  .sideline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(20px, 2.6vw, 30px); }
+  .sl-item { border-top: 1px solid var(--field-line); padding-top: 18px; }
+  .sl-item h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.3px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 9px;
+  }
+  .sl-item p { font-size: 14.5px; line-height: 1.6; color: var(--cream-soft); }
+
+  /* ---------------------------------------------------------- CLOSING */
+  .closing { padding: clamp(52px, 8vw, 100px) 0; background: var(--field-deep); }
+  .closing h2 {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.1;
+    color: var(--cream); margin-bottom: 18px; max-width: 22ch;
+  }
+  .closing p { color: var(--cream-soft); font-size: 16px; line-height: 1.7; max-width: 58ch; }
+  .closing-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+
+  /* ----------------------------------------------------------- FOOTER */
+  .footer { border-top: 1px solid var(--field-line); padding: 48px 0 36px; }
+  .footer-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+  }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a { color: var(--cream-soft); text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-meta {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--field-line);
+    color: var(--cream-mute); font-size: 12px; letter-spacing: 0.3px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep); border: 1px solid var(--gold-deep); color: var(--cream);
+    padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 1000; opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    max-width: calc(100% - 32px); text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fade-up .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+  }
+
+  /* ---- detailed features page ---- */
+  .fx-intro { max-width: 70ch; }
+  .fx-jump { display: flex; flex-wrap: wrap; gap: 10px; margin: 30px 0 0; padding: 0; list-style: none; }
+  .fx-jump a { display: inline-block; padding: 7px 14px; border: 1px solid rgba(244,236,214,.22);
+               border-radius: 999px; font-size: 13px; letter-spacing: .04em; text-transform: uppercase;
+               color: var(--cream-soft); text-decoration: none; }
+  .fx-jump a:hover { border-color: var(--gold); color: var(--gold); }
+  .fx-sec { padding: 54px 0 0; }
+  .fx-sec + .fx-sec { border-top: 1px solid rgba(244,236,214,.10); margin-top: 54px; }
+  .fx-head { display: flex; gap: 16px; align-items: baseline; margin-bottom: 8px; }
+  .fx-head h2 { margin: 0; font-size: clamp(24px, 3vw, 32px); }
+  .fx-head .fx-kicker { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+  .fx-sec > p.fx-lede { color: var(--cream-soft); max-width: 68ch; margin: 0 0 22px; font-size: 16.5px; line-height: 1.65; }
+  .fx-list { list-style: none; padding: 0; margin: 0; display: grid;
+             grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px 34px; }
+  @media (max-width: 820px) { .fx-list { grid-template-columns: 1fr; } }
+  .fx-list li { position: relative; padding-left: 20px; font-size: 15.5px; line-height: 1.6;
+                color: var(--cream-soft); }
+  .fx-list li::before { content: ""; position: absolute; left: 0; top: .62em; width: 7px; height: 7px;
+                        border-radius: 50%; background: var(--gold); opacity: .75; }
+  .fx-list strong { color: var(--cream); font-weight: 600; }
+  .fx-sub { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold);
+            margin: 26px 0 12px; }
+  .fx-note { margin-top: 20px; font-size: 14.5px; color: var(--cream-soft); opacity: .85;
+             border-left: 2px solid var(--gold); padding-left: 14px; max-width: 66ch; }
+
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGameInsights</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="container" style="padding-top:56px">
+    <p class="eyebrow" style="letter-spacing:.16em;text-transform:uppercase;font-size:12.5px;color:var(--gold);margin:0 0 14px">Coaches Box Soccer &mdash; full feature list</p>
+    <h1 style="margin:0 0 20px">Everything it tracks.</h1>
+    <p class="fx-intro" style="color:var(--cream-soft);font-size:17.5px;line-height:1.7;margin:0">
+      Every stat the app captures, how it captures it, and what it can produce
+      once the match is over.
+    </p>
+    <nav class="fx-jump">
+      <a href="#tracking">Live game tracking</a>
+      <a href="#shots">Shot tracking</a>
+      <a href="#possession">Possession and field position</a>
+      <a href="#voice">Voice commands</a>
+      <a href="#clock">Game clock and periods</a>
+      <a href="#subs">Substitutions and playing time</a>
+      <a href="#keeper">Goalkeeper stats</a>
+      <a href="#opponent">Opponent tracking</a>
+      <a href="#accuracy">Corrections and accuracy</a>
+      <a href="#stats">Every stat captured</a>
+      <a href="#views">What you can see during the match</a>
+      <a href="#display">Second-screen display</a>
+      <a href="#reports">Reports and exports</a>
+      <a href="#teams">Teams, rosters and seasons</a>
+      <a href="#pricing">Trying it</a>
+    </nav>
+  </section>
+
+
+<section class="fx-sec container" id="tracking">
+    <div class="fx-head"><span class="fx-kicker">01</span><h2>Live game tracking</h2></div>
+    <p class="fx-lede">The screen is built around the ball rather than a list of events. The app always knows who has it, so recording what happened next is usually a single tap.</p>
+    <ul class="fx-list">
+      <li><strong>Ball-tracking interface.</strong> Tap a teammate to record a completed pass and the receiver becomes the new ball carrier, so a full passing sequence is one tap per pass.</li>
+      <li><strong>Every way a pass can end.</strong> Completed, incomplete (loose ball, same team), turnover, direct steal, intercepted pass.</li>
+      <li><strong>One-tap actions.</strong> Shot, penalty kick, corner, foul, offside, yellow card, red card, substitution, goalkeeper change.</li>
+      <li><strong>Arm, then tap.</strong> Select the action, then the player it belongs to.</li>
+      <li><strong>Assist prompt after every goal</strong>, for your team and the opponent.</li>
+      <li><strong>Possession changes itself</strong> after steals, turnovers, shots and fouls.</li>
+      <li><strong>TEAM attribution</strong> when you did not catch which player it was.</li>
+      <li><strong>Both teams on one screen</strong>, so one person charts the whole match.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="shots">
+    <div class="fx-head"><span class="fx-kicker">02</span><h2>Shot tracking</h2></div>
+    <p class="fx-lede">Two taps: where it came from, and where it went. That second tap is the one most apps skip, and it is the difference between knowing a shooter misses and knowing they miss left.</p>
+    <ul class="fx-list">
+      <li><strong>Shot origin</strong> captured as precise field coordinates, sorted automatically into six field zones plus the penalty spot.</li>
+      <li><strong>Shot target</strong> on a nine-zone goal grid, plus miss left, miss right, miss high and blocked.</li>
+      <li><strong>Results.</strong> Goal, saved (keeper holds or rebound), miss, blocked.</li>
+      <li><strong>Play context.</strong> Open play, corner, free kick, penalty, throw-in, goal kick, counter attack.</li>
+      <li><strong>Corners handled automatically</strong> &mdash; shots and goals from them are attributed without extra work.</li>
+      <li><strong>Filterable</strong> by team and by individual player.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="possession">
+    <div class="fx-head"><span class="fx-kicker">03</span><h2>Possession and field position</h2></div>
+    <p class="fx-lede">Possession percentage on its own tells you very little. Possession in the attacking third, with the box counted separately, tells you whether you were pressing or passing it round the back.</p>
+    <ul class="fx-list">
+      <li><strong>Live possession timer</strong> for each team.</li>
+      <li><strong>Zone possession.</strong> Offensive third, defensive third, and inside the box, counted separately.</li>
+      <li><strong>Possession count and percentage</strong> alongside the raw time.</li>
+      <li><strong>Possession time per player</strong>, not just per team.</li>
+      <li><strong>Field possession map</strong> comparing both teams&rsquo; time in each third.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="voice">
+    <div class="fx-head"><span class="fx-kicker">04</span><h2>Voice commands</h2></div>
+    <p class="fx-lede">Soccer moves too fast to look down. Call the number and the ball moves to that player; call the color and the number when the other team takes it.</p>
+    <ul class="fx-list">
+      <li><strong>Commands for</strong> passes (&ldquo;to 7&rdquo;), incomplete passes, turnovers, steals, interceptions, possession changes, zone changes, and subs in and out.</li>
+      <li><strong>Possession by shirt color</strong> &mdash; &ldquo;blue ball&rdquo;.</li>
+      <li><strong>Built-in handling for misheard words.</strong> &ldquo;For&rdquo; becomes 4, &ldquo;steel&rdquo; becomes steal.</li>
+      <li><strong>Custom alias editor</strong> that teaches the app your accent and your terms.</li>
+      <li><strong>Waits until you finish speaking</strong>, so &ldquo;twenty&rdquo; does not fire before &ldquo;twenty-two&rdquo;.</li>
+      <li><strong>Confirmation banners on screen</strong>, and a prompt when a command is not recognized.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="clock">
+    <div class="fx-head"><span class="fx-kicker">05</span><h2>Game clock and periods</h2></div>
+    <ul class="fx-list">
+      <li><strong>Halves or quarters</strong>, with preset lengths for varsity, JV, freshman, middle school, club and recreational, or set your own.</li>
+      <li><strong>Stoppage time</strong> that counts up after regulation.</li>
+      <li><strong>Clock adjustment</strong> in fifteen-second steps, either direction.</li>
+      <li><strong>Overtime and second overtime.</strong></li>
+      <li><strong>Full penalty shootout</strong> with round-by-round tracking and its own report.</li>
+      <li><strong>Mark final</strong>, and undo it if you marked it early.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="subs">
+    <div class="fx-head"><span class="fx-kicker">06</span><h2>Substitutions and playing time</h2></div>
+    <p class="fx-lede">The app knows who was on the field and when, so minutes are counted rather than estimated after the fact.</p>
+    <ul class="fx-list">
+      <li><strong>On Field and Bench view</strong> with tap-to-sub.</li>
+      <li><strong>Minutes played and periods played</strong> for every player.</li>
+      <li><strong>Goalkeeper designation</strong> that can change at any point in the match.</li>
+      <li><strong>Active-player tracking for the opponent</strong> as well as your own side.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="keeper">
+    <div class="fx-head"><span class="fx-kicker">07</span><h2>Goalkeeper stats</h2></div>
+    <p class="fx-lede">Keepers get their own statistics rather than a save count bolted onto a field-player line.</p>
+    <ul class="fx-list">
+      <li><strong>Saves, goals against, shots faced, shots on goal faced</strong>, save percentage, goals-against average and clean sheets.</li>
+      <li><strong>Penalties faced and penalty goals allowed.</strong></li>
+      <li><strong>Corners faced</strong>, with shots and goals allowed from them.</li>
+      <li><strong>Save locations</strong> plotted on the goal grid.</li>
+      <li><strong>Part-match keepers handled</strong> &mdash; a player who keeps for a half and plays out for a half gets both sets of stats.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="opponent">
+    <div class="fx-head"><span class="fx-kicker">08</span><h2>Opponent tracking</h2></div>
+    <p class="fx-lede">Charting both teams from one iPad means your scouting of them is a by-product of tracking your own match.</p>
+    <ul class="fx-list">
+      <li><strong>Opponent individual stats by jersey number</strong> &mdash; goals, assists, shots, steals, turnovers, fouls, cards and more.</li>
+      <li><strong>Opponent shot charts</strong> and <strong>opponent goalkeeper stats</strong>.</li>
+      <li><strong>Add opponent numbers mid-match</strong> as you learn them.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="accuracy">
+    <div class="fx-head"><span class="fx-kicker">09</span><h2>Corrections and accuracy</h2></div>
+    <p class="fx-lede">Tracking live means getting things wrong occasionally. Every mistake has a way back.</p>
+    <ul class="fx-list">
+      <li><strong>Undo the last event</strong> with one tap.</li>
+      <li><strong>Delete any event</strong> from the log, with the stats reversed automatically.</li>
+      <li><strong>Reassign an event</strong> to a different player.</li>
+      <li><strong>Manual stat corrections</strong> for players, opponents or team totals.</li>
+      <li><strong>An audit trail</strong> of every correction, which appears in the report.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="stats">
+    <div class="fx-head"><span class="fx-kicker">10</span><h2>Every stat captured</h2></div>
+    <p class="fx-sub">Field players</p>
+    <ul class="fx-list">
+      <li>Goals, assists, points</li>
+      <li>Shots, shots on goal, shooting percentage</li>
+      <li>Passes attempted, completed and received, pass percentage</li>
+      <li>Steals, turnovers</li>
+      <li>Corners, plus shots and goals off corners</li>
+      <li>Penalties attempted and made</li>
+      <li>Fouls, offsides, yellow and red cards</li>
+      <li>Minutes, periods played, possession time</li>
+    </ul>
+    <p class="fx-sub">Goalkeepers</p>
+    <ul class="fx-list">
+      <li>Saves, goals against, shots faced, shots on goal faced</li>
+      <li>Save percentage, goals-against average, clean sheets</li>
+      <li>Penalties faced and allowed</li>
+      <li>Corners faced, shots and goals allowed</li>
+      <li>Save locations on the goal grid</li>
+    </ul>
+    <p class="fx-sub">Team</p>
+    <ul class="fx-list">
+      <li>Every field-player stat in aggregate</li>
+      <li>Possession time by zone</li>
+      <li>Possession count and percentage</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="views">
+    <div class="fx-head"><span class="fx-kicker">11</span><h2>What you can see during the match</h2></div>
+    <ul class="fx-list">
+      <li><strong>Live scoreboard</strong> with team colors, clock, period and possession indicator.</li>
+      <li><strong>Player stats tab</strong> with sortable columns and team totals for both sides.</li>
+      <li><strong>Team stats tab</strong> with the possession breakdown and field map.</li>
+      <li><strong>Shot chart</strong> showing the field and goal views side by side.</li>
+      <li><strong>Game flow timeline</strong> and a full event log, filterable by period, player and event type.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="display">
+    <div class="fx-head"><span class="fx-kicker">12</span><h2>Second-screen display</h2></div>
+    <p class="fx-lede">A second iPad or iPhone mirrors the match for an assistant, the bench or the press box. It connects device to device, so no venue wifi is required &mdash; which matters, because most fields do not have any.</p>
+    <ul class="fx-list">
+      <li><strong>Direct device-to-device</strong> over Bluetooth or peer-to-peer wifi. No network, no internet.</li>
+      <li><strong>Shows</strong> the live scoreboard, possession, team totals, field player and goalkeeper stats, shot charts and game flow.</li>
+      <li><strong>iPhone works as a display-only companion.</strong></li>
+      <li><strong>The display device can generate the full game report on its own.</strong></li>
+      <li><strong>Automatic reconnect</strong>, plus a View Last Game option.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="reports">
+    <div class="fx-head"><span class="fx-kicker">13</span><h2>Reports and exports</h2></div>
+    <p class="fx-lede">Everything leaves through the normal iOS share sheet, so you send it the way you already send things.</p>
+    <p class="fx-sub">Game report</p>
+    <ul class="fx-list">
+      <li>Team stats, possession and shot map</li>
+      <li>Shot charts for both teams</li>
+      <li>Field player and goalkeeper tables</li>
+      <li>Opponent stats and the full game flow</li>
+      <li>Stat corrections, with the audit trail</li>
+      <li>Share or print</li>
+    </ul>
+    <p class="fx-sub">Individual player reports</p>
+    <ul class="fx-list">
+      <li>Season totals and a game-by-game log</li>
+      <li>Season or per-game shot charts</li>
+      <li>Keepers get a shots-faced chart; a player who does both gets both sections</li>
+      <li>One player or the whole roster, one page each</li>
+      <li>Print or save as PDF</li>
+    </ul>
+    <p class="fx-sub">CSV</p>
+    <ul class="fx-list">
+      <li>Game CSV: summary, possession, player stats, goalkeeper stats, opponent stats, shot coordinates, shootout, full timeline</li>
+      <li>Season CSV: game-by-game results plus season player and goalkeeper stats</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="teams">
+    <div class="fx-head"><span class="fx-kicker">14</span><h2>Teams, rosters and seasons</h2></div>
+    <ul class="fx-list">
+      <li><strong>Season management</strong>, with games grouped by season or viewed all together.</li>
+      <li><strong>Multiple teams</strong>, so JV and varsity live in one app, with a My Teams and Opponents filter.</li>
+      <li><strong>Team colors</strong>, fourteen to choose from.</li>
+      <li><strong>Roster import from a photo.</strong> Photograph or screenshot a team sheet and on-device text recognition pulls the numbers, names and positions.</li>
+      <li><strong>Eight positions</strong> &mdash; GK, CB, FB, DM, CM, W, FW, ST.</li>
+      <li><strong>Saved lineups.</strong> Starters, defensive, attacking, three sub sets, and a penalty-shootout lineup.</li>
+      <li><strong>Home screen season overview</strong> showing games this month and this season.</li>
+    </ul>
+    <p class="fx-note">Roster import, text recognition and everything else here runs on the iPad itself. There is no account to create and nothing is uploaded.</p>
+  </section>
+
+<section class="fx-sec container" id="pricing">
+    <div class="fx-head"><span class="fx-kicker">15</span><h2>Trying it</h2></div>
+    <ul class="fx-list">
+      <li><strong>Free for three full games</strong> &mdash; not a trial period, three complete matches with everything working.</li>
+      <li><strong>Premium, monthly or annual</strong>, adds unlimited games and all exports: game reports, player reports and CSV.</li>
+    </ul>
+  </section>
+
+
+  <section class="fx-sec container" id="get" style="padding-bottom:10px">
+    <div class="fx-head"><span class="fx-kicker">Next</span><h2>Track your next match with it.</h2></div>
+    <p class="fx-lede">Three full games free. Everything on this page works in those three.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px">
+      <a class="btn btn-primary" href="https://apps.apple.com/us/app/soccer-stats-by-ingameinsights/id6762889730?itscg=30200&amp;itsct=apps_box_badge&amp;mttnsubad=6762889730">Download on the App Store</a>
+      <a class="btn btn-ghost" href="coaches-box-soccer.html">Back to the overview</a>
+      <a class="btn btn-ghost" href="guide-soccer.html">How to use it</a>
+    </div>
+  </section>
+
+
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGameInsights</div>
+      <nav class="footer-links">
+        <a href="index.html#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Coaches Box Soccer &mdash; live stat tracking for iPad.</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
