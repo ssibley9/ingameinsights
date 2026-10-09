@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coaches Box Basketball &mdash; every stat it tracks</title>
+<meta name="description" content="The complete feature list for Coaches Box Basketball: voice commands, tap-to-place shot charts, shot quality graded per player, possession analytics, play-call effectiveness, lineup plus-minus, second screen, reports and season rollups.">
+<meta property="og:title" content="Coaches Box Basketball — live stat tracking and shot quality for iPad">
+<meta property="og:description" content="Track every shot, possession and foul live, then get shot charts that grade shot selection, box scores with deflections and plus-minus, season rollups and player reports. Built for iPad.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com/coaches-box-basketball.html">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Coaches Box Football — product page
+     -------------------------------------------------------------------------
+     Structure lifted from the printed one-pager: three numbered pillars
+     (playbook / stats / scouting), the game-week strip, the tackle-vs-flag
+     split, and the small-feature grid. The strip is the spine of the page —
+     it's the clearest argument for one app instead of three tools.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------------------------------------------------------------- NAV */
+  .nav {
+    padding: 28px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--cream); }
+  /* Transparent mark — no tinted tile behind it. */
+  .nav-brand-logo {
+    width: 38px; height: 38px; flex-shrink: 0;
+    object-fit: contain;
+  }
+  /* Wordmark set in DM Serif Display to match the brand lockup — the mark
+     and the name now speak the same typographic language. Single cream
+     weight, no split color, matching the artwork. */
+  .nav-brand-text {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .nav-menu { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 28px); flex-wrap: wrap; }
+  .nav-link {
+    color: var(--cream-soft); text-decoration: none; font-size: 14px;
+    font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease;
+  }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
+
+  /* --------------------------------------------------------------- HERO */
+  .hero { padding: clamp(44px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.15fr 1fr;
+    gap: clamp(30px, 4.5vw, 64px); align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
+    color: var(--cream-mute); padding: 8px 18px;
+    border: 1px solid var(--field-line); border-radius: 100px; margin-bottom: 24px;
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 0.95; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); display: block; }
+  .hero-lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--cream-soft); line-height: 1.65; max-width: 54ch; }
+
+  .tag-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .tag {
+    font-size: 11px; letter-spacing: 2px; font-weight: 700; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-deep); border-radius: 100px; padding: 8px 16px;
+  }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 15px 24px; border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .btn-primary { color: var(--field-deep); background: var(--gold); }
+  .btn-primary:hover { background: var(--cream); box-shadow: 0 4px 20px rgba(240,168,48,0.3); }
+  .btn-ghost { color: var(--cream); background: transparent; border: 1px solid var(--field-line); }
+  .btn-ghost:hover { background: var(--field-mid); border-color: var(--gold); }
+
+  /* Shared screenshot frame with graceful missing-asset fallback. */
+  .shot-frame {
+    position: relative; border: 1px solid var(--field-line); border-radius: 10px;
+    overflow: hidden; background: var(--field-deep); box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .shot-frame img { width: 100%; height: auto; display: block; }
+  .shot-ph {
+    display: none; min-height: 220px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; text-align: center; padding: 40px 24px;
+    color: var(--cream-mute); font-size: 13px; line-height: 1.6;
+  }
+  .shot-ph .icon { font-size: 28px; color: var(--field-line); }
+  .shot-ph code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--cream-soft); }
+  figure { margin: 0; }
+  figcaption { margin-top: 12px; font-size: 13px; color: var(--cream-mute); letter-spacing: 0.3px; }
+
+  /* ------------------------------------------------------------ PILLARS */
+  .pillar { padding: clamp(48px, 7vw, 92px) 0; border-top: 1px solid var(--field-line); }
+  .pillar.shaded { background: var(--field-deep); border-top: none; }
+
+  .pillar-head { display: flex; gap: 22px; align-items: flex-start; margin-bottom: clamp(30px, 4vw, 48px); }
+  .pillar-num {
+    font-family: var(--display); font-size: clamp(24px, 3vw, 34px);
+    color: var(--field-deep); background: var(--gold);
+    width: clamp(48px, 5vw, 62px); height: clamp(48px, 5vw, 62px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; flex-shrink: 0; line-height: 1;
+  }
+  .pillar.shaded .pillar-num { background: var(--cream); }
+  .pillar-titles { flex: 1; min-width: 0; }
+  .pillar-titles h2 {
+    font-family: var(--display); font-size: clamp(26px, 4vw, 44px);
+    letter-spacing: 1px; text-transform: uppercase; color: var(--cream); line-height: 1.02;
+  }
+  .pillar-titles p {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(16px, 1.9vw, 22px); color: var(--gold); margin-top: 8px;
+  }
+
+  .pillar-body {
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(28px, 4.5vw, 60px); align-items: start;
+  }
+  @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
+
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
+  .points { list-style: none; display: grid; gap: 18px; }
+  .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
+  .points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0;
+    color: var(--gold-deep); font-size: 14px;
+  }
+  .points strong { color: var(--cream); font-weight: 600; }
+
+  .figure-stack { display: grid; gap: 24px; }
+
+  /* ---------------------------------------------------------- RULE SETS */
+  .rulesets { padding: clamp(44px, 6vw, 80px) 0; border-top: 1px solid var(--field-line); }
+  .ruleset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.5vw, 48px); }
+  @media (max-width: 760px) { .ruleset-grid { grid-template-columns: 1fr; } }
+  .ruleset {
+    border: 1px solid var(--field-line); border-left: 3px solid var(--gold);
+    border-radius: 10px; padding: clamp(24px, 3vw, 34px);
+  }
+  .ruleset h3 {
+    font-family: var(--display); font-size: 20px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .ruleset p { font-size: 15px; line-height: 1.7; color: var(--cream-soft); }
+
+  /* ------------------------------------------------------ SIDELINE GRID */
+  .sideline { padding: clamp(44px, 6vw, 84px) 0; border-top: 1px solid var(--field-line); }
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.6vw, 40px);
+    color: var(--cream); line-height: 1.08; margin-bottom: clamp(30px, 4vw, 44px); max-width: 24ch;
+  }
+  .sideline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(20px, 2.6vw, 30px); }
+  .sl-item { border-top: 1px solid var(--field-line); padding-top: 18px; }
+  .sl-item h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.3px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 9px;
+  }
+  .sl-item p { font-size: 14.5px; line-height: 1.6; color: var(--cream-soft); }
+
+  /* ---------------------------------------------------------- CLOSING */
+  .closing { padding: clamp(52px, 8vw, 100px) 0; background: var(--field-deep); }
+  .closing h2 {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.1;
+    color: var(--cream); margin-bottom: 18px; max-width: 22ch;
+  }
+  .closing p { color: var(--cream-soft); font-size: 16px; line-height: 1.7; max-width: 58ch; }
+  .closing-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+
+  /* ----------------------------------------------------------- FOOTER */
+  .footer { border-top: 1px solid var(--field-line); padding: 48px 0 36px; }
+  .footer-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+  }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a { color: var(--cream-soft); text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-meta {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--field-line);
+    color: var(--cream-mute); font-size: 12px; letter-spacing: 0.3px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep); border: 1px solid var(--gold-deep); color: var(--cream);
+    padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 1000; opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    max-width: calc(100% - 32px); text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fade-up .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+  }
+
+  .fx-intro { max-width: 70ch; }
+  .fx-jump { display: flex; flex-wrap: wrap; gap: 10px; margin: 30px 0 0; padding: 0; list-style: none; }
+  .fx-jump a { display: inline-block; padding: 7px 14px; border: 1px solid rgba(244,236,214,.22);
+               border-radius: 999px; font-size: 13px; letter-spacing: .04em; text-transform: uppercase;
+               color: var(--cream-soft); text-decoration: none; }
+  .fx-jump a:hover { border-color: var(--gold); color: var(--gold); }
+  .fx-sec { padding: 54px 0 0; }
+  .fx-sec + .fx-sec { border-top: 1px solid rgba(244,236,214,.10); margin-top: 54px; }
+  .fx-head { display: flex; gap: 16px; align-items: baseline; margin-bottom: 8px; }
+  .fx-head h2 { margin: 0; font-size: clamp(24px, 3vw, 32px); }
+  .fx-head .fx-kicker { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+  .fx-sec > p.fx-lede { color: var(--cream-soft); max-width: 68ch; margin: 0 0 22px; font-size: 16.5px; line-height: 1.65; }
+  .fx-list { list-style: none; padding: 0; margin: 0; display: grid;
+             grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px 34px; }
+  @media (max-width: 820px) { .fx-list { grid-template-columns: 1fr; } }
+  .fx-list li { position: relative; padding-left: 20px; font-size: 15.5px; line-height: 1.6; color: var(--cream-soft); }
+  .fx-list li::before { content: ""; position: absolute; left: 0; top: .62em; width: 7px; height: 7px;
+                        border-radius: 50%; background: var(--gold); opacity: .75; }
+  .fx-list strong { color: var(--cream); font-weight: 600; }
+  .fx-sub { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin: 26px 0 12px; }
+  .fx-note { margin-top: 20px; font-size: 14.5px; color: var(--cream-soft); opacity: .85;
+             border-left: 2px solid var(--gold); padding-left: 14px; max-width: 66ch; }
+
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGameInsights</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="container" style="padding-top:56px">
+    <p style="letter-spacing:.16em;text-transform:uppercase;font-size:12.5px;color:var(--gold);margin:0 0 14px">Coaches Box Basketball &mdash; full feature list</p>
+    <h1 style="margin:0 0 20px">Everything it tracks.</h1>
+    <p class="fx-intro" style="color:var(--cream-soft);font-size:17.5px;line-height:1.7;margin:0">
+      Every stat the app captures, how it captures it, and what it can produce
+      once the game is over.
+    </p>
+    <nav class="fx-jump">
+      <a href="#voice">Voice commands</a>
+      <a href="#shots">Shot charting</a>
+      <a href="#quality">Shot quality, graded per player</a>
+      <a href="#profiles">Building each player&rsquo;s shooting profile</a>
+      <a href="#ball">Ball tracking</a>
+      <a href="#possessions">Possessions and key metrics</a>
+      <a href="#plays">Play calls, and what they produced</a>
+      <a href="#lineups">Lineups and substitutions</a>
+      <a href="#stats">Every stat captured</a>
+      <a href="#setup">Game setup and rules</a>
+      <a href="#corrections">Corrections</a>
+      <a href="#display">Second-screen display</a>
+      <a href="#reports">Game reports and exports</a>
+      <a href="#season">Season rollups</a>
+      <a href="#player">Individual player reports</a>
+      <a href="#teams">Teams and rosters</a>
+      <a href="#privacy">How it runs</a>
+      <a href="#plans">Free and Pro</a>
+    </nav>
+  </section>
+
+
+<section class="fx-sec container" id="voice">
+    <div class="fx-head"><span class="fx-kicker">01</span><h2>Voice commands</h2></div>
+    <p class="fx-lede">Apple&rsquo;s on-device speech recognition, so your eyes stay on the floor. Audio never leaves the iPad.</p>
+    <ul class="fx-list">
+      <li><strong>Passes</strong> by jersey number, or &ldquo;team&rdquo;.</li>
+      <li><strong>Incomplete pass, turnover, steal, interception.</strong></li>
+      <li><strong>Start and stop the clock.</strong></li>
+      <li><strong>Timeouts</strong> &mdash; full, 30-second, and the opponent&rsquo;s.</li>
+      <li><strong>Jump ball.</strong></li>
+      <li><strong>Set calls by name</strong> &mdash; offensive, defensive and inbound.</li>
+      <li><strong>&ldquo;Foul&rdquo; or &ldquo;deflection&rdquo;</strong> opens a picker, then you say the number.</li>
+      <li><strong>Context-aware.</strong> A bare number does the right thing for the screen you are on: passes the ball, subs a player, or picks the rebounder, blocker, fouler or assister.</li>
+      <li><strong>A live banner confirms each command</strong> and flags anything it could not match.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="shots">
+    <div class="fx-head"><span class="fx-kicker">02</span><h2>Shot charting</h2></div>
+    <p class="fx-lede">Tap exactly where the shot went up. Everything the app knows about shot quality is built on that one tap being accurate.</p>
+    <ul class="fx-list">
+      <li><strong>Tap-to-place on a half-court diagram</strong>, stored at the exact spot and classified into one of eleven zones.</li>
+      <li><strong>Shot type.</strong> Jump shot, layup, floater, dunk, hook, free throw.</li>
+      <li><strong>A guided flow</strong> captures assists, blocks, rebounds and and-one fouls in one sequence.</li>
+      <li><strong>Smart assist detection</strong> pre-selects the last player who passed to the shooter.</li>
+      <li><strong>Eleven zones.</strong> Five three-point zones (corners, wings, top of key), five two-point zones (layup, lane, key, left, right), and free throws.</li>
+      <li><strong>Zones roll up</strong> into layup, mid-range two, corner three, wing and top three, and free throw.</li>
+      <li><strong>Percentage overlays</strong> &mdash; green at forty per cent or better, red below.</li>
+      <li><strong>Filter</strong> by period, team or individual player.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="quality">
+    <div class="fx-head"><span class="fx-kicker">03</span><h2>Shot quality, graded per player</h2></div>
+    <p class="fx-lede">A corner three is a good shot for the player who makes 40 per cent of them and a bad one for the player who makes 20. The app grades every shot against that shooter&rsquo;s own profile, not a league average.</p>
+    <ul class="fx-list">
+      <li><strong>Every shot graded</strong> good, marginal or bad.</li>
+      <li><strong>Layups are always good.</strong></li>
+      <li><strong>Everything else</strong> is judged against the shooter&rsquo;s expected points per attempt in that zone.</li>
+      <li><strong>Thresholds you set</strong>, per team and per season.</li>
+      <li><strong>Points lost to bad shots</strong>, as a number, for the game and the season.</li>
+      <li><strong>Points per attempt by zone</strong>, comparing tonight, the season so far and your own estimate on one axis, with confidence intervals.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="profiles">
+    <div class="fx-head"><span class="fx-kicker">04</span><h2>Building each player&rsquo;s shooting profile</h2></div>
+    <p class="fx-lede">Grading shots against a player&rsquo;s own numbers means the app needs those numbers before the season has produced them. There are four ways to get them in.</p>
+    <ul class="fx-list">
+      <li><strong>Tap a court</strong> to set an expected percentage for each zone.</li>
+      <li><strong>Spreadsheet-style tables</strong> of field-goal percentage and attempts, if you would rather type.</li>
+      <li><strong>Scan a screenshot</strong> to fill the tables, with unfilled cells highlighted for review.</li>
+      <li><strong>Printable bubble sheets.</strong> One sheet per player, filled in by players or assistants, then scanned back. A QR code on each block matches it to the right team and player automatically.</li>
+      <li><strong>A team baseline</strong> covers anyone without their own estimates yet.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="ball">
+    <div class="fx-head"><span class="fx-kicker">05</span><h2>Ball tracking</h2></div>
+    <ul class="fx-list">
+      <li><strong>Follows the ball handler pass by pass</strong>, for both teams.</li>
+      <li><strong>Passes attempted, completed and received</strong>, with completion percentage.</li>
+      <li><strong>Ball-handler time</strong> &mdash; how long each player actually had it.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="possessions">
+    <div class="fx-head"><span class="fx-kicker">06</span><h2>Possessions and key metrics</h2></div>
+    <p class="fx-lede">The possession is the unit basketball is actually played in, and most stat apps do not count them at all.</p>
+    <ul class="fx-list">
+      <li><strong>Automatic possession tracking</strong> and possession-arrow management.</li>
+      <li><strong>Possession Flow.</strong> A color-coded block for every possession showing the outcome, points, sets called and shot quality.</li>
+      <li><strong>Possessions and points per possession</strong>, for both teams.</li>
+      <li><strong>Second-chance opportunities and points.</strong></li>
+      <li><strong>Offensive rebounds per 100 missed field goals.</strong></li>
+      <li><strong>Points off turnovers</strong> and <strong>fast-break points</strong>.</li>
+      <li><strong>XXX</strong> &mdash; three consecutive defensive stops.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="plays">
+    <div class="fx-head"><span class="fx-kicker">07</span><h2>Play calls, and what they produced</h2></div>
+    <p class="fx-lede">Tag the set you called and the app tells you afterwards which calls actually scored, and against which defense.</p>
+    <ul class="fx-list">
+      <li><strong>Play-set libraries per team</strong> &mdash; offense, defense, inbounds, and the defenses you face.</li>
+      <li><strong>Offensive analysis.</strong> Points per possession for each call, two-point, three-point and free-throw splits, percentage of possessions with a shot, multi-shot possessions, turnover rate.</li>
+      <li><strong>Filter by the opponent&rsquo;s defense</strong>, so you can see which calls work against a zone and which against man.</li>
+      <li><strong>Defensive analysis.</strong> The same breakdown for each of your defensive sets.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="lineups">
+    <div class="fx-head"><span class="fx-kicker">08</span><h2>Lineups and substitutions</h2></div>
+    <ul class="fx-list">
+      <li><strong>Five-player lineup plus-minus</strong>, with minutes and plus-minus per minute, sortable.</li>
+      <li><strong>Lineup data rolls up across the season.</strong></li>
+      <li><strong>One-tap substitutions</strong>, plus saved units &mdash; starters and four more &mdash; that put a full five on the floor at once.</li>
+      <li><strong>Save Five</strong> captures the opponent&rsquo;s lineup mid-game so you can restore it after a changeover.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="stats">
+    <div class="fx-head"><span class="fx-kicker">09</span><h2>Every stat captured</h2></div>
+    <p class="fx-sub">Per player, both teams</p>
+    <ul class="fx-list">
+      <li>Points</li>
+      <li>Two-point and three-point makes and attempts, by zone</li>
+      <li>Free throws</li>
+      <li>Offensive and defensive rebounds</li>
+      <li>Assists, steals, blocks, turnovers</li>
+      <li>Fouls and technicals</li>
+      <li>Deflections and charges drawn</li>
+      <li>Fast-break attempts, makes and points</li>
+      <li>Plus-minus</li>
+      <li>Minutes played</li>
+    </ul>
+    <p class="fx-sub">Team</p>
+    <ul class="fx-list">
+      <li>Team rebounds and team turnovers</li>
+      <li>Full and 30-second timeouts</li>
+      <li>Bench and coach technicals</li>
+      <li>Team fouls by period</li>
+      <li>Possession time</li>
+    </ul>
+    <p class="fx-sub">Opponent</p>
+    <ul class="fx-list">
+      <li>Tracked by jersey number, with a full opponent box score</li>
+      <li>Every per-player stat above, for their side too</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="setup">
+    <div class="fx-head"><span class="fx-kicker">10</span><h2>Game setup and rules</h2></div>
+    <ul class="fx-list">
+      <li><strong>Levels.</strong> Varsity, JV, freshman, middle school, rec and AAU.</li>
+      <li><strong>Quarters or halves</strong>, with configurable period and overtime length.</li>
+      <li><strong>Rules default to NFHS</strong> for school levels, and all of it is configurable: bonus and double-bonus thresholds, whether team fouls reset by quarter or half, timeout counts and overtime grants.</li>
+      <li><strong>A plain-English summary</strong> of the rule set, so you can confirm it at a glance.</li>
+      <li><strong>Scoreboard header</strong> with clock and period control, linescores, team fouls with bonus and double-bonus indicators, timeouts used against allowed, the possession arrow and jump ball.</li>
+      <li><strong>Foul Trouble view</strong> listing players at two, three, four and five personals, for both teams.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="corrections">
+    <div class="fx-head"><span class="fx-kicker">11</span><h2>Corrections</h2></div>
+    <p class="fx-lede">Nobody tracks a whole game without a mistake. None of them are permanent.</p>
+    <ul class="fx-list">
+      <li><strong>Instant feedback bubbles</strong> let you fix a mis-entered play right away.</li>
+      <li><strong>Edit or reassign any play</strong> afterwards, with stats updating automatically.</li>
+      <li><strong>Bulk-replace a player</strong> across the whole game or specific stints, for when the wrong jersey was logged all night.</li>
+      <li><strong>A lineup checker</strong> finds and fixes events with duplicate players on the floor.</li>
+      <li><strong>One-tap recalculation</strong> of plus-minus and playing time.</li>
+      <li><strong>Continuous auto-save</strong>, so nothing is lost if the app closes.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="display">
+    <div class="fx-head"><span class="fx-kicker">12</span><h2>Second-screen display</h2></div>
+    <p class="fx-lede">A second iPad for the bench or the stands, connected peer to peer over local wifi or Bluetooth. No internet, which most gyms do not have anyway.</p>
+    <ul class="fx-list">
+      <li><strong>Read-only</strong>, so a stray tap from the bench cannot change anything.</li>
+      <li><strong>Tabs.</strong> Box score, shooting, key metrics, possession analysis, flow, foul trouble.</li>
+      <li><strong>Viewers can filter the shot charts</strong> without affecting the person tracking.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="reports">
+    <div class="fx-head"><span class="fx-kicker">13</span><h2>Game reports and exports</h2></div>
+    <p class="fx-sub">HTML game report, during or after the game</p>
+    <ul class="fx-list">
+      <li>Header and team stat comparison</li>
+      <li>Key metrics</li>
+      <li>Shot selection and team shot quality</li>
+      <li>Interactive shot charts</li>
+      <li>Box scores for both teams</li>
+      <li>Possession flow</li>
+      <li>Lineup plus-minus</li>
+      <li>Full play-by-play</li>
+    </ul>
+    <p class="fx-sub">Other exports</p>
+    <ul class="fx-list">
+      <li>One-tap CSV box score for spreadsheets</li>
+      <li>Game and season files shared between iPads as .bbexport, by AirDrop or Files, importable into any season</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="season">
+    <div class="fx-head"><span class="fx-kicker">14</span><h2>Season rollups</h2></div>
+    <p class="fx-lede">Pick any subset of games &mdash; the last five, conference only, after a lineup change &mdash; and every number recalculates for just those.</p>
+    <ul class="fx-list">
+      <li><strong>Season dashboard</strong> with record and game counts.</li>
+      <li><strong>Aggregated box scores.</strong></li>
+      <li><strong>Shooting by zone</strong> for the team or any player.</li>
+      <li><strong>Season key metrics</strong> and <strong>season lineup plus-minus</strong>.</li>
+      <li><strong>Season shot selection.</strong></li>
+      <li><strong>Tournament and event grouping</strong> for coaches running more than one team. When two of your own teams meet, the game counts for both, each from its own side.</li>
+      <li><strong>Season key metrics CSV export.</strong></li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="player">
+    <div class="fx-head"><span class="fx-kicker">15</span><h2>Individual player reports</h2></div>
+    <ul class="fx-list">
+      <li><strong>One player, or the whole roster</strong> in one document with a page each.</li>
+      <li><strong>Season averages and totals.</strong></li>
+      <li><strong>Game log</strong> with a box-score row per game, plus totals and averages.</li>
+      <li><strong>Shot charts</strong> for the full season and for each game, with a picker.</li>
+      <li><strong>Print, save as PDF, or share</strong> by AirDrop, Mail or Messages.</li>
+      <li><strong>Opens properly in iOS Quick Look</strong>, so a parent with no app installed can still read it.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="teams">
+    <div class="fx-head"><span class="fx-kicker">16</span><h2>Teams and rosters</h2></div>
+    <ul class="fx-list">
+      <li><strong>Roster import from a photo or screenshot</strong>, or by scanning a paper roster with the camera, with an editable review before saving.</li>
+      <li><strong>Multiple teams</strong>, each with its own roster, colors, rules, play sets and lineups.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="privacy">
+    <div class="fx-head"><span class="fx-kicker">17</span><h2>How it runs</h2></div>
+    <ul class="fx-list">
+      <li><strong>Voice is processed on the device</strong> through Apple&rsquo;s speech framework. Audio is never sent to InGameInsights.</li>
+      <li><strong>The connection between iPads is local peer to peer</strong>, so it works in gyms with no internet.</li>
+    </ul>
+  </section>
+
+<section class="fx-sec container" id="plans">
+    <div class="fx-head"><span class="fx-kicker">18</span><h2>Free and Pro</h2></div>
+    <ul class="fx-list">
+      <li><strong>Free.</strong> Three games with full live tracking and analysis.</li>
+      <li><strong>Pro, monthly or annual.</strong> Unlimited games, CSV exports, HTML game reports, and season and player report exports.</li>
+    </ul>
+  </section>
+
+
+  <section class="fx-sec container" id="get" style="padding-bottom:10px">
+    <div class="fx-head"><span class="fx-kicker">Next</span><h2>Track your next game with it.</h2></div>
+    <p class="fx-lede">Three games free, with everything on this page working.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px">
+      <a class="btn btn-primary" href="https://apps.apple.com/us/app/id6758053681?itscg=30200&amp;itsct=apps_box_badge&amp;mttnsubad=6758053681">Download on the App Store</a>
+      <a class="btn btn-ghost" href="coaches-box-basketball.html">Back to the overview</a>
+      <a class="btn btn-ghost" href="guide-hoops.html">How to use it</a>
+    </div>
+  </section>
+
+
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGameInsights</div>
+      <nav class="footer-links">
+        <a href="index.html#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Coaches Box Basketball &mdash; live stat tracking for iPad.</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
