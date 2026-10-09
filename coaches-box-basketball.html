@@ -211,6 +211,24 @@
   .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
                  text-transform: uppercase; color: var(--cream); }
   .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
+
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold); font-size: 13px; font-weight: 700;
+                 display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em; text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
+  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 26px; }
+  @media (max-width: 900px) { .trio { grid-template-columns: 1fr; } }
+  .trio figure { margin: 0; }
+  .trio .shot-frame { margin: 0; }
+  .trio figcaption { margin-top: 10px; font-size: 13.5px; line-height: 1.5; }
+  .trio figcaption b { color: var(--cream); font-weight: 600; display: block; margin-bottom: 2px; }
   .points { list-style: none; display: grid; gap: 18px; }
   .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
   .points li::before {
@@ -364,7 +382,7 @@
           <p>One screen, eight jobs, with your thumbs and your voice.</p>
         </div>
       </div>
-                  <div class="pillar-body" style="grid-template-columns:1fr">
+      <div class="pillar-body" style="grid-template-columns:1fr">
         <figure class="track-figure">
           <div class="shot-frame">
             <img src="assets/feature-live-track.png" alt="The basketball tracking screen with each section numbered" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
@@ -384,7 +402,7 @@
         </ul>
         <p style="margin:26px 0 0;font-size:15px;color:var(--cream-soft)"><a href="features-basketball.html">See every stat the app tracks &rarr;</a></p>
       </div>
-        </div>
+    </div>
   </section>
 
   <section class="pillar shaded" id="decide">
@@ -393,23 +411,41 @@
         <div class="pillar-num">02</div>
         <div class="pillar-titles">
           <h2>Decide</h2>
-          <p>Answers while you can still use them.</p>
+          <p>Answers while you can still use them &mdash; on the bench iPad, not yours.</p>
         </div>
       </div>
-      <div class="pillar-body">
-        <ul class="points">
+      <div class="pillar-body" style="grid-template-columns:1fr">
+        <ul class="points" style="grid-template-columns:repeat(2,1fr);display:grid">
           <li><strong>Foul trouble at a glance.</strong> Who&rsquo;s at three, who&rsquo;s at four, both benches, always on screen.</li>
           <li><strong>Possessions and points per possession.</strong> Live, both teams &mdash; the numbers college staffs use, without the staff.</li>
+          <li><strong>Lineup plus-minus while it still matters.</strong> Which five are winning their minutes, sorted by plus-minus, minutes, or per minute.</li>
           <li><strong>A box score that never stops.</strong> Full team and individual lines building themselves while the ball is in play.</li>
-          <li><strong>Share to the bench.</strong> An assistant follows score, situation, and every stat tab on a second screen without touching your inputs.</li>
+          <li><strong>Read-only on the bench.</strong> An assistant flips tabs and filters charts without touching what you are tracking.</li>
+          <li><strong>No wifi needed.</strong> The two iPads talk to each other directly, which matters in gyms that have none.</li>
         </ul>
-        <figure>
+        <div class="trio">
+          <figure>
           <div class="shot-frame">
-            <img src="assets/feature-live-track.png" alt="Live tracking view with foul trouble and team stats" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/feature-live-track.png</code></span></div>
+            <img src="assets/basketball-display-box.png" alt="The box score tab on the bench iPad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/basketball-display-box.png</code></span></div>
           </div>
-          <figcaption>The tracking screen, mid&ndash;game</figcaption>
+          <figcaption><b>Box score</b>Every line, both teams, building itself.</figcaption>
         </figure>
+          <figure>
+          <div class="shot-frame">
+            <img src="assets/basketball-display-fouls.png" alt="The foul trouble tab on the bench iPad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/basketball-display-fouls.png</code></span></div>
+          </div>
+          <figcaption><b>Foul trouble</b>Who is one away, on both benches.</figcaption>
+        </figure>
+          <figure>
+          <div class="shot-frame">
+            <img src="assets/basketball-display-metrics.png" alt="Key metrics and lineup plus-minus on the bench iPad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/basketball-display-metrics.png</code></span></div>
+          </div>
+          <figcaption><b>Key metrics and lineup plus-minus</b>Points per possession, second chance, points off turnovers &mdash; and which five are winning their minutes.</figcaption>
+        </figure>
+        </div>
       </div>
     </div>
   </section>
