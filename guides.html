@@ -84,8 +84,8 @@
     color: var(--cream-soft); font-size: clamp(16px, 1.6vw, 18px); line-height: 1.6; max-width: 62ch;
   }
 
-  /* Four guides: two columns above the breakpoint keeps the grid balanced
-     rather than leaving one card alone on a second row. */
+  /* Two columns above the breakpoint keeps the grid balanced rather than
+     leaving one card alone on a second row. */
   .guides-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -94,6 +94,9 @@
   }
   @media (min-width: 800px) {
     .guides-grid { grid-template-columns: repeat(2, 1fr); }
+    /* An odd card count would leave the last one stranded in a half-width
+       column; spanning it reads as deliberate. Reverts at an even count. */
+    .guides-grid > .guide-card:nth-child(odd):last-child { grid-column: 1 / -1; }
   }
   .guide-card {
     position: relative;
@@ -222,7 +225,16 @@
       <a href="guide-football.html" class="guide-card">
         <img src="assets/football-icon.png" alt="Football app icon" class="guide-card-icon">
         <div class="guide-card-name">Football <span class="status-pill in-beta">In Beta</span></div>
-        <p class="guide-card-desc">Play-by-play logging, down and distance, rush and pass yardage, flag pulls, and drive charts.</p>
+        <p class="guide-card-desc">Play-by-play logging, down and distance, rush and pass yardage, and drive charts.</p>
+        <span class="guide-card-cta">Open guide <span aria-hidden="true">→</span></span>
+      </a>
+
+      <!-- Flag Football shares the football guide until guide-flag.html exists;
+           swap the href when that page lands. -->
+      <a href="guide-football.html" class="guide-card">
+        <img src="assets/flag-icon.png" alt="Coaches Box Flag Football app icon" class="guide-card-icon">
+        <div class="guide-card-name">Flag Football <span class="status-pill in-beta">In Beta</span></div>
+        <p class="guide-card-desc">Playbook and wristbands, snap-by-snap logging with the call you made, air yards, yards after catch, and snap counts.</p>
         <span class="guide-card-cta">Open guide <span aria-hidden="true">→</span></span>
       </a>
 

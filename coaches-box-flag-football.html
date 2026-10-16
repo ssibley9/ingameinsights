@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coaches Box Flag Football — Playbook and live stats for iPad</title>
+<meta name="description" content="Draw your plays, print the wristbands, call them on Saturday, and tag every snap with the call you made — one iPad app built for flag football, 5v5 through 7v7, NFHS and NFL FLAG. Call sheets, air-yard splits, snap counts, and play-call grading.">
+<meta property="og:title" content="Coaches Box Flag Football — Your playbook. Your stats. One app.">
+<meta property="og:description" content="Built for flag from the ground up: playbook and wristbands sized to real windows, snap-by-snap live stats, and play-call grading that falls out of your own games.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com/coaches-box-flag-football.html">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Coaches Box Flag Football — product page
+     -------------------------------------------------------------------------
+     Structure and styles are shared with coaches-box-football.html so the two
+     football pages read as one family; only the content differs. Two numbered
+     pillars here (playbook / live stats) rather than three — there is no
+     opponent-scouting module in the flag app. The draw-to-grade loop replaces
+     the game-week strip and is the spine of the page: it is the clearest
+     argument for the playbook and the stat sheet living in one app.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------------------------------------------------------------- NAV */
+  .nav {
+    padding: 28px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--cream); }
+  /* Transparent mark — no tinted tile behind it. */
+  .nav-brand-logo {
+    width: 38px; height: 38px; flex-shrink: 0;
+    object-fit: contain;
+  }
+  /* Wordmark set in DM Serif Display to match the brand lockup — the mark
+     and the name now speak the same typographic language. Single cream
+     weight, no split color, matching the artwork. */
+  .nav-brand-text {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .nav-menu { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 28px); flex-wrap: wrap; }
+  .nav-link {
+    color: var(--cream-soft); text-decoration: none; font-size: 14px;
+    font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease;
+  }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
+
+  /* --------------------------------------------------------------- HERO */
+  .hero { padding: clamp(44px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.15fr 1fr;
+    gap: clamp(30px, 4.5vw, 64px); align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
+    color: var(--cream-mute); padding: 8px 18px;
+    border: 1px solid var(--field-line); border-radius: 100px; margin-bottom: 24px;
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 0.95; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); display: block; }
+  .hero-lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--cream-soft); line-height: 1.65; max-width: 54ch; }
+
+  .tag-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .tag {
+    font-size: 11px; letter-spacing: 2px; font-weight: 700; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-deep); border-radius: 100px; padding: 8px 16px;
+  }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 15px 24px; border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .btn-primary { color: var(--field-deep); background: var(--gold); }
+  .btn-primary:hover { background: var(--cream); box-shadow: 0 4px 20px rgba(240,168,48,0.3); }
+  .btn-ghost { color: var(--cream); background: transparent; border: 1px solid var(--field-line); }
+  .btn-ghost:hover { background: var(--field-mid); border-color: var(--gold); }
+
+  /* Shared screenshot frame with graceful missing-asset fallback. */
+  .shot-frame {
+    position: relative; border: 1px solid var(--field-line); border-radius: 10px;
+    overflow: hidden; background: var(--field-deep); box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .shot-frame img { width: 100%; height: auto; display: block; }
+  .shot-ph {
+    display: none; min-height: 220px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; text-align: center; padding: 40px 24px;
+    color: var(--cream-mute); font-size: 13px; line-height: 1.6;
+  }
+  .shot-ph .icon { font-size: 28px; color: var(--field-line); }
+  .shot-ph code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--cream-soft); }
+  figure { margin: 0; }
+  figcaption { margin-top: 12px; font-size: 13px; color: var(--cream-mute); letter-spacing: 0.3px; }
+
+  /* ------------------------------------------------------------ PILLARS */
+  .pillar { padding: clamp(48px, 7vw, 92px) 0; border-top: 1px solid var(--field-line); }
+  .pillar.shaded { background: var(--field-deep); border-top: none; }
+
+  .pillar-head { display: flex; gap: 22px; align-items: flex-start; margin-bottom: clamp(30px, 4vw, 48px); }
+  .pillar-num {
+    font-family: var(--display); font-size: clamp(24px, 3vw, 34px);
+    color: var(--field-deep); background: var(--gold);
+    width: clamp(48px, 5vw, 62px); height: clamp(48px, 5vw, 62px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; flex-shrink: 0; line-height: 1;
+  }
+  .pillar.shaded .pillar-num { background: var(--cream); }
+  .pillar-titles { flex: 1; min-width: 0; }
+  .pillar-titles h2 {
+    font-family: var(--display); font-size: clamp(26px, 4vw, 44px);
+    letter-spacing: 1px; text-transform: uppercase; color: var(--cream); line-height: 1.02;
+  }
+  .pillar-titles p {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(16px, 1.9vw, 22px); color: var(--gold); margin-top: 8px;
+  }
+
+  .pillar-body {
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(28px, 4.5vw, 60px); align-items: start;
+  }
+  @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
+
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
+  .points { list-style: none; display: grid; gap: 18px; }
+  .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
+  .points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0;
+    color: var(--gold-deep); font-size: 14px;
+  }
+  .points strong { color: var(--cream); font-weight: 600; }
+
+  .figure-stack { display: grid; gap: 24px; }
+
+  /* -------------------------------------------------------- GAME WEEK */
+  .gameweek { padding: clamp(48px, 7vw, 88px) 0; background: var(--field-deep); }
+  .gameweek h2 {
+    font-family: var(--display); font-size: clamp(24px, 3.4vw, 38px);
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold);
+    margin-bottom: clamp(28px, 4vw, 44px);
+  }
+  /* Five steps here, not the football page's six — the connecting rule behind
+     the dots is drawn edge-to-edge, so the column count has to match or the
+     line runs on past the last dot into an empty cell. */
+  .week-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 0; position: relative;
+  }
+  .week-grid::before {
+    content: ""; position: absolute; top: 21px; left: 8%; right: 8%;
+    height: 1px; background: var(--field-line);
+  }
+  @media (max-width: 860px) {
+    .week-grid { grid-template-columns: repeat(3, 1fr); row-gap: 34px; }
+    .week-grid::before { display: none; }
+  }
+  @media (max-width: 460px) { .week-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .week-step { text-align: center; padding: 0 8px; position: relative; z-index: 1; }
+  .week-dot {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--field-deep); border: 1px solid var(--field-line);
+    color: var(--cream-soft); font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .week-step.key .week-dot { background: var(--gold); border-color: var(--gold); color: var(--field-deep); }
+  .week-step h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 6px;
+  }
+  .week-step p { font-size: 13px; line-height: 1.5; color: var(--cream-mute); }
+
+  /* ---------------------------------------------------------- RULE SETS */
+  .rulesets { padding: clamp(44px, 6vw, 80px) 0; border-top: 1px solid var(--field-line); }
+  .ruleset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.5vw, 48px); }
+  @media (max-width: 760px) { .ruleset-grid { grid-template-columns: 1fr; } }
+  .ruleset {
+    border: 1px solid var(--field-line); border-left: 3px solid var(--gold);
+    border-radius: 10px; padding: clamp(24px, 3vw, 34px);
+  }
+  .ruleset h3 {
+    font-family: var(--display); font-size: 20px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .ruleset p { font-size: 15px; line-height: 1.7; color: var(--cream-soft); }
+
+  /* ------------------------------------------------------ SIDELINE GRID */
+  .sideline { padding: clamp(44px, 6vw, 84px) 0; border-top: 1px solid var(--field-line); }
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.6vw, 40px);
+    color: var(--cream); line-height: 1.08; margin-bottom: clamp(30px, 4vw, 44px); max-width: 24ch;
+  }
+  .sideline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(20px, 2.6vw, 30px); }
+  .sl-item { border-top: 1px solid var(--field-line); padding-top: 18px; }
+  .sl-item h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.3px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 9px;
+  }
+  .sl-item p { font-size: 14.5px; line-height: 1.6; color: var(--cream-soft); }
+
+  /* ---------------------------------------------------------- CLOSING */
+  .closing { padding: clamp(52px, 8vw, 100px) 0; background: var(--field-deep); }
+  .closing h2 {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.1;
+    color: var(--cream); margin-bottom: 18px; max-width: 22ch;
+  }
+  .closing p { color: var(--cream-soft); font-size: 16px; line-height: 1.7; max-width: 58ch; }
+  .closing-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+
+  /* ----------------------------------------------------------- FOOTER */
+  .footer { border-top: 1px solid var(--field-line); padding: 48px 0 36px; }
+  .footer-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+  }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a { color: var(--cream-soft); text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-meta {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--field-line);
+    color: var(--cream-mute); font-size: 12px; letter-spacing: 0.3px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep); border: 1px solid var(--gold-deep); color: var(--cream);
+    padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 1000; opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    max-width: calc(100% - 32px); text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fade-up .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ---------------------------------------------------------------- NAV -->
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGameInsights</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- --------------------------------------------------------------- HERO -->
+  <section class="container hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal d1">Built for flag. One iPad.</div>
+        <h1 class="reveal d1">Your playbook. Your stats. <em>One app.</em></h1>
+        <p class="hero-lede reveal d2">Draw your plays, print the wristbands, call them on Saturday, and tag each snap with the call you actually made. By Monday you know which calls worked &mdash; because the playbook and the stat sheet were never separate things.</p>
+        <div class="tag-row reveal d3">
+          <span class="tag">5v5 through 7v7</span>
+          <span class="tag">NFHS and NFL FLAG</span>
+          <span class="tag">Built for iPad</span>
+        </div>
+        <div class="hero-actions reveal d4">
+          <a href="mailto:support@ingameinsights.com?subject=Flag%20Football%20-%20TestFlight%20Access" class="btn btn-primary" data-email="support@ingameinsights.com">Email for TestFlight access</a>
+          <a href="#loop" class="btn btn-ghost">See how the loop closes</a>
+        </div>
+      </div>
+      <figure class="reveal d3">
+        <div class="shot-frame">
+          <img src="assets/flag-football-hero.png" alt="Coaches Box Flag Football play editor and live stat tracking on iPad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/flag-football-hero.png</code></span></div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------- PILLAR 01 PLAYBOOK -->
+  <section class="pillar" id="playbook">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">01</div>
+        <div class="pillar-titles">
+          <h2>Playbook</h2>
+          <p>Draw it once. Use it all week, and on game day.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Chart your plays.</strong> Routes, motion and formations on a canvas built for flag, with your own terminology for formation, motion, play, direction and tag.</li>
+          <li><strong>Custom route tree.</strong> Redraw a route once and every play that runs it updates to match.</li>
+          <li><strong>Call sheets and wristbands.</strong> Printed with the play actually drawn on them, sized to real wristband windows.</li>
+          <li><strong>Sideline whiteboard.</strong> Start from any formation, sketch the adjustment in real time, and save it as a new play.</li>
+          <li><strong>Offense and defense together.</strong> Both sides of the ball in one team playbook, filterable by formation and category.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame">
+            <img src="assets/flag-football-play-editor.png" alt="Play editor showing a flag football route concept drawn from a trips formation" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/flag-football-play-editor.png</code></span></div>
+          </div>
+          <figcaption>The team playbook &mdash; every call, filterable by formation and category</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------- PILLAR 02 STATS -->
+  <section class="pillar shaded" id="stats">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">02</div>
+        <div class="pillar-titles">
+          <h2>Live Stats</h2>
+          <p>Fast enough for the sideline. Deep enough for Monday.</p>
+        </div>
+      </div>
+            <div class="pillar-body" style="grid-template-columns:1fr">
+        <figure class="track-figure">
+          <div class="shot-frame">
+            <img src="assets/flag-football-live-input.png" alt="The flag football live input screen with each section numbered" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/flag-football-live-input.png</code></span></div>
+          </div>
+          <figcaption>Logging a completed pass &mdash; second and eight, with the call already tagged</figcaption>
+        </figure>
+        <ul class="callouts">
+          <li><span class="n">1</span><div><h4>SITUATION KEEPS ITSELF</h4><p>Drive number, down, distance and ball spot advance on their own as you log snaps. Nobody on your staff is tracking the chains twice.</p></div></li>
+          <li><span class="n">2</span><div><h4>YOUR PLAYBOOK, LIVE</h4><p>Tag the call you actually made from your own formation and play chips. This is what lets the app grade play-call effectiveness later.</p></div></li>
+          <li><span class="n">3</span><div><h4>THE RESULT, IN ONE ROW</h4><p>Run or pass, then what happened &mdash; caught, incomplete, dropped, overthrown, intercepted, scrambled. One row covers every outcome.</p></div></li>
+          <li><span class="n">4</span><div><h4>ONLY THE FIELDS THAT APPLY</h4><p>A completed pass asks for passer, receiver, yardage and tackler. Change the result and the row changes with it, so you are never staring at fields that cannot apply.</p></div></li>
+          <li><span class="n">5</span><div><h4>BOTH SIDES OF THE BALL</h4><p>Flip between your offense and your defense without leaving the screen, so one person charts the whole game.</p></div></li>
+          <li><span class="n">6</span><div><h4>TAP THE FIELD, NOT A FORM</h4><p>Two taps on the field set where the ball was caught and where the play ended. The yardage, the drive chart and the field-position report all come from that.</p></div></li>
+        </ul>
+      </div>
+        </div>
+  </section>
+
+  <!-- ------------------------------------------------------------- THE LOOP -->
+  <!-- The one-pager's spine: the five steps that only close because the
+       playbook and the stat sheet are the same app. Reuses the game-week
+       grid styles from the football page. -->
+  <section class="gameweek" id="loop">
+    <div class="container">
+      <h2>Why the two halves are one app</h2>
+      <div class="week-grid">
+        <div class="week-step">
+          <div class="week-dot">1</div>
+          <h3>Draw</h3>
+          <p>Plays in your own words</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">2</div>
+          <h3>Print</h3>
+          <p>Call sheet and wristbands</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">3</div>
+          <h3>Call</h3>
+          <p>From the sheet you printed</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">4</div>
+          <h3>Tag</h3>
+          <p>The snap, with its call</p>
+        </div>
+        <div class="week-step key">
+          <div class="week-dot">5</div>
+          <h3>Grade</h3>
+          <p>Which calls actually worked</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ RULE SETS -->
+  <section class="rulesets">
+    <div class="container">
+      <div class="ruleset-grid">
+        <div class="ruleset">
+          <h3>Rules that match</h3>
+          <p>5v5 through 7v7, built around NFHS and NFL FLAG &mdash; no kicking, no-run zones, and one- and two-point conversions from the 5 and the 10.</p>
+        </div>
+        <div class="ruleset">
+          <h3>A real defensive line</h3>
+          <p>Flag pulls, pass breakups, interceptions, forced fumbles and snap counts, player by player &mdash; so the defensive half of your box score is as detailed as the offensive half.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------- SIDELINE GRID -->
+  <section class="sideline">
+    <div class="container">
+      <span class="section-label">&mdash; Built for the sideline</span>
+      <h2 class="section-title">The small things that decide whether an app survives a season.</h2>
+      <div class="sideline-grid">
+        <div class="sl-item">
+          <h3>Roster from a screenshot</h3>
+          <p>Import jersey numbers and names straight from a roster image, then review before saving.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Share with your staff</h3>
+          <p>Send teams, playbooks, and games to another coach's iPad by AirDrop, Messages, or Mail.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Rotations and depth</h3>
+          <p>Set up to three units per side, with rotation tables printed on the call sheet.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Works with no signal</h3>
+          <p>Everything stays on the iPad. No accounts, no cloud sync, no bars needed at the field.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Share live to a bench iPad</h3>
+          <p>An assistant follows score, situation, and every stat tab as it happens, without touching your inputs.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Reports and season totals</h3>
+          <p>HTML reports and CSV exports, with records, team totals, and player lines rolling up across the season on their own.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------- CLOSING -->
+  <section class="closing">
+    <div class="container">
+      <h2>Currently in beta, with staffs running real seasons.</h2>
+      <p>Coaches Box Flag Football is in TestFlight while we run it through live Saturdays. Email us and we'll get you in, or set up a walkthrough before your season starts &mdash; and if you need something to hand a program director, there's a printable one-pager below.</p>
+      <div class="closing-actions">
+        <a href="mailto:support@ingameinsights.com?subject=Flag%20Football%20-%20TestFlight%20Access" class="btn btn-primary" data-email="support@ingameinsights.com">Email for TestFlight access</a>
+        <!-- Points at the HTML one-pager; swap for a .pdf here once one exists. -->
+        <a href="assets/coaches-box-flag-football-one-pager.html" class="btn btn-ghost" target="_blank" rel="noopener">Open the one-pager</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------- FOOTER -->
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGameInsights</div>
+      <nav class="footer-links">
+        <a href="index.html#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Coaches Box &mdash; playbook and live stats for flag football.</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Email copied</div>
+
+</div>
+
+<script>
+  (function() {
+    var toast = document.getElementById('toast');
+    var toastTimer = null;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 3500);
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function(resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); document.body.removeChild(ta); resolve(); }
+        catch (e) { document.body.removeChild(ta); reject(e); }
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a[data-email]');
+      if (!link) return;
+      var email = link.getAttribute('data-email');
+      if (!email) return;
+      copyToClipboard(email).then(
+        function() { showToast('Email copied: ' + email); },
+        function() { showToast('Email: ' + email); }
+      );
+    });
+  })();
+</script>
+</body>
+</html>

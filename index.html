@@ -360,9 +360,9 @@
     min-width: 280px;
   }
 
-  /* Four cards: auto-fit would leave a lone card orphaned on a second row at
-     desktop widths (three fit, the fourth wraps). Locking to two columns above
-     the breakpoint gives a balanced 2x2 instead. */
+  /* Auto-fit would leave a lone card orphaned on a second row at desktop
+     widths (three fit, the fourth wraps). Locking to two columns above the
+     breakpoint gives balanced rows instead. */
   .apps-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -370,6 +370,34 @@
   }
   @media (min-width: 860px) {
     .apps-grid { grid-template-columns: repeat(2, 1fr); }
+    /* With an odd number of cards the last one would sit alone in a half-width
+       column. Spanning it across both reads as deliberate rather than
+       orphaned; the rule switches itself off again at an even count.
+       Spanning alone would leave the right half empty, so the wide card also
+       switches to icon-beside-text, and the body copy is held to a readable
+       measure instead of stretching the full width. */
+    .apps-grid > .app-card:nth-child(odd):last-child {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: clamp(28px, 3.5vw, 48px);
+      align-content: start;
+    }
+    /* `1 / -1` would only span the explicit grid — which is one row here — so
+       the icon is given an explicit span wider than the card can ever be. */
+    .apps-grid > .app-card:nth-child(odd):last-child > .app-card-icon {
+      grid-column: 1; grid-row: 1 / span 20; margin-bottom: 0;
+    }
+    .apps-grid > .app-card:nth-child(odd):last-child > *:not(.app-card-icon):not(.app-card-status) {
+      grid-column: 2;
+    }
+    /* Grid items stretch by default; the pill CTA has to stay its own width. */
+    .apps-grid > .app-card:nth-child(odd):last-child > .app-card-cta,
+    .apps-grid > .app-card:nth-child(odd):last-child > .app-card-actions {
+      justify-self: start;
+    }
+    .apps-grid > .app-card:nth-child(odd):last-child .app-card-desc,
+    .apps-grid > .app-card:nth-child(odd):last-child .app-card-tagline { max-width: 62ch; }
   }
 
   .app-card {
@@ -825,7 +853,7 @@
   <section class="apps container" id="apps">
     <div class="section-header reveal d1">
       <span class="section-label">— The Coaches Box lineup</span>
-      <h2 class="section-title">Four sports. One philosophy. Track everything that matters.</h2>
+      <h2 class="section-title">Five sports. One philosophy. Track everything that matters.</h2>
     </div>
     <p class="section-intro reveal d1"><strong>Coaches Box</strong> is the InGameInsights app line — a separate app for each sport, so nothing is bent to fit a generic template.</p>
 
@@ -913,9 +941,23 @@
         <p class="app-card-brand">Coaches Box</p>
         <h3 class="app-card-name">Football</h3>
         <p class="app-card-tagline">Playbook, live stats, and scouting in one app.</p>
-        <p class="app-card-desc">Tackle and flag football in one app: draw your playbook and print call sheets and wristbands, track every snap live with down and distance, and chart next week's opponent for tendency reports — with self-scout falling out of your own games for free. Currently in beta with staffs running real seasons.</p>
+        <p class="app-card-desc">Draw your playbook and print call sheets and wristbands, track every snap live with down and distance, and chart next week's opponent for tendency reports — with self-scout falling out of your own games for free. Currently in beta with staffs running real seasons.</p>
         <a href="coaches-box-football.html" class="app-card-cta secondary">
           Explore Coaches Box Football
+          <span class="arrow">→</span>
+        </a>
+      </article>
+
+      <!-- ============ FLAG FOOTBALL ============ -->
+      <article class="app-card reveal d6">
+        <span class="app-card-status in-beta">In Beta</span>
+        <img src="assets/flag-icon.png" alt="Coaches Box Flag Football app icon" class="app-card-icon" loading="lazy">
+        <p class="app-card-brand">Coaches Box</p>
+        <h3 class="app-card-name">Flag Football</h3>
+        <p class="app-card-tagline">Your playbook. Your stats. One app.</p>
+        <p class="app-card-desc">Built for flag from the ground up, 5v5 through 7v7, NFHS and NFL FLAG. Draw plays on a canvas made for flag with your own terminology, print wristbands sized to real windows, then tag every snap with the call you actually made — so by Monday you know which calls worked. Air-yard splits, yards after catch, and snap counts land in the box score while the game is happening. Currently in beta.</p>
+        <a href="coaches-box-flag-football.html" class="app-card-cta secondary">
+          Explore Coaches Box Flag Football
           <span class="arrow">→</span>
         </a>
       </article>
