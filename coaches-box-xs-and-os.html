@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coaches Box X's &amp; O's — Draw, animate and share basketball plays on iPad and iPhone</title>
+<meta name="description" content="Draw your plays, animate them step by step, and share them with your staff and players. A playbook per team, rosters from a photo, and a sideline whiteboard. iPad and iPhone. Currently in beta.">
+<meta property="og:title" content="Coaches Box X's &amp; O's — Draw it. Animate it. Share it.">
+<meta property="og:description" content="The basketball play designer from the Coaches Box line: animated plays, a playbook per team, a sideline whiteboard, and video export. iPad and iPhone.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com/coaches-box-xs-and-os.html">
+<meta property="og:image" content="https://ingameinsights.com/assets/xos-icon.png">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Coaches Box X's & O's — product page (styles shared with the Football page)
+     -------------------------------------------------------------------------
+     Structure lifted from the printed one-pager: three numbered pillars
+     (playbook / stats / scouting), the game-week strip, the tackle-vs-flag
+     split, and the small-feature grid. The strip is the spine of the page —
+     it's the clearest argument for one app instead of three tools.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------------------------------------------------------------- NAV */
+  .nav {
+    padding: 28px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--cream); }
+  /* Transparent mark — no tinted tile behind it. */
+  .nav-brand-logo {
+    width: 38px; height: 38px; flex-shrink: 0;
+    object-fit: contain;
+  }
+  /* Wordmark set in DM Serif Display to match the brand lockup — the mark
+     and the name now speak the same typographic language. Single cream
+     weight, no split color, matching the artwork. */
+  .nav-brand-text {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .nav-menu { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 28px); flex-wrap: wrap; }
+  .nav-link {
+    color: var(--cream-soft); text-decoration: none; font-size: 14px;
+    font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease;
+  }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
+
+  /* --------------------------------------------------------------- HERO */
+  .hero { padding: clamp(44px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.15fr 1fr;
+    gap: clamp(30px, 4.5vw, 64px); align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
+    color: var(--cream-mute); padding: 8px 18px;
+    border: 1px solid var(--field-line); border-radius: 100px; margin-bottom: 24px;
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 0.95; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); display: block; }
+  .hero-lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--cream-soft); line-height: 1.65; max-width: 54ch; }
+
+  .tag-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .tag {
+    font-size: 11px; letter-spacing: 2px; font-weight: 700; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-deep); border-radius: 100px; padding: 8px 16px;
+  }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 15px 24px; border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .btn-primary { color: var(--field-deep); background: var(--gold); }
+  .btn-primary:hover { background: var(--cream); box-shadow: 0 4px 20px rgba(240,168,48,0.3); }
+  .btn-ghost { color: var(--cream); background: transparent; border: 1px solid var(--field-line); }
+  .btn-ghost:hover { background: var(--field-mid); border-color: var(--gold); }
+
+  /* Shared screenshot frame with graceful missing-asset fallback. */
+  .shot-frame {
+    position: relative; border: 1px solid var(--field-line); border-radius: 10px;
+    overflow: hidden; background: var(--field-deep); box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .shot-frame img { width: 100%; height: auto; display: block; }
+  .shot-ph {
+    display: none; min-height: 220px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; text-align: center; padding: 40px 24px;
+    color: var(--cream-mute); font-size: 13px; line-height: 1.6;
+  }
+  .shot-ph .icon { font-size: 28px; color: var(--field-line); }
+  .shot-ph code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--cream-soft); }
+  figure { margin: 0; }
+  figcaption { margin-top: 12px; font-size: 13px; color: var(--cream-mute); letter-spacing: 0.3px; }
+
+  /* ------------------------------------------------------------ PILLARS */
+  .pillar { padding: clamp(48px, 7vw, 92px) 0; border-top: 1px solid var(--field-line); }
+  .pillar.shaded { background: var(--field-deep); border-top: none; }
+
+  .pillar-head { display: flex; gap: 22px; align-items: flex-start; margin-bottom: clamp(30px, 4vw, 48px); }
+  .pillar-num {
+    font-family: var(--display); font-size: clamp(24px, 3vw, 34px);
+    color: var(--field-deep); background: var(--gold);
+    width: clamp(48px, 5vw, 62px); height: clamp(48px, 5vw, 62px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; flex-shrink: 0; line-height: 1;
+  }
+  .pillar.shaded .pillar-num { background: var(--cream); }
+  .pillar-titles { flex: 1; min-width: 0; }
+  .pillar-titles h2 {
+    font-family: var(--display); font-size: clamp(26px, 4vw, 44px);
+    letter-spacing: 1px; text-transform: uppercase; color: var(--cream); line-height: 1.02;
+  }
+  .pillar-titles p {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(16px, 1.9vw, 22px); color: var(--gold); margin-top: 8px;
+  }
+
+  .pillar-body {
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(28px, 4.5vw, 60px); align-items: start;
+  }
+  @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
+
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
+  .points { list-style: none; display: grid; gap: 18px; }
+  .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
+  .points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0;
+    color: var(--gold-deep); font-size: 14px;
+  }
+  .points strong { color: var(--cream); font-weight: 600; }
+
+  .figure-stack { display: grid; gap: 24px; }
+
+  /* -------------------------------------------------------- GAME WEEK */
+  .gameweek { padding: clamp(48px, 7vw, 88px) 0; background: var(--field-deep); }
+  .gameweek h2 {
+    font-family: var(--display); font-size: clamp(24px, 3.4vw, 38px);
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold);
+    margin-bottom: clamp(28px, 4vw, 44px);
+  }
+  .week-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    gap: 0; position: relative;
+  }
+  .week-grid::before {
+    content: ""; position: absolute; top: 21px; left: 8%; right: 8%;
+    height: 1px; background: var(--field-line);
+  }
+  @media (max-width: 860px) {
+    .week-grid { grid-template-columns: repeat(3, 1fr); row-gap: 34px; }
+    .week-grid::before { display: none; }
+  }
+  @media (max-width: 460px) { .week-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .week-step { text-align: center; padding: 0 8px; position: relative; z-index: 1; }
+  .week-dot {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--field-deep); border: 1px solid var(--field-line);
+    color: var(--cream-soft); font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .week-step.key .week-dot { background: var(--gold); border-color: var(--gold); color: var(--field-deep); }
+  .week-step h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 6px;
+  }
+  .week-step p { font-size: 13px; line-height: 1.5; color: var(--cream-mute); }
+
+  /* ---------------------------------------------------------- RULE SETS */
+  .rulesets { padding: clamp(44px, 6vw, 80px) 0; border-top: 1px solid var(--field-line); }
+  .ruleset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.5vw, 48px); }
+  @media (max-width: 760px) { .ruleset-grid { grid-template-columns: 1fr; } }
+  .ruleset {
+    border: 1px solid var(--field-line); border-left: 3px solid var(--gold);
+    border-radius: 10px; padding: clamp(24px, 3vw, 34px);
+  }
+  .ruleset h3 {
+    font-family: var(--display); font-size: 20px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .ruleset p { font-size: 15px; line-height: 1.7; color: var(--cream-soft); }
+
+  /* ------------------------------------------------------ SIDELINE GRID */
+  .sideline { padding: clamp(44px, 6vw, 84px) 0; border-top: 1px solid var(--field-line); }
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.6vw, 40px);
+    color: var(--cream); line-height: 1.08; margin-bottom: clamp(30px, 4vw, 44px); max-width: 24ch;
+  }
+  .sideline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(20px, 2.6vw, 30px); }
+  .sl-item { border-top: 1px solid var(--field-line); padding-top: 18px; }
+  .sl-item h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.3px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 9px;
+  }
+  .sl-item p { font-size: 14.5px; line-height: 1.6; color: var(--cream-soft); }
+
+  /* ---------------------------------------------------------- CLOSING */
+  .closing { padding: clamp(52px, 8vw, 100px) 0; background: var(--field-deep); }
+  .closing h2 {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.1;
+    color: var(--cream); margin-bottom: 18px; max-width: 22ch;
+  }
+  .closing p { color: var(--cream-soft); font-size: 16px; line-height: 1.7; max-width: 58ch; }
+  .closing-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+
+  /* ----------------------------------------------------------- FOOTER */
+  .footer { border-top: 1px solid var(--field-line); padding: 48px 0 36px; }
+  .footer-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+  }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a { color: var(--cream-soft); text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-meta {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--field-line);
+    color: var(--cream-mute); font-size: 12px; letter-spacing: 0.3px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep); border: 1px solid var(--gold-deep); color: var(--cream);
+    padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 1000; opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    max-width: calc(100% - 32px); text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fade-up .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+  }
+
+  /* ------------------------------------------------- X's & O's additions */
+  /* .hero's padding shorthand wipes the container's side padding; put it back */
+  .container.hero { padding-left: clamp(20px, 4vw, 48px); padding-right: clamp(20px, 4vw, 48px); }
+  /* iPhone screenshots are tall: keep them phone-sized instead of full width */
+  .phone-frame { max-width: 300px; margin: 0 auto; border-radius: 28px; }
+  .phone-row { display: grid; grid-template-columns: repeat(2, minmax(0, 300px)); gap: 24px; justify-content: center; }
+  @media (max-width: 560px) { .phone-row { grid-template-columns: minmax(0, 300px); } }
+  .hero-phones { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  .hero-phones figure:nth-child(2) { margin-top: 48px; }
+
+  .beta-banner {
+    display: flex; gap: 14px; align-items: flex-start;
+    border: 1px solid var(--rose); border-left: 3px solid var(--rose);
+    background: rgba(232,100,90,0.08); border-radius: 10px;
+    padding: 16px 20px; margin-top: 28px; max-width: 58ch;
+    font-size: 14.5px; line-height: 1.6; color: var(--cream-soft);
+  }
+  .beta-banner strong { color: var(--cream); }
+  .beta-dot {
+    flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; margin-top: 7px;
+    background: var(--rose); animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(232,100,90,.7); }
+    50% { opacity: .7; box-shadow: 0 0 0 6px rgba(232,100,90,0); }
+  }
+
+  /* pricing */
+  .pricing { padding: clamp(48px, 7vw, 88px) 0; border-top: 1px solid var(--field-line); }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.6vw, 30px); }
+  @media (max-width: 860px) { .price-grid { grid-template-columns: 1fr; } }
+  .price-card {
+    border: 1px solid var(--field-line); border-radius: 12px; padding: clamp(24px, 3vw, 32px);
+    background: var(--field-deep);
+  }
+  .price-card.key { border-color: var(--gold-deep); box-shadow: 0 0 0 1px var(--gold-deep) inset; }
+  .price-card h3 {
+    font-family: var(--display); font-size: 18px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 6px;
+  }
+  .price {
+    font-family: var(--display); font-size: 44px; line-height: 1; color: var(--gold); margin: 10px 0 14px;
+  }
+  .price small { font-family: var(--body); font-size: 13px; letter-spacing: 0.4px; color: var(--cream-mute); margin-left: 6px; }
+  .price-card p { font-size: 14.5px; line-height: 1.65; color: var(--cream-soft); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ---------------------------------------------------------------- NAV -->
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGameInsights</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- --------------------------------------------------------------- HERO -->
+  <section class="container hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal d1">Coaches Box X's &amp; O's &middot; In beta</div>
+        <h1 class="reveal d1">Draw it. Animate it. <em>Share it.</em></h1>
+        <p class="hero-lede reveal d2">The play designer from the Coaches Box line. Draw a set in seconds, break it into steps, and watch it run &mdash; passes, screens, and the shot at the end. Then hand it to your staff as a file or to your players as a video.</p>
+        <div class="tag-row reveal d3">
+          <span class="tag">Basketball</span>
+          <span class="tag">iPad &amp; iPhone</span>
+          <span class="tag">No subscription</span>
+        </div>
+        <div class="hero-actions reveal d4">
+          <a href="mailto:support@ingameinsights.com?subject=X%27s%20%26%20O%27s%20-%20TestFlight%20Access" class="btn btn-primary" data-email="support@ingameinsights.com">Email for TestFlight access</a>
+          <a href="#draw" class="btn btn-ghost">See how it works</a>
+        </div>
+        <div class="beta-banner reveal d4">
+          <span class="beta-dot" aria-hidden="true"></span>
+          <span><strong>In beta now, App Store next.</strong> X's &amp; O's is in TestFlight with coaches drawing real playbooks, and it's on its way to the App Store. A lacrosse edition is in the works.</span>
+        </div>
+      </div>
+      <div class="hero-phones reveal d3">
+        <figure>
+          <div class="shot-frame phone-frame">
+            <img src="assets/xos-shot.jpg" alt="A Horns Flare play animating on iPhone, with the shot in the air and the step title above the court" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-shot.jpg</code></span></div>
+          </div>
+        </figure>
+        <figure>
+          <div class="shot-frame phone-frame">
+            <img src="assets/xos-playbook.jpg" alt="The playbook on iPhone: plays in two columns with court thumbnails" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-playbook.jpg</code></span></div>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ----------------------------------------------------- PILLAR 01 DRAW -->
+  <section class="pillar" id="draw">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">01</div>
+        <div class="pillar-titles">
+          <h2>Draw the Play</h2>
+          <p>Tap a player. Drag. That's a route.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Routes with a finger.</strong> Tap a player and drag the pencil to draw his route, or tap stops one at a time for exact spots. Arrows, cuts, screens, and stops each draw the way coaches draw them.</li>
+          <li><strong>The ball goes where you say.</strong> Drag the ball to a teammate to pass, or to a spot on his route to lead him. The receiver is picked up automatically, ready for the next action.</li>
+          <li><strong>The shot, too.</strong> Only the ball handler can shoot &mdash; at the end of his route, or catch-and-shoot right where he stands.</li>
+          <li><strong>Defense that follows its man.</strong> Lock each defender to his man and he shadows him through the whole play. Show or hide the defense with one tap.</li>
+          <li><strong>Start from a set.</strong> Zones and presses come built in &mdash; 2-3, 1-3-1, box-and-1, 2-2-1 and more &mdash; along with starter plays like Horns Flare and Zipper. Save your own formations as sets, too. Full court or half court, whichever the play needs.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame phone-frame">
+            <img src="assets/xos-draw.jpg" alt="Drawing a play on iPhone: the point guard selected, with route, ball, pass and shot controls above the court" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-draw.jpg</code></span></div>
+          </div>
+          <figcaption>Selected player, route type, ball, pass and shot &mdash; all one tap away</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------- PILLAR 02 ANIMATE -->
+  <section class="pillar shaded" id="animate">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">02</div>
+        <div class="pillar-titles">
+          <h2>Animate in Steps</h2>
+          <p>Teach it the way you'd walk it through.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Break it into steps.</strong> Entry, flare, shot &mdash; each step gets a name and a line of coaching, shown above the court while the play runs.</li>
+          <li><strong>Watch it run.</strong> Play, pause, or scrub to any moment. Passes fly, screens set, and the shot arcs to the rim with its own finish.</li>
+          <li><strong>See where everyone came from.</strong> Faint tracks from the previous step keep the spacing readable as the play unfolds.</li>
+          <li><strong>Export a video.</strong> Landscape for full court, portrait for half court &mdash; sized for a team group chat or a film session.</li>
+          <li><strong>Share the play itself.</strong> Send a play, a set, or a whole playbook to another coach by AirDrop, Messages, or Mail. Opening a play someone sends you is always free.</li>
+        </ul>
+        <div class="phone-row">
+          <figure>
+            <div class="shot-frame phone-frame">
+              <img src="assets/xos-steps.jpg" alt="A play broken into Entry, Flare and Shot steps, with the ball handler highlighted" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-steps.jpg</code></span></div>
+            </div>
+            <figcaption>Steps across the top, timeline across the bottom</figcaption>
+          </figure>
+          <figure>
+            <div class="shot-frame phone-frame">
+              <img src="assets/xos-shot.jpg" alt="The shot step of a play animating, with the ball in the air" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-shot.jpg</code></span></div>
+            </div>
+            <figcaption>The shot gets its own finish</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------------------------------------------------- PILLAR 03 TEAMS -->
+  <section class="pillar" id="teams">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">03</div>
+        <div class="pillar-titles">
+          <h2>A Playbook per Team</h2>
+          <p>Varsity, JV, and your summer team &mdash; kept apart.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Every team, its own playbook.</strong> Switch teams from the top of the home screen. Copy a play from varsity to JV, or move a few at once.</li>
+          <li><strong>Rosters in a minute.</strong> Type a number and a name and press Return, or import the whole roster from a photo or screenshot. Text recognition runs on the device; nothing is uploaded.</li>
+          <li><strong>Your starters on every play.</strong> Set a starting lineup and your players fill the spots in every play automatically. Swap in someone else for a single play with a long press.</li>
+          <li><strong>Numbers your way.</strong> Show jersey numbers, initials, or plain 1 through 5.</li>
+          <li><strong>Find it fast.</strong> Filter by offense, defense, fast break, out of bounds, press break, or zone, or just search by name.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame phone-frame">
+            <img src="assets/xos-team.jpg" alt="A varsity team on iPhone with its starting lineup and roster" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-team.jpg</code></span></div>
+          </div>
+          <figcaption>Starting lineup and roster for one team</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------- PILLAR 04 WHITEBOARD -->
+  <section class="pillar shaded" id="whiteboard">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">04</div>
+        <div class="pillar-titles">
+          <h2>Sideline Whiteboard</h2>
+          <p>For the timeout, when there's no time to build a play.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Draw like a dry-erase board.</strong> Pick Cut, Pass, or Dribble and the line draws solid, dashed, or zigzag &mdash; with the arrowhead added for you.</li>
+          <li><strong>Players you can move.</strong> Drag the X's and O's anywhere. Lock the defense to their men and they follow along.</li>
+          <li><strong>Mark the ball.</strong> One tap shows who starts with it.</li>
+          <li><strong>Start from a set.</strong> Load any saved set, sketch the adjustment, and save the board for later.</li>
+          <li><strong>Best with Apple Pencil.</strong> Full court or half court, on the biggest screen on your bench.</li>
+        </ul>
+        <figure>
+          <div class="shot-frame">
+            <img src="assets/xos-whiteboard.jpg" alt="The sideline whiteboard on iPad with cuts, a dribble, a pass, and locked defenders" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-whiteboard.jpg</code></span></div>
+          </div>
+          <figcaption>Cuts in white, the dribble in orange, the pass in yellow</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------- WORKFLOW -->
+  <section class="gameweek" id="workflow">
+    <div class="container">
+      <h2>From the whiteboard to the film session</h2>
+      <div class="week-grid">
+        <div class="week-step">
+          <div class="week-dot">1</div>
+          <h3>Sketch</h3>
+          <p>Rough it out on the whiteboard</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">2</div>
+          <h3>Draw</h3>
+          <p>Build it from a set, step by step</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">3</div>
+          <h3>Animate</h3>
+          <p>Watch it run, fix the spacing</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">4</div>
+          <h3>Install</h3>
+          <p>Walk it through at practice</p>
+        </div>
+        <div class="week-step key">
+          <div class="week-dot">5</div>
+          <h3>Share</h3>
+          <p>Video to players, file to staff</p>
+        </div>
+        <div class="week-step">
+          <div class="week-dot">6</div>
+          <h3>Adjust</h3>
+          <p>Tweak it for next week's opponent</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <span class="section-label">&mdash; Pricing</span>
+      <h2 class="section-title">Buy it once. No subscription.</h2>
+      <div class="price-grid">
+        <div class="price-card">
+          <h3>Always free</h3>
+          <div class="price">$0</div>
+          <p>Download it, open plays a coach sends you, and view and animate every play you've saved. Your plays never get locked away.</p>
+        </div>
+        <div class="price-card">
+          <h3>Free trial</h3>
+          <div class="price">7<small>days</small></div>
+          <p>Every feature unlocked for a week: drawing, teams, the whiteboard, and video export. No account needed, and nothing is charged when it ends.</p>
+        </div>
+        <div class="price-card key">
+          <h3>Full version</h3>
+          <div class="price">$9.99<small>one time</small></div>
+          <p>Create, edit, export, and share for good. Works with Family Sharing, and it carries over to your new iPad or iPhone with Restore Purchase.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------- SIDELINE GRID -->
+  <section class="sideline">
+    <div class="container">
+      <span class="section-label">&mdash; Built for the bench</span>
+      <h2 class="section-title">The small things that make it quick to use in a gym.</h2>
+      <div class="sideline-grid">
+        <div class="sl-item">
+          <h3>iPad and iPhone</h3>
+          <p>A big canvas on the iPad, and the same playbook in your pocket on the iPhone.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Undo everything</h3>
+          <p>Undo and redo every move, route, and pass while you draw.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Six play types</h3>
+          <p>Offense, defense, fast break, out of bounds, press break, and zone. Pick a default set for each and new plays start there.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Stays on your device</h3>
+          <p>No account and no sign-in. Your plays and rosters stay on your iPad or iPhone.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Pairs with Coaches Box</h3>
+          <p>Same look and feel as Coaches Box Basketball, the stat tracker coaches already use on the bench.</p>
+        </div>
+        <div class="sl-item">
+          <h3>Made by coaches' feedback</h3>
+          <p>Beta coaches shape what ships. Tell us what your staff needs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------- CLOSING -->
+  <section class="closing">
+    <div class="container">
+      <h2>Currently in beta, on its way to the App Store.</h2>
+      <p>Coaches Box X's &amp; O's is in TestFlight while coaches put it through real practices. Email us and we'll get you in, and we'll let you know the day it's on the App Store.</p>
+      <div class="closing-actions">
+        <a href="mailto:support@ingameinsights.com?subject=X%27s%20%26%20O%27s%20-%20TestFlight%20Access" class="btn btn-primary" data-email="support@ingameinsights.com">Email for TestFlight access</a>
+        <a href="coaches-box-basketball.html" class="btn btn-ghost">See Coaches Box Basketball</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------- FOOTER -->
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGameInsights</div>
+      <nav class="footer-links">
+        <a href="index.html#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Coaches Box X's &amp; O's &mdash; draw, animate, and share your plays.</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Email copied</div>
+
+</div>
+<script>
+  (function() {
+    var toast = document.getElementById('toast');
+    var toastTimer = null;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 3500);
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function(resolve, reject) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); document.body.removeChild(ta); resolve(); }
+        catch (e) { document.body.removeChild(ta); reject(e); }
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a[data-email]');
+      if (!link) return;
+      var email = link.getAttribute('data-email');
+      if (!email) return;
+      copyToClipboard(email).then(
+        function() { showToast('Email copied: ' + email); },
+        function() { showToast('Email: ' + email); }
+      );
+    });
+  })();
+</script>
+</body>
+</html>
