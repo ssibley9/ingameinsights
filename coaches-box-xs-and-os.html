@@ -354,6 +354,8 @@
   .phone-row { display: grid; grid-template-columns: repeat(2, minmax(0, 300px)); gap: 24px; justify-content: center; }
   @media (max-width: 560px) { .phone-row { grid-template-columns: minmax(0, 300px); } }
   .hero-phones { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  /* iPad screenshots need more room than phones did */
+  @media (min-width: 901px) { .hero-grid { grid-template-columns: 1fr 1.15fr; } }
   .hero-phones figure:nth-child(2) { margin-top: 48px; }
 
   .beta-banner {
@@ -435,15 +437,15 @@
       </div>
       <div class="hero-phones reveal d3">
         <figure>
-          <div class="shot-frame phone-frame">
-            <img src="assets/xos-shot.jpg" alt="A Horns Flare play animating on iPhone, with the shot in the air and the step title above the court" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-shot.jpg</code></span></div>
+          <div class="shot-frame">
+            <img src="assets/xos-ipad-catch-shoot.jpg" alt="Zipper animating on iPad: a catch-and-shoot step, with the coaching point above the court" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-ipad-catch-shoot.jpg</code></span></div>
           </div>
         </figure>
         <figure>
-          <div class="shot-frame phone-frame">
-            <img src="assets/xos-playbook.jpg" alt="The playbook on iPhone: plays in two columns with court thumbnails" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-playbook.jpg</code></span></div>
+          <div class="shot-frame">
+            <img src="assets/xos-ipad-playbook.jpg" alt="The playbook on iPad: a team's plays with court thumbnails, category filters, and the team switcher" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">▣</span><span>Add screenshot<br><code>assets/xos-ipad-playbook.jpg</code></span></div>
           </div>
         </figure>
       </div>
