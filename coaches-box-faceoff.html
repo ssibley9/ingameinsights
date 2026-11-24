@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coaches Box Faceoff — chart every lacrosse faceoff from your iPhone</title>
+<meta name="description" content="Faceoff tracking for lacrosse parents and coaches: clamp, move, exit direction, ground balls and what happened next, with per-FOGO stats, reports, and sync into Coaches Box Lacrosse.">
+<meta property="og:title" content="Coaches Box Faceoff — chart every lacrosse faceoff from your iPhone">
+<meta property="og:description" content="Faceoff tracking for lacrosse parents and coaches: clamp, move, exit direction, ground balls and what happened next, with per-FOGO stats, reports, and sync into Coaches Box Lacrosse.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ingameinsights.com/coaches-box-faceoff.html">
+<meta name="theme-color" content="#1a3a26">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================================
+     Coaches Box Football — product page
+     -------------------------------------------------------------------------
+     Structure lifted from the printed one-pager: three numbered pillars
+     (playbook / stats / scouting), the game-week strip, the tackle-vs-flag
+     split, and the small-feature grid. The strip is the spine of the page —
+     it's the clearest argument for one app instead of three tools.
+     ========================================================================= */
+  :root {
+    --field-deep:    #0e2818;
+    --field:         #1a3a26;
+    --field-mid:     #244e34;
+    --field-line:    #2d5e40;
+    --cream:         #efdc99;
+    --cream-soft:    #d4c285;
+    --cream-mute:    #8a7d5a;
+    --gold:          #f0a830;
+    --gold-deep:     #c98a1f;
+    --rose:          #e8645a;
+
+    --serif: "DM Serif Display", "Times New Roman", serif;
+    --display: "Anton", "Impact", sans-serif;
+    --body: "Inter", -apple-system, system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body);
+    background: var(--field);
+    color: var(--cream);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+    background-size: 24px 24px;
+  }
+  .page { position: relative; z-index: 1; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 48px);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------------------------------------------------------------- NAV */
+  .nav {
+    padding: 28px 0 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--cream); }
+  /* Transparent mark — no tinted tile behind it. */
+  .nav-brand-logo {
+    width: 38px; height: 38px; flex-shrink: 0;
+    object-fit: contain;
+  }
+  /* Wordmark set in DM Serif Display to match the brand lockup — the mark
+     and the name now speak the same typographic language. Single cream
+     weight, no split color, matching the artwork. */
+  .nav-brand-text {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .nav-menu { display: flex; align-items: center; gap: clamp(16px, 2.5vw, 28px); flex-wrap: wrap; }
+  .nav-link {
+    color: var(--cream-soft); text-decoration: none; font-size: 14px;
+    font-weight: 500; letter-spacing: 0.4px; transition: color .2s ease;
+  }
+  .nav-link:hover, .nav-link.current { color: var(--gold); }
+
+  /* --------------------------------------------------------------- HERO */
+  .hero { padding: clamp(44px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.15fr 1fr;
+    gap: clamp(30px, 4.5vw, 64px); align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 3px; font-weight: 600; text-transform: uppercase;
+    color: var(--cream-mute); padding: 8px 18px;
+    border: 1px solid var(--field-line); border-radius: 100px; margin-bottom: 24px;
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); box-shadow: 0 0 10px var(--gold);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 0.95; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; color: var(--gold); display: block; }
+  .hero-lede { font-size: clamp(16px, 1.6vw, 19px); color: var(--cream-soft); line-height: 1.65; max-width: 54ch; }
+
+  .tag-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+  .tag {
+    font-size: 11px; letter-spacing: 2px; font-weight: 700; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold-deep); border-radius: 100px; padding: 8px 16px;
+  }
+
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 32px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-size: 13px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 15px 24px; border-radius: 100px;
+    transition: background .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .btn-primary { color: var(--field-deep); background: var(--gold); }
+  .btn-primary:hover { background: var(--cream); box-shadow: 0 4px 20px rgba(240,168,48,0.3); }
+  .btn-ghost { color: var(--cream); background: transparent; border: 1px solid var(--field-line); }
+  .btn-ghost:hover { background: var(--field-mid); border-color: var(--gold); }
+
+  /* Shared screenshot frame with graceful missing-asset fallback. */
+  .shot-frame {
+    position: relative; border: 1px solid var(--field-line); border-radius: 10px;
+    overflow: hidden; background: var(--field-deep); box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+  .shot-frame img { width: 100%; height: auto; display: block; }
+  .shot-ph {
+    display: none; min-height: 220px; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px; text-align: center; padding: 40px 24px;
+    color: var(--cream-mute); font-size: 13px; line-height: 1.6;
+  }
+  .shot-ph .icon { font-size: 28px; color: var(--field-line); }
+  .shot-ph code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--cream-soft); }
+  figure { margin: 0; }
+  figcaption { margin-top: 12px; font-size: 13px; color: var(--cream-mute); letter-spacing: 0.3px; }
+
+  /* ------------------------------------------------------------ PILLARS */
+  .pillar { padding: clamp(48px, 7vw, 92px) 0; border-top: 1px solid var(--field-line); }
+  .pillar.shaded { background: var(--field-deep); border-top: none; }
+
+  .pillar-head { display: flex; gap: 22px; align-items: flex-start; margin-bottom: clamp(30px, 4vw, 48px); }
+  .pillar-num {
+    font-family: var(--display); font-size: clamp(24px, 3vw, 34px);
+    color: var(--field-deep); background: var(--gold);
+    width: clamp(48px, 5vw, 62px); height: clamp(48px, 5vw, 62px);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; flex-shrink: 0; line-height: 1;
+  }
+  .pillar.shaded .pillar-num { background: var(--cream); }
+  .pillar-titles { flex: 1; min-width: 0; }
+  .pillar-titles h2 {
+    font-family: var(--display); font-size: clamp(26px, 4vw, 44px);
+    letter-spacing: 1px; text-transform: uppercase; color: var(--cream); line-height: 1.02;
+  }
+  .pillar-titles p {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(16px, 1.9vw, 22px); color: var(--gold); margin-top: 8px;
+  }
+
+  .pillar-body {
+    display: grid; grid-template-columns: 1fr 1.05fr;
+    gap: clamp(28px, 4.5vw, 60px); align-items: start;
+  }
+  @media (max-width: 900px) { .pillar-body { grid-template-columns: 1fr; } }
+
+
+  /* annotated tracking figure: image full width, callouts numbered beneath */
+  .track-figure { margin-top: 10px; }
+  .track-figure .shot-frame { margin: 0; }
+  .track-figure figcaption { margin-top: 10px; }
+  .callouts { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr);
+              gap: 22px 34px; margin-top: 30px; }
+  @media (max-width: 900px) { .callouts { grid-template-columns: 1fr; } }
+  .callouts li { display: flex; gap: 12px; }
+  .callouts .n { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+                 border: 1.5px solid var(--gold); color: var(--gold);
+                 font-size: 13px; font-weight: 700; display: flex;
+                 align-items: center; justify-content: center; margin-top: 2px; }
+  .callouts h4 { margin: 0 0 3px; font-size: 13px; letter-spacing: .09em;
+                 text-transform: uppercase; color: var(--cream); }
+  .callouts p { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--cream-soft); }
+  .points { list-style: none; display: grid; gap: 18px; }
+  .points li { position: relative; padding-left: 24px; font-size: 15.5px; line-height: 1.65; color: var(--cream-soft); }
+  .points li::before {
+    content: "▸"; position: absolute; left: 0; top: 0;
+    color: var(--gold-deep); font-size: 14px;
+  }
+  .points strong { color: var(--cream); font-weight: 600; }
+
+  .figure-stack { display: grid; gap: 24px; }
+
+  /* ---------------------------------------------------------- RULE SETS */
+  .rulesets { padding: clamp(44px, 6vw, 80px) 0; border-top: 1px solid var(--field-line); }
+  .ruleset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.5vw, 48px); }
+  @media (max-width: 760px) { .ruleset-grid { grid-template-columns: 1fr; } }
+  .ruleset {
+    border: 1px solid var(--field-line); border-left: 3px solid var(--gold);
+    border-radius: 10px; padding: clamp(24px, 3vw, 34px);
+  }
+  .ruleset h3 {
+    font-family: var(--display); font-size: 20px; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .ruleset p { font-size: 15px; line-height: 1.7; color: var(--cream-soft); }
+
+  /* ------------------------------------------------------ SIDELINE GRID */
+  .sideline { padding: clamp(44px, 6vw, 84px) 0; border-top: 1px solid var(--field-line); }
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; font-weight: 700;
+    text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: var(--serif); font-size: clamp(26px, 3.6vw, 40px);
+    color: var(--cream); line-height: 1.08; margin-bottom: clamp(30px, 4vw, 44px); max-width: 24ch;
+  }
+  .sideline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(20px, 2.6vw, 30px); }
+  .sl-item { border-top: 1px solid var(--field-line); padding-top: 18px; }
+  .sl-item h3 {
+    font-family: var(--display); font-size: 15px; letter-spacing: 1.3px;
+    text-transform: uppercase; color: var(--cream); margin-bottom: 9px;
+  }
+  .sl-item p { font-size: 14.5px; line-height: 1.6; color: var(--cream-soft); }
+
+  /* ---------------------------------------------------------- CLOSING */
+  .closing { padding: clamp(52px, 8vw, 100px) 0; background: var(--field-deep); }
+  .closing h2 {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(28px, 4vw, 44px); line-height: 1.1;
+    color: var(--cream); margin-bottom: 18px; max-width: 22ch;
+  }
+  .closing p { color: var(--cream-soft); font-size: 16px; line-height: 1.7; max-width: 58ch; }
+  .closing-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+
+  /* ----------------------------------------------------------- FOOTER */
+  .footer { border-top: 1px solid var(--field-line); padding: 48px 0 36px; }
+  .footer-grid { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    color: var(--cream);
+  }
+  .footer-links { display: flex; gap: 28px; flex-wrap: wrap; }
+  .footer-links a { color: var(--cream-soft); text-decoration: none; font-size: 14px; transition: color .2s ease; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-meta {
+    margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--field-line);
+    color: var(--cream-mute); font-size: 12px; letter-spacing: 0.3px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--field-deep); border: 1px solid var(--gold-deep); color: var(--cream);
+    padding: 14px 24px; border-radius: 100px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); z-index: 1000; opacity: 0;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s ease;
+    max-width: calc(100% - 32px); text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fade-up .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .05s; }
+  .reveal.d2 { animation-delay: .15s; }
+  .reveal.d3 { animation-delay: .25s; }
+  .reveal.d4 { animation-delay: .35s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { animation: none; opacity: 1; }
+    * { transition: none !important; animation-duration: 0.01ms !important; }
+  }
+  @media (max-width: 540px) {
+    .nav-link { font-size: 13px; }
+    .eyebrow { padding: 6px 14px; font-size: 10px; letter-spacing: 2px; }
+  }
+
+  /* .hero's own padding shorthand zeroes the container's side padding; restore it */
+  .container.hero { padding-left: clamp(20px, 4vw, 48px); padding-right: clamp(20px, 4vw, 48px); }
+  /* iPhone screenshots are tall: keep them phone-sized instead of full width */
+  .phone-frame { max-width: 300px; margin: 0 auto; border-radius: 28px; }
+  .hero-phones { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  .hero-phones figure:nth-child(2) { margin-top: 48px; }
+  .phone-fig figcaption { text-align: center; max-width: 300px; margin-left: auto; margin-right: auto; }
+  .price-note { margin-top: 18px; font-size: 13.5px; color: var(--cream-mute); letter-spacing: 0.2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="container">
+    <nav class="nav">
+      <a href="/" class="nav-brand">
+        <img src="assets/logo.png" alt="" class="nav-brand-logo">
+        <span class="nav-brand-text">InGameInsights</span>
+      </a>
+      <div class="nav-menu">
+        <a href="index.html#apps" class="nav-link">Apps</a>
+        <a href="features.html" class="nav-link">Features</a>
+        <a href="guides.html" class="nav-link">Guides</a>
+        <a href="support.html" class="nav-link">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="container hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal d1">One phone. Every draw.</div>
+        <h1 class="reveal d1">Every faceoff, <em>charted.</em></h1>
+        <p class="hero-lede reveal d2">The scorebook says won or lost. Coaches Box Faceoff records the rest &mdash; who won the clamp, which move, where the ball went, who picked it up, and what happened next &mdash; in a few taps from the sideline.</p>
+        <div class="tag-row reveal d3">
+          <span class="tag">iPhone app</span>
+          <span class="tag">Free 7-day trial</span>
+          <span class="tag">No subscription</span>
+        </div>
+        <div class="hero-actions reveal d4">
+          <a href="https://apps.apple.com/us/app/coaches-box-faceoff/id6821172162?itscg=30200&itsct=apps_box_badge&mttnsubad=6821172162" class="btn btn-primary" target="_blank" rel="noopener">Download on the App Store</a>
+          <a href="#log" class="btn btn-ghost">See how it works</a>
+        </div>
+        <p class="price-note reveal d4">Free to download. Track free for 7 days, then a one-time $4.99 unlock.</p>
+      </div>
+      <div class="hero-phones reveal d3">
+        <figure class="phone-fig">
+          <div class="shot-frame phone-frame">
+            <img src="assets/faceoff-log.jpg" alt="The faceoff log form with result, FOGO, clamp and move selected" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/faceoff-log.jpg</code></span></div>
+          </div>
+        </figure>
+        <figure class="phone-fig">
+          <div class="shot-frame phone-frame">
+            <img src="assets/faceoff-totals.jpg" alt="Game totals with clamp stats and a direction grid" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/faceoff-totals.jpg</code></span></div>
+          </div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillar" id="log">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">01</div>
+        <div class="pillar-titles">
+          <h2>Log</h2>
+          <p>One screen per draw, built for the time between whistles.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Won or lost is the only required tap.</strong> Everything else is optional, so a busy sequence never leaves you behind.</li>
+          <li><strong>The clamp and the result, separately.</strong> Winning the clamp and winning the faceoff are different things. Logging both shows which one your FOGO is losing.</li>
+          <li><strong>Your moves, your names.</strong> Clamp, rake, plunger, jump, laser and pinch to start. Add, remove and reorder them to match what your players call things.</li>
+          <li><strong>Where the ball went.</strong> Forward left, forward right, back left or back right, from the FOGO&rsquo;s own view in his stance.</li>
+          <li><strong>Who came up with it.</strong> A clean pick, a scrum ground ball, a wing, another teammate, or a violation &mdash; for either team.</li>
+          <li><strong>What it turned into.</strong> Fast break created or given up, a shot, a goal.</li>
+        </ul>
+        <figure class="phone-fig">
+          <div class="shot-frame phone-frame">
+            <img src="assets/faceoff-list.jpg" alt="A game&rsquo;s list of logged faceoffs" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/faceoff-list.jpg</code></span></div>
+          </div>
+          <figcaption>Every draw in the game, newest first &mdash; tap one to correct it</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillar shaded" id="fogos">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">02</div>
+        <div class="pillar-titles">
+          <h2>Your FOGOs</h2>
+          <p>Track one player or the whole faceoff unit.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>A badge for each FOGO.</strong> Add each player once. Tap one to track him today, and switch mid-game when the coach does.</li>
+          <li><strong>Records that follow the player.</strong> Win percentage and clamp percentage for each FOGO across every game and tournament you log.</li>
+          <li><strong>Filter or combine.</strong> See one FOGO&rsquo;s numbers alone, or select several to see the unit together.</li>
+          <li><strong>The other guy, too.</strong> Record the opposing FOGO&rsquo;s number and see how yours does against each one.</li>
+        </ul>
+        <figure class="phone-fig">
+          <div class="shot-frame phone-frame">
+            <img src="assets/faceoff-home.jpg" alt="The home screen with a badge for each FOGO and the tournament&rsquo;s games" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/faceoff-home.jpg</code></span></div>
+          </div>
+          <figcaption>Each badge carries the player&rsquo;s running record</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillar" id="totals">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">03</div>
+        <div class="pillar-titles">
+          <h2>Totals</h2>
+          <p>The numbers a faceoff coach actually asks for.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>Win rate when the clamp is won, and when it is lost.</strong> Two numbers that tell you whether the problem is the draw or the scrap after it.</li>
+          <li><strong>A direction grid.</strong> How many went to each quadrant, and the record on each &mdash; an exit he keeps losing shows up fast.</li>
+          <li><strong>Possession, both ways.</strong> How your team got the ball and how theirs did, side by side.</li>
+          <li><strong>By move, by quarter, by opponent.</strong> Which move is working today, whether he fades late, and who is giving him trouble.</li>
+        </ul>
+        <figure class="phone-fig">
+          <div class="shot-frame phone-frame">
+            <img src="assets/faceoff-totals.jpg" alt="Totals with clamp percentages and the direction grid" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/faceoff-totals.jpg</code></span></div>
+          </div>
+          <figcaption>Live as you log &mdash; no waiting for the final whistle</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillar shaded" id="share">
+    <div class="container">
+      <div class="pillar-head">
+        <div class="pillar-num">04</div>
+        <div class="pillar-titles">
+          <h2>Share</h2>
+          <p>A report for the coach, or straight into the stat iPad.</p>
+        </div>
+      </div>
+      <div class="pillar-body">
+        <ul class="points">
+          <li><strong>A report worth handing over.</strong> A clean, branded HTML report for one game, a tournament, or one player. CSV if you want the raw numbers.</li>
+          <li><strong>Works with Coaches Box Lacrosse.</strong> At a quarter or half break, AirDrop your faceoff detail to the scorer&rsquo;s iPad. It matches up with the faceoffs already logged there and fills in the game and player reports. (Syncing needs Coaches Box Lacrosse Pro on the iPad.)</li>
+          <li><strong>Nothing leaves the phone until you send it.</strong> No account, no sign-in, no data collected.</li>
+        </ul>
+        <figure class="phone-fig">
+          <div class="shot-frame phone-frame">
+            <img src="assets/faceoff-report.jpg" alt="The exported faceoff report with summary tiles and a per-FOGO table" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+            <div class="shot-ph"><span class="icon">&#9635;</span><span>Add screenshot<br><code>assets/faceoff-report.jpg</code></span></div>
+          </div>
+          <figcaption>The game report, as the coach sees it</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="rulesets">
+    <div class="container">
+      <span class="section-label">&mdash; Pricing</span>
+      <h2 class="section-title">Try it for a week. Pay once if it earns it.</h2>
+      <div class="ruleset-grid">
+        <div class="ruleset">
+          <h3>Free for 7 days</h3>
+          <p>Unlimited games and faceoffs for every FOGO. A game you start during the trial can still be finished. Your games, totals, FOGO stats and Send to Coaches Box stay free after the trial ends.</p>
+        </div>
+        <div class="ruleset">
+          <h3>$4.99, one time</h3>
+          <p>Keeps tracking unlocked for good and adds HTML and CSV exports. No subscription, and it is shared with your Family Sharing group.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="container">
+      <h2>The faceoff X deserves its own stat sheet.</h2>
+      <p>A FOGO can spend a whole season hearing only his win percentage. Coaches Box Faceoff gives him, his parents and his coach the detail behind it. Download it and chart the next game.</p>
+      <div class="closing-actions">
+        <a href="https://apps.apple.com/us/app/coaches-box-faceoff/id6821172162?itscg=30200&itsct=apps_box_badge&mttnsubad=6821172162" class="btn btn-primary" target="_blank" rel="noopener">Download on the App Store</a>
+        <a href="coaches-box-lacrosse.html" class="btn btn-ghost">See Coaches Box Lacrosse</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="container footer">
+    <div class="footer-grid">
+      <div class="footer-brand">InGameInsights</div>
+      <nav class="footer-links">
+        <a href="index.html#apps">Apps</a>
+        <a href="features.html">Features</a>
+        <a href="guides.html">Guides</a>
+        <a href="index.html#about">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="support.html">Support</a>
+        <a href="mailto:support@ingameinsights.com">Contact</a>
+      </nav>
+    </div>
+    <div class="footer-meta">
+      <span>&copy; 2026 InGameInsights. All rights reserved.</span>
+      <span>Coaches Box Faceoff &mdash; faceoff tracking for iPhone.</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
